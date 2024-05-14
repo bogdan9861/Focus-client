@@ -1,0 +1,143 @@
+.feed {
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  // .feed__post
+
+  &__post {
+    background-color: #fff;
+    padding: 12px 33px 18px 33px;
+
+    max-width: 512px;
+    width: 100%;
+  }
+
+  // .feed__post-top
+
+  &__post-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  // .feed__post-profile
+
+  &__post-profile {
+    display: flex;
+    align-items: center;
+  }
+
+  &__post-profile__img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    object-fit: contain;
+    margin-right: 18px;
+  }
+
+  // .feed__post-profile-info
+
+  &__post-profile-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // .feed__post-profile-name
+
+  &__post-profile-name {
+  }
+
+  // .feed__post-profile-status
+
+  &__post-profile-status {
+  }
+
+  // .feed__post-top-btn
+
+  &__post-top-btn {
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.76);
+
+    width: 100px;
+    height: 30px;
+
+    text-align: center;
+    font-size: 12px;
+    line-height: 14px;
+
+    border: 0.5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  // .feed__post-img
+
+  &__post-img {
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+
+  // .feed__post-description
+
+  &__post-description {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 14px;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  &__comments {
+    &-list {
+      margin-bottom: 10px;
+    }
+
+    overflow-y: scroll;
+    max-height: 150px;
+    margin-bottom: 20px;
+
+    &-inner {
+      display: flex;
+      align-items: center;
+    }
+
+    &-name {
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      margin-right: 5px;
+    }
+
+    &-message {
+      color: rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  // .feed__post-statistic
+
+  &__post-statistic {
+    display: flex;
+    gap: 0 26px;
+  }
+
+  // .feed__post-statistic-btn
+
+  &__post-statistic-btn {
+    background-color: transparent;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+  }
+}
+
+.likes-count,
+.comments-count {
+  font-size: 18px;
+}
