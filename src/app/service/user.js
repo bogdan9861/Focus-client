@@ -3,14 +3,14 @@ import { api } from "./api";
 export const UserApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUserLikes: builder.query({
-      query: () => ({
-        url: "/users/likes",
+      query: (id) => ({
+        url: `/users/likes/${id}`,
         method: "GET",
       }),
     }),
     getUserSaves: builder.query({
-      query: () => ({
-        url: "/users/saves",
+      query: (id) => ({
+        url: `/users/saves/${id}`,
         method: "GET",
       }),
     }),
@@ -27,14 +27,14 @@ export const UserApi = api.injectEndpoints({
       }),
     }),
     getUserFollowers: builder.query({
-      query: () => ({
-        url: `/users/followers`,
+      query: (id) => ({
+        url: `/users/followers/${id}`,
         method: "GET",
       }),
     }),
     getUserFollows: builder.query({
-      query: () => ({
-        url: `/users/follows`,
+      query: (id) => ({
+        url: `/users/follows/${id}`,
         method: "GET",
       }),
     }),
@@ -42,21 +42,27 @@ export const UserApi = api.injectEndpoints({
       query: (id) => ({
         url: `/users/follow`,
         method: "POST",
-        body: id,
-      }),
-    }),
-    updateUser: builder.mutation({
-      query: (data) => ({
-        url: `/users/update`,
-        method: "PUT",
-        body: data,
+        body: { id },
       }),
     }),
     unsub: builder.mutation({
       query: (id) => ({
         url: `/users/unsub`,
         method: "DELETE",
-        body: id,
+        body: { id },
+      }),
+    }),
+    isFollowed: builder.query({
+      query: (id) => ({
+        url: `/users/isFollowed/${id}`,
+        method: "GET",
+      }),
+    }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/users/update`,
+        method: "PUT",
+        body: { data },
       }),
     }),
   }),
@@ -67,6 +73,7 @@ export const {
   useGetUserSavesQuery,
   useCurrentUserQuery,
   useFollowMutation,
+  useIsFollowedQuery,
   useGetUserByIDQuery,
   useGetUserFollowersQuery,
   useGetUserFollowsQuery,

@@ -21,8 +21,8 @@
   // .profile__img
 
   &__img {
-    width: 180px;
-    height: 180px;
+    width: 100px;
+    height: 100px;
     border-radius: 100%;
     object-fit: contain;
   }
@@ -30,21 +30,21 @@
   // .profile__content
 
   &__content {
-    margin-left: 92px;
+    margin-left: 50px;
   }
 
   // .profile__content-top
 
   &__content-top {
     display: flex;
-    margin-bottom: 37px;
+    margin-bottom: 30px;
   }
 
   // .profile__name
 
   &__name {
     color: rgba(0, 0, 0, 0.76);
-    font-size: 40px;
+    font-size: 30px;
     margin-right: 42px;
   }
 
@@ -54,6 +54,21 @@
     display: flex;
     align-items: center;
     gap: 0 15px;
+  }
+
+  &__content-btn {
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.76);
+
+    width: 100px;
+    height: 30px;
+    padding: 3px;
+
+    text-align: center;
+    font-size: 14px;
+
+    border: 0.5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
   }
 
   // .profile__content-subscribe
@@ -83,13 +98,13 @@
   &__statistics {
     display: flex;
     align-items: center;
-    gap: 0 73px;
+    gap: 0 65px;
   }
 
   // .profile__statistic
 
   &__statistic {
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 38px;
   }
 
@@ -108,7 +123,7 @@
   // .profile__info-name
 
   &__info-name {
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 5px;
     font-weight: 600;
     display: block;
@@ -143,11 +158,14 @@
     display: flex;
     justify-content: center;
     gap: 0 95px;
+    margin-bottom: 50px;
   }
 
   &__posts-mods__item {
     padding-top: 10px;
     transform: translateY(-4px);
+    border-top: 4px solid transparent;
+    transition: all 0.3s;
   }
 
   &__posts-mods__item.active {

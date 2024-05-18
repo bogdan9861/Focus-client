@@ -3,8 +3,8 @@ import { api } from "./api";
 export const PostsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUsersPost: builder.query({
-      query: () => ({
-        url: "posts/getUsersPost",
+      query: (id) => ({
+        url: `posts/getUsersPost/${id}`,
         method: "GET",
       }),
     }),
@@ -21,32 +21,11 @@ export const PostsApi = api.injectEndpoints({
         body: id,
       }),
     }),
-    getUsersPostByID: builder.mutation({
-      query: (id) => ({
-        url: "posts/getUsersPostByID",
-        method: "POST",
-        body: { id },
-      }),
-    }),
     getComments: builder.mutation({
       query: (id) => ({
         url: "posts/getComments",
         method: "POST",
         body: { id },
-      }),
-    }),
-    getLikes: builder.query({
-      query: (id) => ({
-        url: "posts/likes",
-        method: "GET",
-        body: id,
-      }),
-    }),
-    like: builder.mutation({
-      query: (id) => ({
-        url: "posts/like",
-        method: "PUT",
-        body: id,
       }),
     }),
     post: builder.mutation({
@@ -69,6 +48,27 @@ export const PostsApi = api.injectEndpoints({
         body: { message, id },
       }),
     }),
+    like: builder.mutation({
+      query: (id) => ({
+        url: "posts/like",
+        method: "PUT",
+        body: { id },
+      }),
+    }),
+    unlike: builder.mutation({
+      query: (id) => ({
+        url: "posts/unlike",
+        method: "PUT",
+        body: { id },
+      }),
+    }),
+    isLiked: builder.mutation({
+      query: (id) => ({
+        url: `posts/isLiked`,
+        method: "POST",
+        body: { id },
+      }),
+    }),
     save: builder.mutation({
       query: (id) => ({
         url: "posts/save",
@@ -87,15 +87,14 @@ export const PostsApi = api.injectEndpoints({
 });
 
 export const {
-  useGetPostQuery,
   useGetCommentsMutation,
   useCommentMutation,
   useGetAllPostsQuery,
-  useGetLikesQuery,
   useGetPostByIDMutation,
-  useGetUsersPostByIDMutation,
   useGetUsersPostQuery,
   useLikeMutation,
+  useUnlikeMutation,
+  useIsLikedMutation,
   usePostMutation,
   useRemovePostMutation,
   useSaveMutation,

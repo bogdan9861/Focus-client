@@ -25,6 +25,7 @@ const Feed = () => {
           {data.map((post) => {
             return (
               <Post
+                key={post?.id}
                 id={post?.id}
                 userId={post?.userId}
                 url={post?.photo}
@@ -33,6 +34,7 @@ const Feed = () => {
                 likes={post?.likesCount}
                 name={post?.name}
                 self={user.id === post?.userId}
+                status={post?.status}
               />
             );
           })}
