@@ -7,7 +7,7 @@ import noPhoto from "../../assets/images/no-photo.png";
 import "./Header.scss";
 import { selectUser, useCurrentQuery } from "../../app/service/auth";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Header = () => {
   const { data, isLoading } = useCurrentQuery();
@@ -51,7 +51,7 @@ const Header = () => {
             <Link className="header__prfile-user" to={`/profile/${user?.id}`}>
               <img
                 className="header__profile-img"
-                src={data?.photo ? data?.photo : noPhoto}
+                src={data?.photo || noPhoto}
                 alt=""
               />
               <div className="header__profile-info">
@@ -72,13 +72,16 @@ const Header = () => {
                 </a>
               </li>
               <li className="header__activity-item">
-                <a className="header__activity-link" href="#">
+                <Link
+                  className="header__activity-link"
+                  to={`/chat/${user?.id}`}
+                >
                   <img
                     className="header__activity-img"
                     src={message}
                     alt="messages"
                   />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

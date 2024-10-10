@@ -12,6 +12,7 @@ import "./assets/styles/index.css";
 import Profile from "./pages/Profile/Profile";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import Chat from "./pages/chat/Chat";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/chat/:id",
+    element: <Chat />,
   },
 ]);
 

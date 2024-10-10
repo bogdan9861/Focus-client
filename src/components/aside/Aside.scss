@@ -37,12 +37,16 @@
     border-top: 1px solid rgba($color: #000000, $alpha: 0.2);
   }
 
-  // .aside__footer-link
+  // .aside__footer-btn
 
-  &__footer-link {
+  &__footer-btn {
     position: relative;
     margin-left: 73px;
+    font-size: 19px;
+    font-weight: 300;
 
+    background-color: transparent;
+    border: none;
     display: inline-block;
 
     transition: transform 0.3s;

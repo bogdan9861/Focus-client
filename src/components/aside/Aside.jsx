@@ -1,11 +1,16 @@
 import { useCallback, useMemo, useState } from "react";
 import "./Aside.scss";
 
+import { logout } from "../../features/auth";
+import { useDispatch } from "react-redux";
+
 import logo from "../../assets/images/logo.svg";
 import { Link } from "react-router-dom";
 
 const Aside = () => {
   const [oppen, setOppen] = useState("");
+
+  const dispatch = useDispatch();
 
   window.addEventListener("mousemove", (e) => {
     if (e.clientX <= 10) {
@@ -13,6 +18,12 @@ const Aside = () => {
     } else if (e.clientX > 275) {
       setOppen("");
     }
+  });
+
+  const onLogout = useCallback(() => {
+    localStorage.removeItem("token");
+    dispatch(logout());
+    window.location.reload();
   });
 
   return (
@@ -47,9 +58,9 @@ const Aside = () => {
         </nav>
       </div>
       <div className="aside__footer">
-        <a className="aside__footer-link" href="#">
+        <button className="aside__footer-btn" onClick={() => onLogout()}>
           выйти
-        </a>
+        </button>
       </div>
     </div>
   );

@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Divider, Form, Input, Modal, notification } from "antd";
 
 import FileInput from "../FileInput/FileInput";
-import { useUpdateUserMutation } from "../../app/service/user";
+import {
+  useUpdateUserMutation,
+  useUploadAvatarMutation,
+} from "../../app/service/user";
 
+import { toProxyPath } from "../../utils/toProxyPath";
 import noPhoto from "../../assets/images/no-photo.png";
-import "../../pages/Login/Form.scss";
 import "./UpdateModal.scss";
 
-type Notification = {
+export type Notification = {
   duration: number;
   description: string;
 };
@@ -16,7 +19,7 @@ type Notification = {
 type User = {
   name: string;
   nickname: string;
-  photo: string;
+  photo?: string | undefined;
   status: string;
   about: string;
 };
@@ -30,15 +33,17 @@ type Props = {
 
 const UpdateModal = ({ data, oppen, onCancel, setOppenModal }: Props) => {
   const [url, setUrl] = useState("");
+  const [formData, setFormData] = useState();
+  const [file, setFile] = useState("");
   const [localData, setLocalData] = useState<User>({
     name: data.name,
     nickname: data.nickname,
-    photo: "",
-    about: "",
-    status: "",
+    about: data.about,
+    status: data.status,
   });
 
   const [doUpdate] = useUpdateUserMutation();
+  const [doUploadAvatar] = useUploadAvatarMutation();
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = ({ duration, description }: Notification) => {
@@ -50,14 +55,14 @@ const UpdateModal = ({ data, oppen, onCancel, setOppenModal }: Props) => {
     });
   };
 
-  useEffect(() => {
-    setLocalData({ ...localData, photo: url });
-    console.log(url);
-  }, [url]);
-
   const onUppdate = async () => {
     try {
-      await doUpdate(localData).unwrap;
+      await doUpdate(localData).unwrap();
+
+      if (formData) {
+        await doUploadAvatar(formData).unwrap();
+      }
+
       setOppenModal(false);
 
       openNotification({
@@ -83,44 +88,62 @@ const UpdateModal = ({ data, oppen, onCancel, setOppenModal }: Props) => {
         <div className="update__profile">
           <img
             className="update__img"
-            src={url || data?.photo || noPhoto}
+            src={url || (data?.photo && toProxyPath(data?.photo)) || noPhoto}
             alt=""
           />
           <div className="update__profile-content">
             <span className="update__profile-name">{data?.name}</span>
             <span className="update__profile-nickName">{data?.nickname}</span>
 
-            <FileInput setUrl={setUrl} />
+            <FileInput
+              setUrl={setUrl}
+              setFormData={setFormData}
+              setFile={setFile}
+              name="avatar"
+            />
           </div>
         </div>
         <Divider />
         <p className="update__form-title">Изменить данные</p>
         <Form onFinish={onUppdate}>
           <Form.Item name="name" initialValue={localData.name}>
-            <Input
-              className="update__input form__input"
+            <input
+              className="update__input"
               placeholder="Введите имя"
               onChange={(e) =>
                 setLocalData({ ...localData, name: e.target.value })
               }
+              maxLength={50}
             />
           </Form.Item>
 
           <Form.Item name="nickname" initialValue={localData.nickname}>
-            <Input
-              className="update__input form__input"
+            <input
+              className="update__input"
               placeholder="Введите никнейм"
               value={localData.nickname}
               onChange={(e) =>
                 setLocalData({ ...localData, nickname: e.target.value })
               }
+              maxLength={50}
+            />
+          </Form.Item>
+
+          <Form.Item name="about" initialValue={localData.about}>
+            <input
+              className="update__input"
+              placeholder="город"
+              value={localData.about}
+              onChange={(e) =>
+                setLocalData({ ...localData, about: e.target.value })
+              }
             />
           </Form.Item>
 
           <Form.Item name="status" initialValue={localData.status}>
-            <Input.TextArea
+            <textarea
               maxLength={300}
-              className="update__input form__input"
+              className="update__input update__textarea"
               placeholder="Введите статус"
               value={localData.status}
               onChange={(e) =>
@@ -128,17 +151,7 @@ const UpdateModal = ({ data, oppen, onCancel, setOppenModal }: Props) => {
               }
             />
           </Form.Item>
-          <Form.Item name="about" initialValue={localData.about}>
-            <Input
-              className="update__input form__input"
-              placeholder="Где вы живёте?"
-              value={localData.about}
-              onChange={(e) =>
-                setLocalData({ ...localData, about: e.target.value })
-              }
-            />
-          </Form.Item>
-          <button className="update__from-btn" type="submit">
+          <button className="send__btn update__from-btn" type="submit">
             обновить данные
           </button>
         </Form>

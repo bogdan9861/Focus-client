@@ -4,12 +4,22 @@ import {
   useCommentMutation,
   useGetCommentsMutation,
   useIsLikedMutation,
+  useIsSavedMutation,
   useLikeMutation,
+  useRemovePostMutation,
+  useSaveMutation,
+  useUnSaveMutation,
   useUnlikeMutation,
 } from "../../app/service/posts";
 
 import noPhoto from "../../assets/images/no-photo.png";
 import { Link } from "react-router-dom";
+import { Button, Modal, notification } from "antd";
+import { Notification } from "../UpdateForm/UpdateModal";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/user";
+import { useIsFollowedQuery } from "../../app/service/user";
+import { NULL } from "sass";
 
 type Props = {
   id: string;
@@ -19,7 +29,6 @@ type Props = {
   status: string;
   profileURL: string;
   self: boolean;
-  description: string;
   likes: string;
 };
 
@@ -38,32 +47,56 @@ export const Post = ({
   url,
   profileURL,
   self,
-  description,
   likes,
   status,
 }: Props) => {
   const [doLike] = useLikeMutation();
   const [doUnlike] = useUnlikeMutation();
   const [checkIsLiked] = useIsLikedMutation();
+  const [checkIsSaved] = useIsSavedMutation();
+  const [doSave] = useSaveMutation();
+  const [doUnsave] = useUnSaveMutation();
+  const [doDelete] = useRemovePostMutation();
 
   const [commentsCount, setCommentsCount] = useState(0);
   const [currentLikes, setCurrentLikes] = useState(0);
   const [oppenComment, setOppenComment] = useState(false);
   const [isLikedLocal, setIsLikedLocal] = useState(false);
+  const [isSavedLocal, setIsSavedLocal] = useState(false);
+
+  const [oppenMenu, setOppenMenu] = useState(false);
+  const [oppenRemoveAlert, setOppenRemoveAlert] = useState(false);
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = ({ duration, description }: Notification) => {
+    api.open({
+      message: "Уведомление",
+      placement: "topLeft",
+      description,
+      duration,
+    });
+  };
 
   useEffect(() => {
     setCurrentLikes(+likes);
     isLiked();
+    isSaved();
   }, []);
-
-  useEffect(() => {
-    console.log(isLikedLocal);
-  }, [isLikedLocal]);
 
   const isLiked = async () => {
     try {
       const res = await checkIsLiked(id).unwrap();
       setIsLikedLocal(res.isLiked);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isSaved = async () => {
+    try {
+      const res = await checkIsSaved(id).unwrap();
+      setIsSavedLocal(res.isSaved);
     } catch (error) {
       console.log(error);
     }
@@ -102,8 +135,64 @@ export const Post = ({
     }
   };
 
+  const onSave = async () => {
+    try {
+      await doSave(id).unwrap();
+      setIsSavedLocal(true);
+
+      openNotification({
+        description: "Пост добавлен в сохранённые",
+        duration: 3,
+      });
+
+      setIsSavedLocal(!isSavedLocal);
+      setOppenMenu(false);
+    } catch (error: any) {
+      if (error?.data.message) {
+        openNotification({ description: error?.data.message, duration: 5 });
+      } else {
+        openNotification({ description: "Произошла ошибка", duration: 5 });
+      }
+    }
+  };
+
+  const unSave = async () => {
+    try {
+      await doUnsave(id).unwrap();
+      setIsSavedLocal(false);
+      setOppenMenu(false);
+      openNotification({
+        description: "Пост удвлён из сохранённых",
+        duration: 3,
+      });
+    } catch (error: any) {
+      if (error?.data.message) {
+        openNotification({ description: error?.data.message, duration: 5 });
+      } else {
+        openNotification({ description: "Произошла ошибка", duration: 5 });
+      }
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      await doDelete(id).unwrap();
+      openNotification({ description: "Пост успешно удалён", duration: 3 });
+
+      setOppenRemoveAlert(false);
+      setOppenMenu(false);
+    } catch (error: any) {
+      if (error?.data.message) {
+        openNotification({ description: error?.data.message, duration: 5 });
+      } else {
+        openNotification({ description: "Произошла ошибка", duration: 5 });
+      }
+    }
+  };
+
   return (
     <div className="feed__post">
+      {contextHolder}
       <div className="feed__post-top">
         <Link className="feed__post-profile" to={`/profile/${userId}`}>
           <img
@@ -116,15 +205,101 @@ export const Post = ({
             <span className="feed__post-profile-status">{status}</span>
           </div>
         </Link>
-        {!self ? (
-          <button className="feed__post-top-btn">подписаться</button>
-        ) : null}
+        <div className="feed__post-menu-wrapper">
+          <button
+            className="feed__post-menu-btn"
+            onClick={() => setOppenMenu(!oppenMenu)}
+          >
+            <svg
+              width="5.000000"
+              height="23.000000"
+              viewBox="0 0 5 23"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+            >
+              <desc>Created with Pixso.</desc>
+              <defs />
+              <circle
+                id="Эллипс 4"
+                cx="2.500000"
+                cy="2.500000"
+                r="2.500000"
+                fill="#5B5B5B"
+                fillOpacity="1.000000"
+              />
+              <circle
+                id="Эллипс 5"
+                cx="2.500000"
+                cy="11.500000"
+                r="2.500000"
+                fill="#5B5B5B"
+                fillOpacity="1.000000"
+              />
+              <circle
+                id="Эллипс 6"
+                cx="2.500000"
+                cy="20.500000"
+                r="2.500000"
+                fill="#5B5B5B"
+                fillOpacity="1.000000"
+              />
+            </svg>
+          </button>
+          <ul className={`feed__post-menu-list ${oppenMenu ? "active" : ""}`}>
+            <li className="feed__post-menu-list__item">
+              {!isSavedLocal ? (
+                <button
+                  className="feed__post-menu-list__item-btn"
+                  onClick={() => onSave()}
+                >
+                  сохранить
+                </button>
+              ) : (
+                <button
+                  className="feed__post-menu-list__item-btn"
+                  onClick={() => unSave()}
+                >
+                  удалить из сохранённых
+                </button>
+              )}
+            </li>
+            {self ? (
+              <li className="feed__post-menu-list__item">
+                <button
+                  className="feed__post-menu-list__item-btn red"
+                  onClick={() => setOppenRemoveAlert(true)}
+                >
+                  удалить
+                </button>
+              </li>
+            ) : null}
+          </ul>
+          <Modal
+            open={oppenRemoveAlert}
+            onOk={() => onDelete()}
+            onCancel={() => setOppenRemoveAlert(false)}
+          >
+            <h1 className="remove-alert__title">
+              Вы уверенны,что хоите удалить этот пост?
+            </h1>
+            <img className="remove-alert__img" src={url} alt="" />
+            <button
+              className="remove-alert__btn send__btn"
+              onClick={() => setOppenRemoveAlert(false)}
+            >
+              отмена
+            </button>
+            <button
+              className="remove-alert__btn send__btn red"
+              onClick={() => onDelete()}
+            >
+              удалить
+            </button>
+          </Modal>
+        </div>
       </div>
       <img className="feed__post-img" src={url} alt="" />
-      <span className="feed__post-description">
-        {name}: {description}
-      </span>
-
       <Comments
         id={id}
         setCommentsCount={setCommentsCount}
@@ -237,7 +412,7 @@ const Comments = ({ id, setCommentsCount, oppenComment, setOppenComment }) => {
             <li className="feed__comments-item" key={comment?.id}>
               <div className="feed__comments-inner">
                 <span className="feed__comments-name">
-                  @{comment?.nickname || comment?.name}:
+                  @{comment?.nickname || comment?.name}
                 </span>
                 <p className="feed__comments-message">{comment?.text}</p>
               </div>

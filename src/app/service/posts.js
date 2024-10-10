@@ -2,10 +2,11 @@ import { api } from "./api";
 
 export const PostsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getUsersPost: builder.query({
+    getUsersPost: builder.mutation({
       query: (id) => ({
-        url: `posts/getUsersPost/${id}`,
-        method: "GET",
+        url: `posts/getUsersPost`,
+        method: "POST",
+        body: { id },
       }),
     }),
     getAllPosts: builder.query({
@@ -29,10 +30,10 @@ export const PostsApi = api.injectEndpoints({
       }),
     }),
     post: builder.mutation({
-      query: (postData) => ({
+      query: (fromData) => ({
         url: "posts/post",
         method: "POST",
-        body: postData,
+        body: fromData,
       }),
     }),
     removePost: builder.mutation({
@@ -62,6 +63,13 @@ export const PostsApi = api.injectEndpoints({
         body: { id },
       }),
     }),
+    getUserLikes: builder.mutation({
+      query: (id) => ({
+        url: `/posts/likes`,
+        method: "POST",
+        body: { id },
+      }),
+    }),
     isLiked: builder.mutation({
       query: (id) => ({
         url: `posts/isLiked`,
@@ -73,14 +81,28 @@ export const PostsApi = api.injectEndpoints({
       query: (id) => ({
         url: "posts/save",
         method: "POST",
-        body: id,
+        body: { id },
       }),
     }),
     unSave: builder.mutation({
       query: (id) => ({
         url: "posts/unsave",
+        method: "DELETE",
+        body: { id },
+      }),
+    }),
+    isSaved: builder.mutation({
+      query: (id) => ({
+        url: `posts/isSaved`,
         method: "POST",
-        body: id,
+        body: { id },
+      }),
+    }),
+    getUserSaves: builder.mutation({
+      query: (id) => ({
+        url: `/posts/saves`,
+        method: "POST",
+        body: { id },
       }),
     }),
   }),
@@ -91,7 +113,6 @@ export const {
   useCommentMutation,
   useGetAllPostsQuery,
   useGetPostByIDMutation,
-  useGetUsersPostQuery,
   useLikeMutation,
   useUnlikeMutation,
   useIsLikedMutation,
@@ -99,4 +120,8 @@ export const {
   useRemovePostMutation,
   useSaveMutation,
   useUnSaveMutation,
+  useGetUsersPostMutation,
+  useGetUserSavesMutation,
+  useIsSavedMutation,
+  useGetUserLikesMutation,
 } = PostsApi;

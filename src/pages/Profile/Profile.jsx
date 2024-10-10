@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import {
   useCurrentUserQuery,
@@ -7,31 +8,41 @@ import {
   useGetUserByIDQuery,
   useGetUserFollowersQuery,
   useGetUserFollowsQuery,
-  useGetUserLikesQuery,
-  useGetUserSavesQuery,
   useIsFollowedQuery,
   useUnsubMutation,
 } from "../../app/service/user";
-import { useGetUsersPostQuery } from "../../app/service/posts";
+import {
+  useGetUserLikesMutation,
+  useGetUserSavesMutation,
+  useGetUsersPostMutation,
+} from "../../app/service/posts";
+
+import { selectPosts } from "../../features/posts";
+import { toProxyPath } from "../../utils/toProxyPath";
+import { selectUser } from "../../features/user";
+
+import Aside from "../../components/aside/Aside";
+import { Post } from "../../components/post/Post";
+import UpdateModal from "../../components/UpdateForm/UpdateModal";
+import PostModal from "../../components/postModal/PostModal";
 
 import noPhoto from "../../assets/images/no-photo.png";
 import settings from "../../assets/icons/settings.svg";
-import Aside from "../../components/aside/Aside";
-import { Post } from "../../components/post/Post";
+import plus from "../../assets/images/plus.svg";
 
 import "./Profile.scss";
-import UpdateModal from "../../components/UpdateForm/UpdateModal";
 
 const Profile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetUserByIDQuery(id);
-  const currentUser = useCurrentUserQuery();
+  const current = useCurrentUserQuery();
+  const user = useSelector(selectUser);
 
-  const postsData = useGetUsersPostQuery(id);
-  const savesData = useGetUserSavesQuery(id);
-  const likesData = useGetUserLikesQuery(id);
+  const [getPosts] = useGetUsersPostMutation();
+  const [getSaves] = useGetUserSavesMutation();
+  const [getLikes] = useGetUserLikesMutation();
 
   const followers = useGetUserFollowersQuery(id);
   const follows = useGetUserFollowsQuery(id);
@@ -40,9 +51,10 @@ const Profile = () => {
   const [follow] = useFollowMutation();
   const [unsub] = useUnsubMutation();
 
-  const [posts, setPosts] = useState([]);
+  const posts = useSelector(selectPosts);
   const [postsMode, setPostsMode] = useState("posts");
-  const [oppenModal, setOppenModal] = useState(false);
+  const [oppenUpdateModal, setOppenUpdateModal] = useState(false);
+  const [oppenPostModal, setOppenPostModal] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -52,32 +64,16 @@ const Profile = () => {
 
   useEffect(() => {
     if (postsMode === "posts") {
-      if (!postsData.isLoading) {
-        setPosts(postsData.data);
-      }
+      getPosts(id);
     } else if (postsMode === "saves") {
-      if (!savesData.isLoading) {
-        setPosts(savesData.data);
-      }
+      getSaves(id);
     } else if (postsMode === "likes") {
-      if (!likesData.isLoading) {
-        setPosts(likesData.data);
-      }
+      getLikes(id);
     }
-  }, [
-    postsMode,
-    id,
-    postsData.isLoading,
-    savesData.isLoading,
-    likesData.isLoading,
-  ]);
+  }, [postsMode, id]);
 
   if (
     isLoading ||
-    currentUser.isLoading ||
-    postsData.isLoading ||
-    savesData.isLoading ||
-    likesData.isLoading ||
     followers.isLoading ||
     follows.isLoading ||
     isFollowed.isLoading
@@ -130,19 +126,19 @@ const Profile = () => {
               <>
                 <img
                   className="profile__img"
-                  src={data?.photo || noPhoto}
+                  src={(user?.photo && toProxyPath(user?.photo)) || noPhoto}
                   alt=""
                 />
                 <div className="profile__content">
                   <div className="profile__content-top">
                     <span className="profile__name">
-                      {data?.nickname || data?.name}
+                      {user?.nickname || user?.name}
                     </span>
-                    {currentUser?.data?.id === id ? (
+                    {current.data.id === id ? (
                       <div className="profile__content-btns">
                         <button
                           className="profile__content-subscribe"
-                          onClick={() => setOppenModal(true)}
+                          onClick={() => setOppenUpdateModal(true)}
                         >
                           Edit profile
                         </button>
@@ -150,7 +146,7 @@ const Profile = () => {
                           <img src={settings} alt="" />
                         </a>
                       </div>
-                    ) : isFollowed?.data?.followed ? (
+                    ) : user.followed ? (
                       <button
                         className="profile__content-btn"
                         onClick={() => onUnsub()}
@@ -169,13 +165,13 @@ const Profile = () => {
                   <div className="profile__statistics">
                     <span className="profile__statistic">
                       <span className="profile__statistic-count">
-                        {postsData.data.length}
+                        {posts.length || 0}
                       </span>
                       posts
                     </span>
                     <span className="profile__statistic">
                       <span className="profile__statistic-count">
-                        {followers.data.length}
+                        {user.followersCount || followers.data.length}
                       </span>
                       followers
                     </span>
@@ -187,9 +183,9 @@ const Profile = () => {
                     </span>
                   </div>
                   <div className="profile__info">
-                    <span className="profile__info-name">{data?.name}</span>
-                    <span className="profile__info-about">{data?.about}</span>
-                    <p className="profile__info-status">{data?.status}</p>
+                    <span className="profile__info-name">{user?.name}</span>
+                    <span className="profile__info-about">{user?.about}</span>
+                    <p className="profile__info-status">{user?.status}</p>
                   </div>
                 </div>
               </>
@@ -245,11 +241,10 @@ const Profile = () => {
                           key={post?.id}
                           id={post?.id}
                           userId={post?.userId}
-                          url={post?.photo}
-                          profileURL={post?.userPhoto}
-                          description={post?.description}
+                          url={toProxyPath(post?.photo)}
+                          profileURL={toProxyPath(post?.userPhoto)}
                           name={post?.name}
-                          self={id === post?.userId}
+                          self={current.data.id === post?.userId}
                           likes={post?.likesCount}
                           status={post?.status}
                         />
@@ -263,12 +258,23 @@ const Profile = () => {
             )}
           </div>
         </div>
+        <button
+          className="publication-btn"
+          onClick={() => setOppenPostModal(true)}
+        >
+          <img className="publication-btn__icon" src={plus} alt="" />
+        </button>
       </div>
       <UpdateModal
-        oppen={oppenModal}
-        onCancel={() => setOppenModal(false)}
-        setOppenModal={setOppenModal}
-        data={data}
+        oppen={oppenUpdateModal}
+        onCancel={() => setOppenUpdateModal(false)}
+        setOppenModal={setOppenUpdateModal}
+        data={user}
+      />
+      <PostModal
+        oppen={oppenPostModal}
+        onCancel={() => setOppenPostModal(false)}
+        setOppenModal={setOppenPostModal}
       />
     </>
   );

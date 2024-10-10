@@ -2,18 +2,6 @@ import { api } from "./api";
 
 export const UserApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getUserLikes: builder.query({
-      query: (id) => ({
-        url: `/users/likes/${id}`,
-        method: "GET",
-      }),
-    }),
-    getUserSaves: builder.query({
-      query: (id) => ({
-        url: `/users/saves/${id}`,
-        method: "GET",
-      }),
-    }),
     currentUser: builder.query({
       query: () => ({
         url: "/users/current",
@@ -65,12 +53,17 @@ export const UserApi = api.injectEndpoints({
         body: { data },
       }),
     }),
+    uploadAvatar: builder.mutation({
+      query: (data) => ({
+        url: `/users/uploadAvatar`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
 export const {
-  useGetUserLikesQuery,
-  useGetUserSavesQuery,
   useCurrentUserQuery,
   useFollowMutation,
   useIsFollowedQuery,
@@ -79,4 +72,5 @@ export const {
   useGetUserFollowsQuery,
   useUnsubMutation,
   useUpdateUserMutation,
+  useUploadAvatarMutation,
 } = UserApi;

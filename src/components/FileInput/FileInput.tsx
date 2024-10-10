@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import "../UpdateForm/UpdateModal.scss";
+import { useUploadMutation } from "../../app/service/file";
 
 type Props = {
   setUrl: (str) => void;
+  setFormData: (data) => void;
+  setFile?: (file) => void;
+  name: string;
 };
 
-const FileInput = ({ setUrl }: Props) => {
+const FileInput = ({ setUrl, setFormData, setFile, name }: Props) => {
   const fileReader = new FileReader();
 
   fileReader.onloadend = () => {
@@ -14,11 +18,14 @@ const FileInput = ({ setUrl }: Props) => {
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      const fromData = new FormData();
       const file = e.target.files[0];
 
       if (!file) return;
 
-      fileReader.readAsDataURL(file);
+      fromData.append(name, file);
+      setUrl(fileReader.readAsDataURL(file));
+      setFormData(fromData);
     }
   };
 

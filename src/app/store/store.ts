@@ -3,10 +3,12 @@ import { getDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware
 import { api } from "../service/api";
 
 import auth from "../../features/auth";
+import user from "../../features/user";
+import posts from "../../features/posts";
 import { listener } from "../../middleware/middleware";
 
 export const store = configureStore({
-  reducer: { [api.reducerPath]: api.reducer, auth },
+  reducer: { [api.reducerPath]: api.reducer, auth, posts, user },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware).prepend(listener.middleware),
 });
