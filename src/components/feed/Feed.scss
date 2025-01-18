@@ -1,0 +1,276 @@
+.feed {
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    width: 85%;
+    margin-left: auto;
+  }
+
+  // .feed__post
+
+  &__post {
+    background-color: #fff;
+    padding: 12px 33px 18px 33px;
+
+    max-width: 512px;
+    width: 100%;
+  }
+
+  // .feed__post-top
+
+  &__post-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  // .feed__post-profile
+
+  &__post-profile {
+    display: flex;
+    align-items: center;
+  }
+
+  &__post-profile__img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    object-fit: cover;
+    margin-right: 18px;
+  }
+
+  // .feed__post-profile-info
+
+  &__post-profile-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // .feed__post-profile-name
+
+  &__post-profile-name {
+    font-size: 17px;
+    margin-bottom: 3px;
+  }
+
+  // .feed__post-profile-status
+
+  &__post-profile-status {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+  }
+
+  // .feed__post-top-btn
+
+  &__post-top-btn {
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.76);
+
+    width: 100px;
+    height: 30px;
+
+    text-align: center;
+    font-size: 12px;
+    line-height: 14px;
+
+    border: 0.5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  // .feed__post-img
+
+  &__post-img {
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+
+  // .feed__post-description
+
+  &__post-description {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 14px;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  &__comments {
+    margin-bottom: auto;
+
+    &-list {
+      margin-bottom: 10px;
+      overflow-y: scroll;
+      max-height: 80px;
+      margin-bottom: 20px;
+    }
+
+    &-item {
+      margin-bottom: 10px;
+    }
+
+    &-inner {
+      display: flex;
+      align-items: center;
+    }
+
+    &-name {
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      margin-right: 5px;
+    }
+
+    &-message {
+      color: rgba(0, 0, 0, 0.55);
+    }
+
+    &-input-wrapper {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    &-input {
+      padding: 5px;
+      border: 1px solid #8b8b8b;
+      width: 100%;
+    }
+  }
+
+  // .feed__post-statistic
+
+  &__post-statistic {
+    display: flex;
+    gap: 0 26px;
+  }
+
+  // .feed__post-statistic-btn
+
+  &__post-statistic-btn {
+    background-color: transparent;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+  }
+
+  &__post-menu-wrapper {
+    position: relative;
+  }
+
+  &__post-menu-btn {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+  }
+
+  // .feed__post-menu-list
+
+  &__post-menu-list {
+    position: absolute;
+    top: -80px;
+    right: -200px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    min-width: 200px;
+    width: fit-content;
+    min-height: 80px;
+
+    padding: 15px 22px 10px 25px;
+
+    border-radius: 15px 15px 15px 0px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background: rgb(255, 255, 255);
+    justify-content: center;
+
+    transition: opacity 0.3s;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &__post-menu-list.active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &__post-menu-list__item-btn {
+    background-color: transparent;
+    border: none;
+
+    color: rgb(101, 101, 101);
+    font-size: 19px;
+    text-wrap: nowrap;
+
+    padding-left: 35px;
+
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 0;
+      width: 16px;
+      height: 19px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/icons/save.svg");
+    }
+  }
+
+  &__post-menu-list__item-btn.red {
+    color: rgb(254, 12, 12);
+
+    &::before {
+      content: "";
+      width: 16px;
+      height: 19px;
+      background-image: url("../../assets/icons/delete.svg");
+    }
+  }
+}
+
+.likes-count,
+.comments-count {
+  font-size: 18px;
+}
+
+.remove-alert {
+  // .remove-alert__title
+
+  &__title {
+    margin-bottom: 25px;
+  }
+
+  // .remove-alert__img
+
+  &__img {
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+    margin-bottom: 60px;
+  }
+
+  // .remove-alert__btn
+
+  &__btn {
+    margin-right: 20px;
+  }
+
+  &__btn.red {
+    background-color: rgb(254, 12, 12);
+    transition: background 0.3s;
+
+    &:hover {
+      background-color: rgb(182, 23, 23);
+    }
+  }
+}

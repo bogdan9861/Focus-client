@@ -1,0 +1,377 @@
+.chat {
+  display: flex;
+  height: 100vh;
+
+  // .chat__aside
+
+  &__aside {
+    padding: 30px 20px;
+
+    max-width: 40%;
+    min-width: 300px;
+
+    background-color: #fff;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.55);
+    border-right: 1px solid #e7e7e7;
+
+    resize: horizontal;
+    overflow: auto;
+
+    &-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    &-top {
+      position: relative;
+      width: 0%;
+      margin-left: 40px;
+      transition: all 0.4s;
+    }
+
+    &-top.active {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    &-top.active &-top__search {
+      border-radius: 30px;
+      background-color: #f0f2f5;
+      outline: #131212;
+    }
+
+    &-top.active &-top__btn {
+      right: 10px;
+    }
+
+    &-top__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    &-top__search {
+      width: 100%;
+      border: none;
+      padding: 13px 45px 13px 20px;
+      outline: none;
+
+      transition: all 0.4s;
+
+      background-color: transparent;
+      color: #292b2e;
+      font-size: 15px;
+
+      &::placeholder {
+        font-size: 13px;
+      }
+    }
+
+    &-top__btn {
+      width: 34px;
+      height: 24px;
+      background-color: transparent;
+      border: none;
+
+      transition: all 0.4s;
+
+      position: absolute;
+      right: 0;
+
+      cursor: pointer;
+    }
+
+    &-back {
+      display: block;
+      width: 25px;
+      height: 25px;
+    }
+
+    &-back img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // .chat__aside-list
+
+  &__aside-list {
+    margin-top: 30px;
+  }
+
+  // .chat__aside-item
+
+  &__aside-item {
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+
+  &__aside-item__content {
+    max-width: 260px;
+  }
+
+  &__aside-item__name {
+    font-size: 16px;
+    line-height: 19px;
+    padding-bottom: 5px;
+    font-weight: 500;
+    display: block;
+  }
+
+  &__aside-item__message {
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  &__aside-item__img {
+    width: 65px;
+    height: 65px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+}
+.chat-body {
+  background: linear-gradient(316deg, #afc7a6, #dbdf8a);
+  width: 100%;
+
+  &__head {
+    gap: 0 20px;
+
+    min-height: 75px;
+
+    border-bottom: 1px solid #b8bf7e;
+    padding: 15px 30px 15px 30px;
+    margin-bottom: 30px;
+    background: #fff;
+  }
+
+  &__head-name {
+    font-size: 19px;
+    line-height: 21px;
+  }
+
+  &__head-status {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__head-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+
+  &__head-name {
+  }
+
+  // .chat-body__inner
+
+  &__inner {
+    position: relative;
+  }
+
+  // .chat-body__messages
+
+  &__messages {
+    overflow-y: scroll;
+    height: 83vh;
+    padding-right: 10px;
+  }
+
+  &__messages::-webkit-scrollbar {
+    width: 5px; /* Ширина всего элемента навигации */
+  }
+
+  &__messages::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1); /* Цвет дорожки */
+  }
+
+  &__messages::-webkit-scrollbar-thumb {
+    background-color: rgba(132, 0, 255, 0.5); /* Цвет бегунка */
+    border-radius: 20px; /* Округление бегунка */
+  }
+
+  // .chat-body__message
+
+  &__message {
+    color: #131212;
+
+    box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+
+    border-radius: 17px;
+    border-bottom-left-radius: 0;
+
+    min-height: 40px;
+    min-width: 90px;
+    max-width: 500px;
+    width: fit-content;
+
+    padding: 10px 30px 10px 13px;
+    margin-left: 30px;
+    margin-bottom: 14px;
+
+    word-break: break-all;
+
+    position: relative;
+  }
+
+  &__message.self {
+    background-color: #5088df;
+    color: #fff;
+    border-bottom-left-radius: 17px;
+    border-bottom-right-radius: 0;
+    margin-left: auto;
+  }
+
+  &__message-text {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  &__message-time {
+    font-size: 10.8px;
+    position: absolute;
+    color: rgba(0, 0, 0, 0.55);
+    bottom: 3px;
+    right: 12px;
+  }
+
+  &__message-play {
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 100%;
+
+    border: none;
+
+    width: 30px;
+    height: 30px;
+  }
+
+  &__message-play img {
+    pointer-events: none;
+  }
+
+  .play {
+    display: block;
+    transform: translateX(1px);
+  }
+
+  .pause {
+    display: none;
+
+    transform: translateX(0);
+  }
+
+  &__message-play.active .pause {
+    display: block;
+  }
+
+  &__message-play.active .play {
+    display: none;
+  }
+
+  &__message.self &__message-time {
+    color: rgb(255 255 255 / 55%);
+  }
+
+  .fallDown {
+    transform: translateX(20px);
+    animation: fallDown 0.3s forwards 1;
+  }
+
+  @keyframes fallDown {
+    0% {
+      transform: translateY(40px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  // .chat-body__form
+
+  &__form {
+    width: 100%;
+    margin: 0px 15px 0 15px;
+    position: relative;
+  }
+
+  // .chat-body__form-inner
+
+  &__form-inner {
+    display: flex;
+    max-height: 50px;
+  }
+
+  &__form-file {
+    background-color: #fff;
+    border-radius: 8px;
+    border: none;
+    position: relative;
+    top: 0;
+    left: -5px;
+    z-index: 10;
+
+    width: 48px;
+    height: 48px;
+
+    padding: 5px 5px 5px 10px;
+
+    cursor: pointer;
+  }
+
+  &__form__btn-img {
+    width: 85%;
+    object-fit: contain;
+  }
+
+  &__form-input {
+    padding: 13px 45px 13px 25px;
+    font-size: 19px;
+    width: 100%;
+    border: none;
+    border-radius: 7px;
+    font-weight: 400;
+
+    outline: none;
+
+    position: relative;
+    z-index: 2;
+
+    &::placeholder {
+      font-size: 16px;
+      line-height: 17px;
+      color: #272b2eb2;
+    }
+  }
+
+  &__form-submit {
+    background-color: transparent;
+    border: none;
+    position: relative;
+    top: -9px;
+    left: -48px;
+    z-index: 10;
+
+    padding: 0;
+
+    transform: translateY(11px);
+  }
+
+  &__form-submit img {
+    background-color: transparent;
+    border: none;
+    width: 30px;
+    height: 27px;
+  }
+}

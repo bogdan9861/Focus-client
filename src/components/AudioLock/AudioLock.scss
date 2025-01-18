@@ -1,0 +1,38 @@
+.audioLock {
+  position: absolute;
+  right: 39px;
+  top: -150px;
+  transform: translateX(100vw);
+  width: 30px;
+  height: 110px;
+
+  transition: all 0.3s;
+
+  &__inner {
+    background-color: #fff;
+
+    height: 100%;
+
+    border-radius: 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 3px 10px 3px;
+
+    &-img {
+      width: 23px;
+      height: 23px;
+    }
+
+    &-img:nth-child(2) {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+.audioLock.audioLock--active {
+  transform: translateX(0);
+}

@@ -1,0 +1,96 @@
+.ant-btn {
+  display: none;
+}
+
+.ant-form-item {
+  margin: 0;
+}
+
+.update {
+  // .update__profile
+
+  padding: 50px 47px 30px 47px;
+
+  &__profile {
+    display: flex;
+  }
+
+  // .update__profile-content
+
+  &__profile-content {
+    margin-left: 50px;
+  }
+
+  &__img {
+    width: 130px;
+    height: 130px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+
+  // .update__profile-name
+
+  &__profile-name {
+    color: rgba(0, 0, 0, 0.94);
+    font-size: 27px;
+    font-weight: 500;
+    line-height: 26px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  // .update__profile-nickName
+
+  &__profile-nickName {
+    color: rgba(0, 0, 0, 0.76);
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 18px;
+    display: block;
+    margin-bottom: 34px;
+  }
+
+  // .update__profile-label
+
+  &__profile-label {
+    width: 140px;
+    height: 30px;
+    padding: 7px 20px;
+    margin-right: 30px;
+
+    color: rgba(0, 0, 0, 0.76);
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: center;
+
+    box-sizing: border-box;
+    border: 0.5px solid rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  // .update__profile-form-title
+
+  &__form-title {
+    color: rgba(0, 0, 0, 0.67);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 27px;
+    margin-bottom: 20px;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 15px 10px;
+    margin-bottom: 15px;
+    border-radius: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    font-size: 17px;
+  }
+
+  &__textarea {
+    height: 100px;
+    resize: none;
+  }
+}

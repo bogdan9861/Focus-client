@@ -1,0 +1,26 @@
+.postModal {
+  // .postModal__img
+
+  &__img {
+    display: block;
+    margin: 0 auto;
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+    margin-bottom: 25px;
+  }
+
+  // .postModal__input
+
+  &__input {
+    margin: 20px 0;
+  }
+}
+.input {
+}
+.send {
+  // .send__btn
+
+  &__btn {
+  }
+}
