@@ -139,7 +139,9 @@ const Chat = () => {
                   >
                     {el?.audio ? (
                       <button
-                        className="chat-body__message-play"
+                        className={`chat-body__message-play ${
+                          el.userId === id ? "self" : ""
+                        }`}
                         onClick={(e) => playAudio(e)}
                       >
                         <audio
@@ -150,12 +152,16 @@ const Chat = () => {
                         />
                         <img
                           className="play"
-                          src="https://img.icons8.com/?size=100&id=99cTBfGlewZU&format=png&color=5088df"
+                          src={`https://img.icons8.com/?size=100&id=99cTBfGlewZU&format=png&color=${
+                            el.userId === id ? "5088df" : "ffffff"
+                          }`}
                           alt=""
                         />
                         <img
                           className="pause"
-                          src="https://img.icons8.com/?size=100&id=61012&format=png&color=5088df"
+                          src={`https://img.icons8.com/?size=100&id=61012&format=png&color=${
+                            el.userId === id ? "5088df" : "ffffff"
+                          }`}
                           alt=""
                         />
                       </button>

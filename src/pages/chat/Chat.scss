@@ -139,6 +139,8 @@
 .chat-body {
   background: linear-gradient(316deg, #afc7a6, #dbdf8a);
   width: 100%;
+  max-height: 100vh;
+  overflow: hidden;
 
   &__head {
     gap: 0 20px;
@@ -147,7 +149,6 @@
 
     border-bottom: 1px solid #b8bf7e;
     padding: 15px 30px 15px 30px;
-    margin-bottom: 30px;
     background: #fff;
   }
 
@@ -172,17 +173,28 @@
   &__head-name {
   }
 
+  &__wrapper {
+    height: calc(100% - 76px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   // .chat-body__inner
 
   &__inner {
     position: relative;
+    flex-basis: auto;
+    flex-grow: 1;
+    height: calc(100% - 48px);
+    padding: 10px 0;
   }
 
   // .chat-body__messages
 
   &__messages {
     overflow-y: scroll;
-    height: 83vh;
+    height: 100%;
     padding-right: 10px;
   }
 
@@ -246,7 +258,7 @@
   }
 
   &__message-play {
-    background-color: #fff;
+    background-color: #5088df;
     padding: 5px;
     border-radius: 100%;
 
@@ -254,6 +266,10 @@
 
     width: 30px;
     height: 30px;
+  }
+
+  &__message-play.self {
+    background-color: #fff;
   }
 
   &__message-play img {
@@ -304,6 +320,7 @@
     width: 100%;
     margin: 0px 15px 0 15px;
     position: relative;
+    transform: translateY(-20%);
   }
 
   // .chat-body__form-inner
@@ -336,12 +353,14 @@
   }
 
   &__form-input {
-    padding: 13px 45px 13px 25px;
-    font-size: 19px;
+    padding: 13px 45px 13px 15px;
+    font-size: 17px;
+    font-weight: 300;
     width: 100%;
     border: none;
     border-radius: 7px;
     font-weight: 400;
+    color: #292727;
 
     outline: none;
 

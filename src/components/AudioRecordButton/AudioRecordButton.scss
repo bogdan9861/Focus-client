@@ -1,11 +1,10 @@
 .audioBtn {
   width: 30px;
   height: 30px;
-  transform: translateY(10px);
   z-index: 9;
 
   position: relative;
-  top: 1px;
+  top: 9px;
   right: 43px;
 
   background-color: transparent;
@@ -52,6 +51,14 @@
   }
 }
 
+.audioBtn.audioBtn--locked.audioBtn--active::before {
+  background-color: #d04e4e;
+}
+
+.audioBtn.audioBtn--locked.audioBtn--active::after {
+  background-color: rgba($color: #d04e4e, $alpha: 0.5);
+}
+
 @keyframes pulse {
   0% {
     transform: scale3d(1, 1, 1);
@@ -61,4 +68,3 @@
     transform: scale3d(1.1, 1.1, 1.3);
   }
 }
-

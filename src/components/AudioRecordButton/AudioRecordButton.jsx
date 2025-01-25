@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   setLocked,
-  setPostion,
   setStarted,
-  setWayHeight,
+  setPassedDistance,
 } from "../../features/audioLock";
 import { setStatus } from "../../features/chat";
 
@@ -20,7 +19,9 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
 
   const started = useSelector((state) => state.audioLock.started);
   const locked = useSelector((state) => state.audioLock.locked);
+  const gapToLock = useSelector((state) => state.audioLock.gapToLock);
 
+  const audioBtn = useRef(null);
   const chunks = useRef([]);
 
   const dispatch = useDispatch();
@@ -39,25 +40,23 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
     } catch (error) {}
   };
 
-  const handleMouseDown = async (e) => {
-    if (e.button !== 0) return;
+  const handleMouseDown = (e) => {
+    if (e.button !== 0 || locked) return;
 
     e.target.classList.add("audioBtn--active");
 
     const start = e.clientY;
-    const gapToLock = 100;
 
     dispatch(setStarted(true));
-    dispatch(setWayHeight(gapToLock));
+
     changeStatus("Записывает аудио");
 
     const handleMouseMove = (e) => {
+      dispatch(setPassedDistance(start - e.clientY));
       if (e.clientY < start - gapToLock) {
         dispatch(setLocked(true));
 
         window.removeEventListener("mousemove", handleMouseMove);
-      } else {
-        dispatch(setPostion(e.clientY));
       }
     };
 
@@ -96,11 +95,11 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
   const stopRecording = (e) => {
     if (e.button !== 0) return;
 
-    dispatch(setLocked(false));
     dispatch(setStarted(false));
-
-    e.target.classList.remove("audioBtn--active");
     dispatch(setStatus(""));
+    dispatch(setLocked(false));
+
+    audioBtn.current.classList.remove("audioBtn--active");
 
     if (mediaRecorder.current && mediaRecorder.current.state === "recording") {
       mediaRecorder.current.stop();
@@ -110,22 +109,34 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
         track.stop();
       });
     }
-
-    changeStatus("");
-
-    setStarted(false);
   };
+
+  useEffect(() => {
+    const handleMouseUp = (e) => {
+      if (locked) return;
+
+      stopRecording(e);
+    };
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [locked]);
 
   return (
     <button
-      className="audioBtn"
+      ref={audioBtn}
+      className={`audioBtn ${
+        locked ? "audioBtn--locked audioBtn--active" : ""
+      }`}
       onMouseDown={handleMouseDown}
-      onMouseUp={stopRecording}
+      onClick={stopRecording}
     >
       {!started ? (
         <img
           src="https://img.icons8.com/?size=100&id=85836&format=png&color=aaaaaa"
-          alt=""
+          alt="microphone"
         />
       ) : locked ? (
         <img
@@ -141,7 +152,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
       ) : (
         <img
           src="https://img.icons8.com/?size=100&id=85836&format=png&color=ffffff"
-          alt=""
+          alt="microphone"
         />
       )}
     </button>

@@ -3,7 +3,7 @@
   right: 39px;
   top: -150px;
   transform: translateX(100vw);
-  width: 30px;
+  width: 35px;
   height: 110px;
 
   transition: all 0.3s;
@@ -11,6 +11,8 @@
   &__inner {
     background-color: #fff;
 
+    max-height: 110px;
+    min-height: 33%;
     height: 100%;
 
     border-radius: 30px;
@@ -24,6 +26,7 @@
     &-img {
       width: 23px;
       height: 23px;
+      margin-top: 3px;
     }
 
     &-img:nth-child(2) {
@@ -35,4 +38,12 @@
 
 .audioLock.audioLock--active {
   transform: translateX(0);
+}
+
+.audioLock.audioLock--locked {
+  top: -70px;
+}
+
+.audioLock.audioLock--locked .audioLock__inner-img {
+  margin-top: 1px;
 }

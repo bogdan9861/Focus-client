@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   locked: false,
   started: false,
-  posY: null,
-  wayHeight: null,
+  passedDistance: null,
+  gapToLock: 130,
 };
 
 const audioLockSlice = createSlice({
@@ -15,20 +15,16 @@ const audioLockSlice = createSlice({
       state.locked = action.payload;
     },
 
-    setPostion: (state, action) => {
-      state.posY = action.payload;
-    },
-
-    setWayHeight: (state, action) => {
-      state.wayHeight = action.payload;
-    },
-
     setStarted: (state, action) => {
       state.started = action.payload;
+    },
+
+    setPassedDistance: (state, action) => {
+      state.passedDistance = action.payload;
     },
   },
 });
 
 export default audioLockSlice.reducer;
-export const { setLocked, setPostion, setStarted, setWayHeight } =
+export const { setLocked, setStarted, setPassedDistance } =
   audioLockSlice.actions;
