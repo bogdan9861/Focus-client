@@ -28,7 +28,7 @@ const Feed = () => {
                 key={post?.id}
                 id={post?.id}
                 userId={post?.userId}
-                url={`https://focus-server.onrender.com/${post?.photo}`}
+                url={`${process.env.SERVER_API}/${post?.photo}`}
                 profileURL={post?.userPhoto}
                 description={post?.description}
                 likes={post?.likesCount}
