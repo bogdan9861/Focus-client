@@ -123,8 +123,9 @@ const Aside = ({ id, self, socket }) => {
                 className="chat__aside-item__img"
                 src={
                   (self(chat.userID_1)
-                    ? toProxyPath(chat.user_2_photo)
-                    : toProxyPath(chat.user_1_photo)) || noPhoto
+                    ? `${process.env.REACT_APP_SERVER_URL}/${chat.user_2_photo}`
+                    : `${process.env.REACT_APP_SERVER_URL}/${chat.user_1_photo}`) ||
+                  noPhoto
                 }
                 alt=""
               />

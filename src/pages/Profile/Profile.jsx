@@ -253,8 +253,8 @@ const Profile = () => {
                           key={post?.id}
                           id={post?.id}
                           userId={post?.userId}
-                          url={toProxyPath(post?.photo)}
-                          profileURL={toProxyPath(post?.userPhoto)}
+                          url={`${process.env.REACT_APP_SERVER_URL}/${post?.photo}`}
+                          profileURL={`${process.env.REACT_APP_SERVER_URL}/${post?.userPhoto}`}
                           name={post?.name}
                           self={current.data.id === post?.userId}
                           likes={post?.likesCount}

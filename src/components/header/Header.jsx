@@ -44,7 +44,10 @@ const Header = () => {
             <Link className="header__prfile-user" to={`/profile/${user?.id}`}>
               <img
                 className="header__profile-img"
-                src={data?.photo || noPhoto}
+                src={
+                  `${process.env.REACT_APP_SERVER_URL}/${data?.photo}` ||
+                  noPhoto
+                }
                 alt=""
               />
               <div className="header__profile-info">
