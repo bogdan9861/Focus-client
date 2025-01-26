@@ -130,7 +130,11 @@ const Profile = () => {
               <>
                 <img
                   className="profile__img"
-                  src={(user?.photo && toProxyPath(user?.photo)) || noPhoto}
+                  src={
+                    (user?.photo &&
+                      `${process.env.REACT_APP_SERVER_URL}/${user?.photo}`) ||
+                    noPhoto
+                  }
                   alt=""
                 />
                 <div className="profile__content">
