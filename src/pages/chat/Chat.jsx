@@ -145,7 +145,7 @@ const Chat = () => {
                         onClick={(e) => playAudio(e)}
                       >
                         <audio
-                          src={toProxyPath(el?.audio)}
+                          src={`${process.env.REACT_APP_SERVER_URL}/${el?.audio}`}
                           onEnded={(e) =>
                             e.target.parentElement.classList.remove("active")
                           }
