@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+import io from "socket.io-client";
 import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ import { selectChat, selectHistory } from "../../features/chat";
 
 import "./Chat.scss";
 
-const socket = io("https://focus-socket.onrender.com");
+const socket = io.connect("https://focus-socket.onrender.com");
 
 const Chat = () => {
   const { state } = useLocation();
