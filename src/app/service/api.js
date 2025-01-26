@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "https://focus-server-1.onrender.com/api";
+const BASE_URL = "https://focus-server.onrender.com/api";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
