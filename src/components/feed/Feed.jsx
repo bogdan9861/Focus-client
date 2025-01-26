@@ -28,8 +28,8 @@ const Feed = () => {
                 key={post?.id}
                 id={post?.id}
                 userId={post?.userId}
-                url={`${process.env.SERVER_API}/${post?.photo}`}
-                profileURL={post?.userPhoto}
+                url={`${process.env.REACT_APP_SERVER_URL}/${post?.photo}`}
+                profileURL={`${process.env.REACT_APP_SERVER_URL}/${post?.userPhoto}`}
                 description={post?.description}
                 likes={post?.likesCount}
                 name={post?.name}
