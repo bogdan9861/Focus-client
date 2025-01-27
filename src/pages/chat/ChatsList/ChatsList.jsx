@@ -11,7 +11,7 @@ import {
 
 import noPhoto from "../../../assets/images/no-photo.png";
 
-const Aside = ({ id, self, socket }) => {
+const ChatsList = ({ id, self, socket }) => {
   const chatsSelector = useSelector(selectChats);
   const [isSearchOppen, setIsSearchOppen] = useState(false);
   const [width, setWidth] = useState(null);
@@ -145,4 +145,4 @@ const Aside = ({ id, self, socket }) => {
   );
 };
 
-export default Aside;
+export default ChatsList;

@@ -1,7 +1,8 @@
 .feed {
   &__inner {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
 
     width: 85%;
@@ -11,10 +12,9 @@
   // .feed__post
 
   &__post {
-    background-color: #fff;
     padding: 12px 33px 18px 33px;
 
-    max-width: 512px;
+    max-width: 700px;
     width: 100%;
   }
 
@@ -83,8 +83,9 @@
   // .feed__post-img
 
   &__post-img {
-    width: 450px;
-    height: 450px;
+    width: 100%;
+    height: fit-content;
+    max-height: 700px;
     object-fit: cover;
     margin-bottom: 20px;
   }
@@ -145,7 +146,8 @@
 
   &__post-statistic {
     display: flex;
-    gap: 0 26px;
+    gap: 0 15px;
+    margin-bottom: 20px;
   }
 
   // .feed__post-statistic-btn
@@ -156,7 +158,9 @@
 
     display: flex;
     align-items: center;
-    gap: 0 10px;
+
+    width: 25px;
+    height: 25px;
   }
 
   &__post-menu-wrapper {
@@ -234,6 +238,57 @@
       width: 16px;
       height: 19px;
       background-image: url("../../assets/icons/delete.svg");
+    }
+  }
+
+  &__post-info {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 5px;
+
+    .likes-count {
+      padding-right: 5px;
+      font-size: 15px;
+    }
+  }
+
+  &__post-info__text {
+    cursor: pointer;
+  }
+
+  &__post-info__text::selection {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  &__comments-list::-webkit-scrollbar {
+    width: 4px; /* Ширина всего элемента навигации */
+  }
+
+  &__comments-list::-webkit-scrollbar-track {
+    background: #dbdbdb; /* Цвет дорожки */
+    border-radius: 5px;
+  }
+
+  &__comments-list::-webkit-scrollbar-thumb {
+    background-color: #8d8d8d; /* Цвет бегунка */
+    border-radius: 20px; /* Округление бегунка */
+  }
+
+  &__comments-input {
+    border: none;
+    border-bottom: 1px solid #dbdbdb;
+    padding-bottom: 15px;
+    font-size: 13px;
+    margin-top: 20px;
+
+    &::placeholder {
+      font-size: 14px;
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid #585858;
     }
   }
 }

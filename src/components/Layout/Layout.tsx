@@ -12,7 +12,7 @@ type Props = {
 const Layout = ({ child }: Props) => {
   return (
     <div className="main">
-      <Aside />
+      <Aside open={true} />
       <AntdLayout.Content>{child}</AntdLayout.Content>
     </div>
   );

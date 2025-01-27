@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../feed/Feed.scss";
 import {
-  useCommentMutation,
-  useGetCommentsMutation,
   useIsLikedMutation,
   useIsSavedMutation,
   useLikeMutation,
@@ -12,28 +10,11 @@ import {
   useUnlikeMutation,
 } from "../../app/service/posts";
 
+import Comments from "../comments/Comments";
+
 import noPhoto from "../../assets/images/no-photo.png";
 import { Link } from "react-router-dom";
 import { Modal, notification } from "antd";
-
-type Props = {
-  id: string;
-  userId: string;
-  name: string;
-  url: string;
-  status: string;
-  profileURL: string;
-  self: boolean;
-  likes: string;
-};
-
-type Comment = {
-  id: string;
-  postId: string;
-  name: string;
-  nickname: string;
-  text: string;
-};
 
 export const Post = ({
   id,
@@ -44,7 +25,7 @@ export const Post = ({
   self,
   likes,
   status,
-}: Props) => {
+}) => {
   const [doLike] = useLikeMutation();
   const [doUnlike] = useUnlikeMutation();
   const [checkIsLiked] = useIsLikedMutation();
@@ -61,6 +42,7 @@ export const Post = ({
 
   const [oppenMenu, setOppenMenu] = useState(false);
   const [oppenRemoveAlert, setOppenRemoveAlert] = useState(false);
+  const [PohotoViewOpen, setPhotoViewOpen] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
 
@@ -142,7 +124,7 @@ export const Post = ({
 
       setIsSavedLocal(!isSavedLocal);
       setOppenMenu(false);
-    } catch (error: any) {
+    } catch (error) {
       if (error?.data.message) {
         openNotification({ description: error?.data.message, duration: 5 });
       } else {
@@ -160,7 +142,7 @@ export const Post = ({
         description: "Пост удвлён из сохранённых",
         duration: 3,
       });
-    } catch (error: any) {
+    } catch (error) {
       if (error?.data.message) {
         openNotification({ description: error?.data.message, duration: 5 });
       } else {
@@ -176,7 +158,7 @@ export const Post = ({
 
       setOppenRemoveAlert(false);
       setOppenMenu(false);
-    } catch (error: any) {
+    } catch (error) {
       if (error?.data.message) {
         openNotification({ description: error?.data.message, duration: 5 });
       } else {
@@ -276,7 +258,7 @@ export const Post = ({
             onCancel={() => setOppenRemoveAlert(false)}
           >
             <h1 className="remove-alert__title">
-              Вы уверенны,что хоите удалить этот пост?
+              Вы уверенны,что хоите удалить эту публикацию?
             </h1>
             <img className="remove-alert__img" src={url} alt="" />
             <button
@@ -294,19 +276,19 @@ export const Post = ({
           </Modal>
         </div>
       </div>
-      <img className="feed__post-img" src={url} alt="" />
-      <Comments
-        id={id}
-        setCommentsCount={setCommentsCount}
-        oppenComment={oppenComment}
-        setOppenComment={setOppenComment}
+
+      <img
+        className="feed__post-img"
+        src={url}
+        alt=""
+        onClick={() => setPhotoViewOpen(true)}
       />
 
       <div className="feed__post-statistic">
         <button className="feed__post-statistic-btn" onClick={() => onLike()}>
           <svg
-            width="27.000000"
-            height="27.000000"
+            width="auto"
+            height="auto"
             viewBox="0 0 27 27"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -333,100 +315,49 @@ export const Post = ({
               />
             </g>
           </svg>
-          <span className="likes-count">{currentLikes}</span>
         </button>
-        <button
-          className="feed__post-statistic-btn"
-          onClick={() => setOppenComment(!oppenComment)}
-        >
+        <button className="feed__post-statistic-btn">
           <svg
-            width="24.000000"
-            height="24.000000"
-            viewBox="0 0 24 24"
+            viewBox="0 -1 24 24"
+            id="meteor-icon-kit__regular-comments"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <desc>Created with Pixso.</desc>
-            <defs />
-            <path
-              id="path"
-              d="M11.99 2C6.42 2 1.71 5.65 1.71 10C1.71 12.32 3.05 14.54 5.37 16.07L6.53 16.85L6.17 18.35C5.91 19.46 5.58 20.32 5.23 21.04C6.58 20.39 7.82 19.5 8.91 18.37L9.49 17.78L10.25 17.87C10.83 17.95 11.42 18 11.99 18C17.57 18 22.28 14.34 22.28 10C22.28 5.65 17.57 2 11.99 2ZM23.99 10C23.99 15.53 18.62 20 11.99 20C11.34 20 10.68 19.95 10.05 19.87C8.3 21.68 6.21 22.96 3.89 23.65C3.41 23.81 2.89 23.92 2.36 24C2.1 24 1.79 23.75 1.72 23.4C1.66 23.01 1.88 22.76 2.08 22.48C2.93 21.37 3.89 20.43 4.52 17.82C1.76 16 0 13.17 0 10C0 4.46 5.37 0 12 0C18.62 0 23.99 4.46 23.99 10Z"
-              fill="#000000"
-              fillOpacity="1.000000"
-              fillRule="nonzero"
-            />
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M8 13H6.35758L3.26816 15.5333C2.41403 16.2337 1.15385 16.1091 0.453464 15.2549C0.160246 14.8974 0 14.4492 0 13.9868V5C0 2.23858 2.23858 0 5 0H11C13.7614 0 16 2.23858 16 5V6H19C21.7614 6 24 8.23858 24 11V19.9868C24 20.4492 23.8398 20.8974 23.5465 21.2549C22.8462 22.1091 21.586 22.2337 20.7318 21.5333L17.6424 19H13C10.2386 19 8 16.7614 8 14V13zM8 11C8 8.23858 10.2386 6 13 6H14V5C14 3.34315 12.6569 2 11 2H5C3.34315 2 2 3.34315 2 5V13.9868L5.64242 11H8zM13 8C11.3431 8 10 9.3431 10 11V14C10 15.6569 11.3431 17 13 17H18.3576L22 19.9868V11C22 9.3431 20.6569 8 19 8H13z"
+                fill="#212121"
+              ></path>
+            </g>
           </svg>
-          <span className="comments-count">{commentsCount}</span>
         </button>
       </div>
-    </div>
-  );
-};
-
-const Comments = ({ id, setCommentsCount, oppenComment, setOppenComment }) => {
-  const [sendID] = useGetCommentsMutation();
-  const [doComment] = useCommentMutation();
-
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [commentText, setCommentText] = useState("");
-
-  useEffect(() => {
-    getComments();
-  }, []);
-
-  useEffect(() => {
-    setCommentsCount(comments.length);
-  }, [comments]);
-
-  const writeComment = async () => {
-    try {
-      const data = await doComment({ id, message: commentText }).unwrap();
-      setComments([...comments, data]);
-      setOppenComment(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getComments = async () => {
-    try {
-      const data = await sendID(id).unwrap();
-
-      setComments(data);
-      setCommentsCount(data.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <div className="feed__comments">
-      <ul className="feed__comments-list">
-        {comments.map((comment: any) => {
-          return (
-            <li className="feed__comments-item" key={comment?.id}>
-              <div className="feed__comments-inner">
-                <span className="feed__comments-name">
-                  @{comment?.nickname || comment?.name}
-                </span>
-                <p className="feed__comments-message">{comment?.text}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-      {oppenComment ? (
-        <div className="feed__comments-input-wrapper">
-          <input
-            className="feed__comments-input"
-            placeholder="Оставьте коментарий"
-            onChange={(e) => setCommentText(e.target.value)}
-          />
-          <button className="feed__comments-btn" onClick={() => writeComment()}>
-            ok
-          </button>
-        </div>
-      ) : null}
+      <div className="feed__post-info">
+        <span className="likes-count">{currentLikes}</span>
+        <span className="feed__post-info__text">отметок "Нравиться"</span>
+      </div>
+      <div className="feed__post-info">
+        <span
+          className="feed__post-info__text"
+          onClick={() => setOppenComment(!oppenComment)}
+        >
+          посмотреть все комментарии ({commentsCount})
+        </span>
+      </div>
+      <Comments
+        id={id}
+        setCommentsCount={setCommentsCount}
+        oppenComment={oppenComment}
+        setOppenComment={setOppenComment}
+      />
     </div>
   );
 };

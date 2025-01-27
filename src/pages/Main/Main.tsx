@@ -18,7 +18,7 @@ function Main() {
     <>
       <Header />
       <Feed />
-      <Aside />
+      <Aside open={true} />
     </>
   );
 }

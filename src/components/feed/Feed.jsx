@@ -7,6 +7,7 @@ import {
   useGetCommentsMutation,
 } from "../../app/service/posts";
 import { Post } from "../post/Post";
+import Loader from "../loader/Loader";
 
 import "./Feed.scss";
 
@@ -15,7 +16,7 @@ const Feed = () => {
   const user = useSelector(selectUser);
 
   if (isLoading) {
-    return <span>loading...</span>;
+    return <Loader />;
   }
 
   return (
