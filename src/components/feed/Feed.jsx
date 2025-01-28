@@ -14,8 +14,21 @@ import "./Feed.scss";
 const Feed = () => {
   const { data, isLoading } = useGetAllPostsQuery();
   const user = useSelector(selectUser);
+  const [reversedData, setReversedData] = useState([]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (data) {
+      const arr = [];
+
+      data.forEach((el) => {
+        arr.unshift(el);
+      });
+
+      setReversedData(arr);
+    }
+  }, [data]);
+
+  if (isLoading || reversedData.length === 0) {
     return <Loader />;
   }
 
@@ -23,7 +36,7 @@ const Feed = () => {
     <div className="feed">
       <div className="container">
         <div className="feed__inner">
-          {data.map((post) => {
+          {reversedData.map((post) => {
             return (
               <Post
                 key={post?.id}
