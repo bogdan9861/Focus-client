@@ -273,7 +273,7 @@ export const Post = ({
       </div>
 
       {url.indexOf(".mp4") > 0 ? (
-        <video className="feed__post-img" src={url} controls autoPlay></video>
+        <video className="feed__post-img" src={url} controls autoPlay playsInline muted></video>
       ) : (
         <img
           className="feed__post-img"
