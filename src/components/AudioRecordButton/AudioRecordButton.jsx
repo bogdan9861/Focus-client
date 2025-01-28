@@ -144,7 +144,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
             width: 25,
             height: 25,
             objectFit: "contain",
-            transform: "translate(3px, 2px)",
+            transform: "translate(3px, -1px)",
           }}
           src="https://img.icons8.com/?size=100&id=IISmtYu065Oa&format=png&color=ffffff"
           alt="send"

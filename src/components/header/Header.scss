@@ -5,6 +5,7 @@
   width: 85%;
   margin-bottom: 35px;
   margin-left: auto;
+  padding: 15px;
 
   &__inner {
     display: flex;
@@ -55,6 +56,13 @@
     font-size: 14px;
     line-height: 17px;
     font-weight: 300;
+  }
+
+  &__burger {
+    width: 30px;
+    display: none;
+    background-color: transparent;
+    border: none;
   }
 
   // .header__profile

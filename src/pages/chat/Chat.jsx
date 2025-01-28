@@ -105,7 +105,7 @@ const Chat = () => {
 
   return (
     <>
-      <Aside open={false} noResize={true} />
+      <Aside noResize={true} />
       <div className="chat">
         <ChatsList id={id} self={self} socket={socket} />
         <div className="chat-body">

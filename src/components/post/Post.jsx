@@ -16,6 +16,8 @@ import noPhoto from "../../assets/images/no-photo.png";
 import { Link } from "react-router-dom";
 import { Modal, notification } from "antd";
 
+import menu from "../../assets/icons/menu.svg";
+
 export const Post = ({
   id,
   userId,
@@ -167,6 +169,22 @@ export const Post = ({
     }
   };
 
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (e.target.className !== "feed__post-menu-btn") {
+        document.querySelectorAll(".feed__post-menu-list").forEach((menu) => {
+          menu.classList.remove("active");
+        });
+      }
+    };
+
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <div className="feed__post">
       {contextHolder}
@@ -187,41 +205,7 @@ export const Post = ({
             className="feed__post-menu-btn"
             onClick={() => setOppenMenu(!oppenMenu)}
           >
-            <svg
-              width="5.000000"
-              height="23.000000"
-              viewBox="0 0 5 23"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-            >
-              <desc>Created with Pixso.</desc>
-              <defs />
-              <circle
-                id="Эллипс 4"
-                cx="2.500000"
-                cy="2.500000"
-                r="2.500000"
-                fill="#5B5B5B"
-                fillOpacity="1.000000"
-              />
-              <circle
-                id="Эллипс 5"
-                cx="2.500000"
-                cy="11.500000"
-                r="2.500000"
-                fill="#5B5B5B"
-                fillOpacity="1.000000"
-              />
-              <circle
-                id="Эллипс 6"
-                cx="2.500000"
-                cy="20.500000"
-                r="2.500000"
-                fill="#5B5B5B"
-                fillOpacity="1.000000"
-              />
-            </svg>
+            <img className="feed__post-menu-btn" src={menu} alt="" />
           </button>
           <ul className={`feed__post-menu-list ${oppenMenu ? "active" : ""}`}>
             <li className="feed__post-menu-list__item">
@@ -260,7 +244,12 @@ export const Post = ({
             <h1 className="remove-alert__title">
               Вы уверенны,что хоите удалить эту публикацию?
             </h1>
-            <img className="remove-alert__img" src={url} alt="" />
+            {url.split(".")[1] === "mp4" ? (
+              <video src={url} controls autoPlay style={{ maxWidth: "100%" }} />
+            ) : (
+              <img className="remove-alert__img" src={url} alt="" />
+            )}
+
             <button
               className="remove-alert__btn send__btn"
               onClick={() => setOppenRemoveAlert(false)}
@@ -276,13 +265,16 @@ export const Post = ({
           </Modal>
         </div>
       </div>
-
-      <img
-        className="feed__post-img"
-        src={url}
-        alt=""
-        onClick={() => setPhotoViewOpen(true)}
-      />
+      {url.split(".")[1] === "mp4" ? (
+        <video className="feed__post-img" src={url} controls autoPlay></video>
+      ) : (
+        <img
+          className="feed__post-img"
+          src={url}
+          alt=""
+          onClick={() => setPhotoViewOpen(true)}
+        />
+      )}
 
       <div className="feed__post-statistic">
         <button className="feed__post-statistic-btn" onClick={() => onLike()}>

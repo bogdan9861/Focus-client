@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../loader/Loader";
 
-const Header = () => {
+const Header = ({ setAsideVisable }) => {
   const { data, isLoading } = useCurrentQuery();
   const user = useSelector(selectUser);
 
@@ -40,6 +40,44 @@ const Header = () => {
               </a>
             </li> */}
         </ul>
+        <button
+          className="header__burger"
+          onClick={() => setAsideVisable(true)}
+        >
+          <svg
+            width={"100%"}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M4 18H10"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M4 12L16 12"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M4 6L20 6"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+            </g>
+          </svg>
+        </button>
         <div className="header__profile">
           <Link className="header__prfile-user" to={`/profile/${user?.id}`}>
             <img

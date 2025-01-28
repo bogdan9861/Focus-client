@@ -1,6 +1,6 @@
 .audioLock {
   position: absolute;
-  right: 39px;
+  right: 47px;
   top: -150px;
   transform: translateX(100vw);
   width: 35px;
@@ -9,7 +9,7 @@
   transition: all 0.3s;
 
   &__inner {
-    background-color: #fff;
+    background-color: #efefef;
 
     max-height: 110px;
     min-height: 33%;

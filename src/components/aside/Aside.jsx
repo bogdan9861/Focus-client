@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import PostModal from "../postModal/PostModal";
 import { logout } from "../../features/auth";
+import { selectUser } from "../../features/user";
 
 import shortLogo from "../../assets/images/short-logo.svg";
 import logo from "../../assets/images/logo.svg";
@@ -14,8 +15,16 @@ import friends from "../../assets/icons/friends.svg";
 
 import "./Aside.scss";
 
-const Aside = ({ open, noResize = null }) => {
+const Aside = ({
+  open,
+  noResize = null,
+  visable = false,
+  setAsideVisable = null,
+}) => {
   const [oppenPostModal, setOppenPostModal] = useState(false);
+  const user = useSelector(selectUser);
+
+  const aside = useRef(null);
 
   const dispatch = useDispatch();
   const collapseWidth = useRef(1205);
@@ -54,11 +63,21 @@ const Aside = ({ open, noResize = null }) => {
     handleResize();
   }, [window.location.pathname]);
 
+  useEffect(() => {
+    console.log(visable);
+
+    if (visable) {
+      aside.current.classList.add("aside--visable");
+    } else {
+      aside.current.classList.remove("aside--visable");
+    }
+  }, [visable]);
+
   return (
-    <div className={`aside ${open ? "aside--active" : ""}`}>
+    <div ref={aside} className={`aside  ${open ? "aside--active" : ""}`}>
       <div className="logo__wrapper">
         {open ? (
-          <picture>
+          <picture onClick={() => setAsideVisable(false)}>
             <source
               srcSet={shortLogo}
               media={`(max-width: ${collapseWidth.current}px`}
@@ -107,7 +126,7 @@ const Aside = ({ open, noResize = null }) => {
               </Link>
             </li>
             <li className="menu__list-item">
-              <Link className="menu__list-link" to={"/"}>
+              <Link className="menu__list-link" to={`/profile/${user?.id}`}>
                 <img className="menu__list-item__img" src={profile} alt="" />
                 <span className="menu__list-item__text">профиль</span>
               </Link>

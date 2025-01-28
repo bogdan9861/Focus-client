@@ -1,13 +1,24 @@
 .postModal {
-  // .postModal__img
+  width: 100%;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  position: relative;
+
+  &__form-inner {
+  }
 
   &__img {
-    display: block;
-    margin: 0 auto;
-    width: 450px;
-    height: 450px;
-    object-fit: cover;
-    margin-bottom: 25px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   // .postModal__input
@@ -22,18 +33,52 @@
     display: flex;
     justify-content: center;
 
-    &-img {
+    &-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    &-icon {
       width: 100px;
       height: 100px;
     }
+
+    &-img {
+      max-width: 720px;
+      max-height: 400px;
+      align-self: center;
+    }
+
+    &-filebtn {
+      width: 180px;
+      font-size: 13px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 7px;
+      background-color: #0095f6;
+      color: #fff;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &__send {
+    width: fit-content;
+    font-size: 13px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 7px;
+    background-color: #0095f6;
+    color: #fff;
+    cursor: pointer;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }
 .input {
-}
-.send {
-  // .send__btn
-
-  &__btn {
-    margin-top: 15px;
-  }
 }

@@ -6,8 +6,9 @@
   border: none;
 
   position: relative;
-  right: 40px;
+  right: 50px;
   top: 1px;
+  z-index: 10;
 
   padding: 0;
 
@@ -27,11 +28,10 @@
   &::before {
     content: "";
     position: absolute;
-    top: -15px;
-    left: -15px;
+    top: -18px;
+    left: -18px;
     width: 60px;
     height: 60px;
-
     background-color: #5088df;
     border-radius: 100%;
   }
@@ -39,8 +39,8 @@
   &::after {
     content: "";
     position: absolute;
-    top: -20px;
-    left: -20px;
+    top: -23px;
+    left: -24px;
     width: 70px;
     height: 70px;
 

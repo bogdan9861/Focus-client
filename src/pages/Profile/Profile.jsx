@@ -120,7 +120,7 @@ const Profile = () => {
 
   return (
     <>
-      <Aside />
+      <Aside open={true} />
       <div className="profile">
         <div className="profile__wrapper">
           <div className="profile__inner">
