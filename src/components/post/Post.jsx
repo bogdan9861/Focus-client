@@ -265,7 +265,8 @@ export const Post = ({
           </Modal>
         </div>
       </div>
-      {url.split(".")[1] === "mp4" ? (
+
+      {url.indexOf(".mp4") > 0 ? (
         <video className="feed__post-img" src={url} controls autoPlay></video>
       ) : (
         <img
