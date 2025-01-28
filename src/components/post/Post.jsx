@@ -245,7 +245,12 @@ export const Post = ({
               Вы уверенны,что хоите удалить эту публикацию?
             </h1>
             {url.split(".")[1] === "mp4" ? (
-              <video src={url} controls style={{ maxWidth: "100%" }} />
+              <video
+                src={url}
+                playsInline
+                controls
+                style={{ maxWidth: "100%" }}
+              />
             ) : (
               <img className="remove-alert__img" src={url} alt="" />
             )}
