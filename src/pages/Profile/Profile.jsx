@@ -337,6 +337,7 @@ const Profile = () => {
                     posts.map((post) => {
                       return (
                         <Post
+                          maxWidth={"700px"}
                           key={post?.id}
                           id={post?.id}
                           userId={post?.userId}

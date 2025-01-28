@@ -40,6 +40,7 @@ const Feed = () => {
           {reversedData.map((post) => {
             return (
               <Post
+              maxWidth={"80%"}
                 key={post?.id}
                 id={post?.id}
                 userId={post?.userId}

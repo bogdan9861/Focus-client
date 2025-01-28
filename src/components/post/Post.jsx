@@ -27,6 +27,7 @@ export const Post = ({
   self,
   likes,
   status,
+  maxWidth,
 }) => {
   const [doLike] = useLikeMutation();
   const [doUnlike] = useUnlikeMutation();
@@ -186,7 +187,7 @@ export const Post = ({
   }, []);
 
   return (
-    <div className="feed__post">
+    <div className="feed__post" style={{ maxWidth }}>
       {contextHolder}
       <div className="feed__post-top">
         <Link className="feed__post-profile" to={`/profile/${userId}`}>
@@ -273,7 +274,14 @@ export const Post = ({
       </div>
 
       {url.indexOf(".mp4") > 0 ? (
-        <video className="feed__post-img" src={url} controls autoPlay playsInline muted></video>
+        <video
+          className="feed__post-img"
+          src={url}
+          controls
+          autoPlay
+          playsInline
+          muted
+        ></video>
       ) : (
         <img
           className="feed__post-img"
