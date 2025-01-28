@@ -40,7 +40,7 @@ const Feed = () => {
           {reversedData.map((post) => {
             return (
               <Post
-              maxWidth={"80%"}
+                maxWidth={"80%"}
                 key={post?.id}
                 id={post?.id}
                 userId={post?.userId}
@@ -56,6 +56,14 @@ const Feed = () => {
           })}
         </div>
       </div>
+      <a href="https://www.youtube.com/watch?v=HHAb-4Bmz70" style={{ position: "absolute", right: 0, bottom: 0 }}>
+        <img
+          width={200}
+          style={{height: 200, objectFit: 'cover'}}
+          src="https://images.genius.com/fd0f7f173e8b6a9d3f81e0b048fe51b5.749x750x1.png"
+          alt=""
+        />
+      </a>
     </div>
   );
 };
