@@ -2,7 +2,7 @@ import Modal from "antd/es/modal/Modal";
 import React, { useState } from "react";
 import { Form, notification } from "antd";
 import FileInput from "../FileInput/FileInput";
-import noPhoto from "../../assets/images/no-image-large.png";
+import noPhoto from "../../assets/icons/PickPhoto.svg";
 
 import "./postModal.scss";
 import { usePostMutation } from "../../app/service/posts";
@@ -53,7 +53,9 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
     <Modal open={oppen} onCancel={onCancel}>
       <div className="postModal">
         <Form>
-          <img className="postModal__img" src={url || noPhoto} alt="" />
+          <div className="postModal__preview">
+            <img src={noPhoto} alt="" />
+          </div>
           <FileInput
             width={"auto"}
             label="Выбрать фото"

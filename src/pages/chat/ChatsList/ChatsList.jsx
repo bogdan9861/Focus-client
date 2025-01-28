@@ -29,7 +29,9 @@ const ChatsList = ({ id, self, socket }) => {
 
   const getChat = async (id) => {
     try {
-      await doGetChat(id).unwrap();
+      const res = await doGetChat(id).unwrap();
+      console.log(res);
+
       getHistory(id);
 
       socket.emit("join-room", id);
@@ -88,31 +90,7 @@ const ChatsList = ({ id, self, socket }) => {
   return (
     <aside className="chat__aside" style={{ width: `${width}px` }}>
       <div className="chat__aside-wrapper">
-        <Link className="chat__aside-back" to="/">
-          <img
-            src="https://img.icons8.com/?size=100&id=40217&format=png&color=000000"
-            alt=""
-          />
-        </Link>
-        <div className={`chat__aside-top ${isSearchOppen ? "active" : ""}`}>
-          <div className="chat__aside-top__inner">
-            <h1 style={{ margin: "0 15px" }}>Search</h1>
-            <input
-              className="chat__aside-top__search"
-              type="text"
-              placeholder="Enter chat name"
-            />
-            <button
-              className="chat__aside-top__btn"
-              onClick={() => setIsSearchOppen(!isSearchOppen)}
-            >
-              <img
-                src="https://img.icons8.com/?size=100&id=Iojt4896hzbD&format=png&color=272B2E "
-                alt=""
-              />
-            </button>
-          </div>
-        </div>
+        <h1 className="chat__aside-title">Сообщения</h1>
       </div>
 
       <ul className="chat__aside-list">

@@ -1,18 +1,24 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import "./Aside.scss";
-
-import { logout } from "../../features/auth";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import logo from "../../assets/images/logo.svg";
+import PostModal from "../postModal/PostModal";
+import { logout } from "../../features/auth";
+
 import shortLogo from "../../assets/images/short-logo.svg";
-import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo.svg";
+import home from "../../assets/icons/home.svg";
+import add from "../../assets/icons/add.svg";
+import profile from "../../assets/icons/profile.svg";
+import friends from "../../assets/icons/friends.svg";
 
-import { AsideNavigation } from "../../AsideNavigation/AsideNavigation";
+import "./Aside.scss";
 
-const Aside = ({ open }) => {
+const Aside = ({ open, noResize = null }) => {
+  const [oppenPostModal, setOppenPostModal] = useState(false);
+
   const dispatch = useDispatch();
-  const [collapseWidth, setCollapseWidth] = useState(1205);
+  const collapseWidth = useRef(1205);
 
   const onLogout = useCallback(() => {
     localStorage.removeItem("token");
@@ -21,9 +27,11 @@ const Aside = ({ open }) => {
   });
 
   const handleResize = () => {
+    if (noResize) return;
+
     const aside = document.querySelector(".aside");
 
-    if (document.body.clientWidth <= collapseWidth) {
+    if (document.body.clientWidth <= collapseWidth.current) {
       aside.classList.remove("aside--active");
     } else {
       aside.classList.add("aside--active");
@@ -49,34 +57,61 @@ const Aside = ({ open }) => {
   return (
     <div className={`aside ${open ? "aside--active" : ""}`}>
       <div className="logo__wrapper">
-        <picture>
-          <source
-            srcSet={shortLogo}
-            media={`(max-width: ${collapseWidth}px`}
+        {open ? (
+          <picture>
+            <source
+              srcSet={shortLogo}
+              media={`(max-width: ${collapseWidth.current}px`}
+              style={{
+                width: "10px",
+                height: "10px",
+                display: "block",
+              }}
+            />
+            <img src={logo} alt="" />
+          </picture>
+        ) : (
+          <img
+            src={shortLogo}
             style={{
-              width: "10px",
-              height: "10px",
+              width: "30px",
+              height: "30px",
               display: "block",
             }}
+            alt=""
           />
-          <img src={logo} alt="" />
-        </picture>
+        )}
       </div>
       <div className="aside__inner">
         <nav className="menu">
           <ul className="menu__list">
-            {AsideNavigation.map((item) => (
-              <li className="menu__list-item">
-                <Link className="menu__list-link" to={item.link}>
-                  <img
-                    className="menu__list-item__img"
-                    src={item.image}
-                    alt=""
-                  />
-                  <span className="menu__list-item__text">{item.label}</span>
-                </Link>
-              </li>
-            ))}
+            <li className="menu__list-item">
+              <Link className="menu__list-link" to={"/"}>
+                <img className="menu__list-item__img" src={home} alt="" />
+                <span className="menu__list-item__text">Главная</span>
+              </Link>
+            </li>
+            <li className="menu__list-item">
+              <div
+                className="menu__list-link"
+                onClick={() => setOppenPostModal(true)}
+              >
+                <img className="menu__list-item__img" src={add} alt="" />
+                <span className="menu__list-item__text">cоздать</span>
+              </div>
+            </li>
+            <li className="menu__list-item">
+              <Link className="menu__list-link" to={"/"}>
+                <img className="menu__list-item__img" src={friends} alt="" />
+                <span className="menu__list-item__text">друзья</span>
+              </Link>
+            </li>
+            <li className="menu__list-item">
+              <Link className="menu__list-link" to={"/"}>
+                <img className="menu__list-item__img" src={profile} alt="" />
+                <span className="menu__list-item__text">профиль</span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
@@ -85,6 +120,12 @@ const Aside = ({ open }) => {
           <span className="menu__list-item__text">выйти</span>
         </button>
       </div>
+
+      <PostModal
+        oppen={oppenPostModal}
+        onCancel={() => setOppenPostModal(false)}
+        setOppenModal={setOppenPostModal}
+      />
     </div>
   );
 };

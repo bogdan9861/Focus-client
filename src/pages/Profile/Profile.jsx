@@ -55,7 +55,6 @@ const Profile = () => {
   const posts = useSelector(selectPosts);
   const [postsMode, setPostsMode] = useState("posts");
   const [oppenUpdateModal, setOppenUpdateModal] = useState(false);
-  const [oppenPostModal, setOppenPostModal] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -358,23 +357,12 @@ const Profile = () => {
             )}
           </div>
         </div>
-        <button
-          className="publication-btn"
-          onClick={() => setOppenPostModal(true)}
-        >
-          <img className="publication-btn__icon" src={plus} alt="" />
-        </button>
       </div>
       <UpdateModal
         oppen={oppenUpdateModal}
         onCancel={() => setOppenUpdateModal(false)}
         setOppenModal={setOppenUpdateModal}
         data={user}
-      />
-      <PostModal
-        oppen={oppenPostModal}
-        onCancel={() => setOppenPostModal(false)}
-        setOppenModal={setOppenPostModal}
       />
     </>
   );

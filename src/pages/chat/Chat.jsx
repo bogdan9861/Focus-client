@@ -105,7 +105,7 @@ const Chat = () => {
 
   return (
     <>
-      <Aside  open={false} />
+      <Aside open={false} noResize={true} />
       <div className="chat">
         <ChatsList id={id} self={self} socket={socket} />
         <div className="chat-body">
@@ -114,7 +114,7 @@ const Chat = () => {
               {openedUser?.data?.nickname ||
                 (self(chatSelector?.userID_1)
                   ? chatSelector?.user_2_name
-                  : chatSelector?.user_1_name || "Select chat")}
+                  : chatSelector?.user_1_name || "Выберите чат")}
             </h2>
             <span className="chat-body__head-status">
               {status !== "" ? <DotsAnimation /> : null}
@@ -138,46 +138,52 @@ const Chat = () => {
               >
                 {historySelector?.map((el, i) => {
                   return (
-                    <li
-                      className={`chat-body__message fallDown ${
-                        el.userId === id ? "self" : ""
-                      }`}
-                      key={i}
-                    >
-                      {el?.audio ? (
-                        <button
-                          className={`chat-body__message-play ${
-                            el.userId === id ? "self" : ""
-                          }`}
-                          onClick={(e) => playAudio(e)}
-                        >
-                          <audio
-                            src={`${process.env.REACT_APP_SERVER_URL}/${el?.audio}`}
-                            onEnded={(e) =>
-                              e.target.parentElement.classList.remove("active")
-                            }
-                          />
-                          <img
-                            className="play"
-                            src={`https://img.icons8.com/?size=100&id=99cTBfGlewZU&format=png&color=${
-                              el.userId === id ? "5088df" : "ffffff"
+                    <>
+                      <li
+                        className={`chat-body__message fallDown ${
+                          el.userId === id ? "self" : ""
+                        }`}
+                        key={i}
+                      >
+                        {el?.audio ? (
+                          <button
+                            className={`chat-body__message-play ${
+                              el.userId === id ? "self" : ""
                             }`}
-                            alt=""
-                          />
-                          <img
-                            className="pause"
-                            src={`https://img.icons8.com/?size=100&id=61012&format=png&color=${
-                              el.userId === id ? "5088df" : "ffffff"
-                            }`}
-                            alt=""
-                          />
-                        </button>
-                      ) : (
-                        <p className="chat-body__message-text">{el.message}</p>
-                      )}
+                            onClick={(e) => playAudio(e)}
+                          >
+                            <audio
+                              src={`${process.env.REACT_APP_SERVER_URL}/${el?.audio}`}
+                              onEnded={(e) =>
+                                e.target.parentElement.classList.remove(
+                                  "active"
+                                )
+                              }
+                            />
+                            <img
+                              className="play"
+                              src={`https://img.icons8.com/?size=100&id=99cTBfGlewZU&format=png&color=${
+                                el.userId === id ? "5088df" : "ffffff"
+                              }`}
+                              alt=""
+                            />
+                            <img
+                              className="pause"
+                              src={`https://img.icons8.com/?size=100&id=61012&format=png&color=${
+                                el.userId === id ? "5088df" : "ffffff"
+                              }`}
+                              alt=""
+                            />
+                          </button>
+                        ) : (
+                          <p className="chat-body__message-text">
+                            {el.message}
+                          </p>
+                        )}
 
-                      <p className="chat-body__message-time">{el.time}</p>
-                    </li>
+                        <p className="chat-body__message-time">{el.time}</p>
+                      </li>
+                    </>
                   );
                 })}
               </ul>

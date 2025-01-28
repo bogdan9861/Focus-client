@@ -8,6 +8,8 @@ import FileInput from "../../../components/FileInput/FileInput";
 
 import { getTime } from "../../../utils/getTime";
 
+import picture from "../../../assets/icons/picture.svg";
+
 import {
   selectChat,
   sendMessage as sendMessageAction,
@@ -132,11 +134,7 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
       <div className="chat-body__form-inner">
         <FileInput width={50} setFormData={setFile}>
           <div className="chat-body__form-file">
-            <img
-              className="chat-body__form__btn-img"
-              src="https://img.icons8.com/?size=100&id=16028&format=png&color=aaaaaa"
-              alt=""
-            />
+            <img className="chat-body__form__btn-img" src={picture} alt="" />
           </div>
         </FileInput>
         <input
