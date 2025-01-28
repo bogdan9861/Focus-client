@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../app/service/auth";
+import { useCurrentUserQuery } from "../../app/service/user";
 
 import {
   useGetAllPostsQuery,
@@ -13,7 +14,7 @@ import "./Feed.scss";
 
 const Feed = () => {
   const { data, isLoading } = useGetAllPostsQuery();
-  const user = useSelector(selectUser);
+  const user = useCurrentUserQuery();
   const [reversedData, setReversedData] = useState([]);
 
   useEffect(() => {
