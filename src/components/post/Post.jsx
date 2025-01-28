@@ -249,6 +249,7 @@ export const Post = ({
                 src={url}
                 playsInline
                 controls
+                muted
                 style={{ maxWidth: "100%" }}
               />
             ) : (
