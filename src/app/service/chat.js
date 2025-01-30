@@ -50,6 +50,13 @@ export const ChatApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    sendFile: builder.mutation({
+      query: (data) => ({
+        url: `/chats/upload/file`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -62,4 +69,5 @@ export const {
   useCreateChatMutation,
   useGetChatByRecipientIdMutation,
   useSendVoiceMutation,
+  useSendFileMutation,
 } = ChatApi;

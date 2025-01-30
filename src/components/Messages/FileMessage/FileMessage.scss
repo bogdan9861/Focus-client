@@ -1,0 +1,54 @@
+.fileMessage {
+  color: #131212;
+
+  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
+  background-color: #efefef;
+
+  border-radius: 17px;
+  border-bottom-left-radius: 0;
+
+  min-height: 40px;
+  min-width: 90px;
+  max-width: 500px;
+  width: fit-content;
+
+  padding: 10px 30px 10px 13px;
+  margin-left: 30px;
+  margin-bottom: 14px;
+
+  word-break: break-all;
+
+  display: flex;
+  align-items: center;
+  gap: 0 15px;
+
+  // .fileMessage__icon-wrapper
+
+  &__icon-wrapper {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+
+    padding: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #fff;
+    border-radius: 100%;
+  }
+
+  // .fileMessage__name
+
+  &__name {
+  }
+}
+
+.fileMessage.self {
+  background-color: #3797f0;
+  color: #fff;
+  border-bottom-left-radius: 17px;
+  border-bottom-right-radius: 0;
+  margin-left: auto;
+}

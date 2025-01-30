@@ -15,10 +15,6 @@ const AudioLock = () => {
     setHeight((passed / gapToLock) * 100);
   }, [passed]);
 
-  useEffect(() => {
-    console.log(heigth);
-  }, [heigth]);
-
   return (
     <div
       className={`audioLock ${started ? "audioLock--active" : ""} ${

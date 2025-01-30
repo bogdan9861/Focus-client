@@ -15,10 +15,6 @@ body {
   height: 100%;
 }
 
-li {
-  text-transform: capitalize;
-}
-
 button {
   padding: 0;
   margin: 0;

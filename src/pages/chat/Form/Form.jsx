@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form as AntdForm } from "antd";
-
-import AudioRecordButton from "../../../components/AudioRecordButton/AudioRecordButton";
-import AudioLock from "../../../components/AudioLock/AudioLock";
-import FileInput from "../../../components/FileInput/FileInput";
-
-import { getTime } from "../../../utils/getTime";
-
-import picture from "../../../assets/icons/picture.svg";
+import { Form as AntdForm, Button, Modal } from "antd";
 
 import {
   selectChat,
@@ -19,16 +11,33 @@ import {
 import {
   useCreateChatMutation,
   useGetChatsMutation,
+  useSendFileMutation,
   useSendMessageMutation,
 } from "../../../app/service/chat";
+
+import AudioRecordButton from "../../../components/AudioRecordButton/AudioRecordButton";
+import AudioLock from "../../../components/AudioLock/AudioLock";
+import FileInput from "../../../components/FileInput/FileInput";
+
+import { getTime } from "../../../utils/getTime";
+
+import fileIcon from "../../../assets/icons/file.svg";
+
+import picture from "../../../assets/icons/picture.svg";
 
 const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
   const [doSendMessage] = useSendMessageMutation();
   const [doCreateChat] = useCreateChatMutation();
   const [doGetChats] = useGetChatsMutation();
+  const [doSendFile] = useSendFileMutation();
 
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
+  const [url, setUrl] = useState(null);
+  const [fileFormData, setFileFormData] = useState(null);
+
   const [message, setMessage] = useState("");
+
+  const [confirmOpen, setConfimOpen] = useState(false);
 
   const chatSelector = useSelector(selectChat);
 
@@ -80,8 +89,8 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("recive-message", ({ message, time, userId, audio }) => {
-      dispatch(sendMessageAction({ message, time, userId, audio }));
+    socket.on("recive-message", ({ message, time, userId, audio, file }) => {
+      dispatch(sendMessageAction({ message, time, userId, audio, file }));
     });
 
     return () => {
@@ -89,12 +98,20 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
     };
   }, []);
 
-  const sendMessage = async (audio) => {
+  const sendMessage = async (audio, file) => {
     const time = getTime();
 
     const send = async (chatId) => {
-      dispatch(sendMessageAction({ message, time, userId: id, audio }));
-      socket.emit("send-message", chatSelector?.id, message, time, id, audio);
+      dispatch(sendMessageAction({ message, time, userId: id, audio, file }));
+      socket.emit(
+        "send-message",
+        chatSelector?.id,
+        message,
+        time,
+        id,
+        audio,
+        file
+      );
 
       if (!audio) {
         try {
@@ -123,8 +140,30 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
       return;
     }
 
-    if (message || audio) {
+    if (message || audio || file) {
       send(chatSelector.id);
+    }
+  };
+
+  useEffect(() => {
+    if (file) {
+      setConfimOpen(true);
+    }
+  }, [file]);
+
+  const sendFile = async () => {
+    const formData = new FormData();
+
+    formData.append("file", file);
+    formData.append("chatId", chatSelector?.id);
+
+    try {
+      const res = await doSendFile(formData).unwrap();
+      sendMessage(null, res.path);
+
+      setConfimOpen(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -132,11 +171,59 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
     <AntdForm className="chat-body__form" hidden={!canWrite}>
       <AudioLock />
       <div className="chat-body__form-inner">
-        <FileInput width={50} setFormData={setFile}>
+        <FileInput
+          width={50}
+          setFormData={setFileFormData}
+          setFile={setFile}
+          setUrl={setUrl}
+        >
           <div className="chat-body__form-file">
             <img className="chat-body__form__btn-img" src={picture} alt="" />
           </div>
         </FileInput>
+        <Modal
+          onCancel={() => setConfimOpen(false)}
+          open={confirmOpen}
+          title="Отправить файл"
+        >
+          <>
+            {file?.type.split("/").shift() === "image" ? (
+              <img src={url} alt="" />
+            ) : file?.type.split("/").shift() === "video" ? (
+              <video
+                src={url}
+                controls
+                autoPlay
+                muted
+                playsInline
+                style={{ maxWidth: "100%" }}
+              />
+            ) : (
+              <div className="chat-body__confirm-file">
+                <div className="chat-body__confirm-file__img">
+                  <img src={fileIcon} alt="" />
+                </div>
+                <div className="chat-body__confirm-file__info">
+                  <p>{file?.name}</p>
+                  <span className="chat-body__confirm-file__size">
+                    {(file?.size / 1048576).toFixed(1)} МБ
+                  </span>
+                </div>
+              </div>
+            )}
+            <div className="chat-body__confirm-wrapper">
+              <button className="chat-body__confirm-btn" onClick={sendFile}>
+                Отправить
+              </button>
+              <button
+                className="chat-body__confirm-btn danger"
+                onClick={() => setConfimOpen(false)}
+              >
+                Отмена
+              </button>
+            </div>
+          </>
+        </Modal>
         <input
           className="chat-body__form-input"
           placeholder="Введите текст сообщения..."

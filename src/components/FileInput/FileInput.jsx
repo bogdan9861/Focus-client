@@ -9,6 +9,7 @@ const FileInput = ({
   label = "",
   children = null,
   width,
+  setFile,
 }) => {
   const fileReader = new FileReader();
 
@@ -25,7 +26,9 @@ const FileInput = ({
 
       fromData.append(name, file);
       setUrl && setUrl(fileReader.readAsDataURL(file));
+
       setFormData(fromData);
+      setFile(file);
     }
   };
 

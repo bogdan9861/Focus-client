@@ -7,19 +7,20 @@ import { useGetChatByRecipientIdMutation } from "../../app/service/chat";
 import Form from "./Form/Form";
 import ChatsList from "./ChatsList/ChatsList";
 
+import Aside from "../../components/aside/Aside";
 import DotsAnimation from "../../components/DotsAnimation/DotsAnimation";
 import ScrollDown from "../../components/scrollDown/ScrollDown";
+import AudioMessageBtn from "../../components/Messages/AudioMessageBtn/AudioMessageBtn";
+import FileMessage from "../../components/Messages/FileMessage/FileMessage";
 
 import { useGetUserByIDQuery } from "../../app/service/user";
-import { toProxyPath } from "../../utils/toProxyPath";
 
 import { setStatus } from "../../features/chat";
 import { selectChat, selectHistory } from "../../features/chat";
 
 import "./Chat.scss";
-import Aside from "../../components/aside/Aside";
 
-const socket = io.connect("https://focus-socket.onrender.com");
+const socket = io.connect("http://localhost:5000");
 
 const Chat = () => {
   const { state } = useLocation();
@@ -85,20 +86,6 @@ const Chat = () => {
     scrollDown();
   }, [chatSelector, historySelector]);
 
-  const playAudio = (e) => {
-    const target = e.target;
-    const audio = target.children[0];
-    const isPlaying = target.className.includes("active");
-
-    if (isPlaying) {
-      audio.pause();
-      target.classList.remove("active");
-    } else {
-      target.classList.add("active");
-      audio.play();
-    }
-  };
-
   const self = (userId) => {
     return id === userId;
   };
@@ -141,40 +128,20 @@ const Chat = () => {
                     <>
                       <li
                         className={`chat-body__message fallDown ${
-                          el.userId === id ? "self" : ""
-                        }`}
+                          el?.file ? "file" : ""
+                        } ${el.userId === id ? "self" : ""}`}
                         key={i}
                       >
-                        {el?.audio ? (
-                          <button
-                            className={`chat-body__message-play ${
-                              el.userId === id ? "self" : ""
-                            }`}
-                            onClick={(e) => playAudio(e)}
-                          >
-                            <audio
-                              src={`${process.env.REACT_APP_SERVER_URL}/${el?.audio}`}
-                              onEnded={(e) =>
-                                e.target.parentElement.classList.remove(
-                                  "active"
-                                )
-                              }
-                            />
-                            <img
-                              className="play"
-                              src={`https://img.icons8.com/?size=100&id=99cTBfGlewZU&format=png&color=${
-                                el.userId === id ? "5088df" : "ffffff"
-                              }`}
-                              alt=""
-                            />
-                            <img
-                              className="pause"
-                              src={`https://img.icons8.com/?size=100&id=61012&format=png&color=${
-                                el.userId === id ? "5088df" : "ffffff"
-                              }`}
-                              alt=""
-                            />
-                          </button>
+                        {el?.file ? (
+                          <FileMessage
+                            self={el.userId === id}
+                            path={el?.file}
+                          />
+                        ) : el?.audio ? (
+                          <AudioMessageBtn
+                            self={el.userId === id}
+                            url={el.audio}
+                          />
                         ) : (
                           <p className="chat-body__message-text">
                             {el.message}
