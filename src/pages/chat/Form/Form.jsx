@@ -101,6 +101,8 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
   const sendMessage = async (audio, file) => {
     const time = getTime();
 
+    setMessage("");
+
     const send = async (chatId) => {
       dispatch(sendMessageAction({ message, time, userId: id, audio, file }));
       socket.emit(
@@ -123,8 +125,6 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
           console.log(error);
         }
       }
-
-      setMessage("");
     };
 
     if (openedUser?.data?.id) {
