@@ -40,10 +40,11 @@ export const UserApi = api.injectEndpoints({
         body: { id },
       }),
     }),
-    isFollowed: builder.query({
+    isFollowed: builder.mutation({
       query: (id) => ({
-        url: `/users/isFollowed/${id}`,
-        method: "GET",
+        url: `/users/isFollowed`,
+        body: { id },
+        method: "POST",
       }),
     }),
     updateUser: builder.mutation({
@@ -66,7 +67,7 @@ export const UserApi = api.injectEndpoints({
 export const {
   useCurrentUserQuery,
   useFollowMutation,
-  useIsFollowedQuery,
+  useIsFollowedMutation,
   useGetUserByIDQuery,
   useGetUserFollowersQuery,
   useGetUserFollowsQuery,

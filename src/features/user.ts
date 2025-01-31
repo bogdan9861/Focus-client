@@ -34,7 +34,11 @@ const initialState: State = {
 const UserSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setFollowed: (state, action) => {
+      state.user.followed = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addMatcher(
       UserApi.endpoints.updateUser.matchFulfilled,
@@ -81,3 +85,4 @@ const UserSlice = createSlice({
 export default UserSlice.reducer;
 
 export const selectUser = (state: RootState) => state.user.user;
+export const { setFollowed } = UserSlice.actions;

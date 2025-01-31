@@ -8,7 +8,7 @@ import {
   useGetUserByIDQuery,
   useGetUserFollowersQuery,
   useGetUserFollowsQuery,
-  useIsFollowedQuery,
+  useIsFollowedMutation,
   useUnsubMutation,
 } from "../../app/service/user";
 import {
@@ -18,20 +18,19 @@ import {
 } from "../../app/service/posts";
 
 import { selectPosts } from "../../features/posts";
-import { toProxyPath } from "../../utils/toProxyPath";
 import { selectUser } from "../../features/user";
 
 import Aside from "../../components/aside/Aside";
 import { Post } from "../../components/post/Post";
 import UpdateModal from "../../components/UpdateForm/UpdateModal";
-import PostModal from "../../components/postModal/PostModal";
 
 import noPhoto from "../../assets/images/no-photo.png";
 import settings from "../../assets/icons/settings.svg";
-import plus from "../../assets/images/plus.svg";
 
 import "./Profile.scss";
 import Loader from "../../components/loader/Loader";
+import FollowsModal from "../../components/FollowsModal/FollowsModal";
+import FollowersModal from "../../components/FollowersModal/FollowersModal";
 
 const Profile = () => {
   const { id } = useParams();
@@ -44,10 +43,10 @@ const Profile = () => {
   const [getPosts] = useGetUsersPostMutation();
   const [getSaves] = useGetUserSavesMutation();
   const [getLikes] = useGetUserLikesMutation();
+  const [isFollowed] = useIsFollowedMutation();
 
   const followers = useGetUserFollowersQuery(id);
   const follows = useGetUserFollowsQuery(id);
-  const isFollowed = useIsFollowedQuery(id);
 
   const [follow] = useFollowMutation();
   const [unsub] = useUnsubMutation();
@@ -56,11 +55,33 @@ const Profile = () => {
   const [postsMode, setPostsMode] = useState("posts");
   const [oppenUpdateModal, setOppenUpdateModal] = useState(false);
 
+  const [followsOpen, setFollowsOpen] = useState(false);
+  const [followersOpen, setFollowersOpen] = useState(false);
+  const [isFolowedLoading, setIsFolowedLoading] = useState(false);
+
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
       navigate("/login");
     }
   }, []);
+
+  const checkFollow = async () => {
+    console.log(id);
+
+    try {
+      setIsFolowedLoading(true);
+      const res = await isFollowed(id).unwrap();
+      console.log(res);
+      
+      setIsFolowedLoading(false);
+    } catch (error) {
+      setIsFolowedLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkFollow();
+  }, [id]);
 
   useEffect(() => {
     if (postsMode === "posts") {
@@ -76,7 +97,7 @@ const Profile = () => {
     isLoading ||
     followers.isLoading ||
     follows.isLoading ||
-    isFollowed.isLoading
+    isFolowedLoading
   ) {
     return <Loader />;
   }
@@ -187,7 +208,10 @@ const Profile = () => {
                         Публикации
                       </span>
                     </div>
-                    <div className="profile__statistic">
+                    <div
+                      className="profile__statistic"
+                      onClick={() => setFollowersOpen(true)}
+                    >
                       <span className="profile__statistic-count">
                         {user.followersCount || followers.data.length}
                       </span>
@@ -195,7 +219,10 @@ const Profile = () => {
                         подписчики
                       </span>
                     </div>
-                    <div className="profile__statistic">
+                    <div
+                      className="profile__statistic"
+                      onClick={() => setFollowsOpen(true)}
+                    >
                       <span className="profile__statistic-count">
                         {follows.data.length}
                       </span>
@@ -364,6 +391,18 @@ const Profile = () => {
         onCancel={() => setOppenUpdateModal(false)}
         setOppenModal={setOppenUpdateModal}
         data={user}
+      />
+      <FollowsModal
+        title="Ваши подписки"
+        id={id}
+        open={followsOpen}
+        setOpen={setFollowsOpen}
+      />
+      <FollowersModal
+        title="Подписчики"
+        id={id}
+        open={followersOpen}
+        setOpen={setFollowersOpen}
       />
     </>
   );

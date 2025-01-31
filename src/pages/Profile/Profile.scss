@@ -133,6 +133,10 @@
     margin-bottom: 38px;
   }
 
+  &__statistic:not(:first-child) {
+    cursor: pointer;
+  }
+
   // .profile__statistic-count
 
   &__statistic-count {

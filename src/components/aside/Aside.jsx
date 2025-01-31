@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import PostModal from "../postModal/PostModal";
 import { logout } from "../../features/auth";
-import { selectUser } from "../../features/user";
+import { useCurrentUserQuery } from "../../app/service/user";
 
 import shortLogo from "../../assets/images/short-logo.svg";
 import logo from "../../assets/images/logo.svg";
@@ -14,6 +14,7 @@ import profile from "../../assets/icons/profile.svg";
 import friends from "../../assets/icons/friends.svg";
 
 import "./Aside.scss";
+import Loader from "../loader/Loader";
 
 const Aside = ({
   open,
@@ -22,7 +23,7 @@ const Aside = ({
   setAsideVisable = null,
 }) => {
   const [oppenPostModal, setOppenPostModal] = useState(false);
-  const user = useSelector(selectUser);
+  const user = useCurrentUserQuery();
 
   const aside = useRef(null);
 
@@ -126,9 +127,19 @@ const Aside = ({
               </Link>
             </li>
             <li className="menu__list-item">
-              <Link className="menu__list-link" to={`/profile/${user?.id}`}>
+              <Link className="menu__list-link" to={`/profile/${user.data?.id}`}>
                 <img className="menu__list-item__img" src={profile} alt="" />
                 <span className="menu__list-item__text">профиль</span>
+              </Link>
+            </li>
+            <li className="menu__list-item">
+              <Link className="menu__list-link" to={`/chat/${user.data?.id}`}>
+                <img
+                  className="menu__list-item__img"
+                  src="/static/media/message.ce2743d0aa415e8c0aa4ab9b2b9537f6.svg"
+                  alt=""
+                />
+                <span className="menu__list-item__text">Сообщения</span>
               </Link>
             </li>
           </ul>
