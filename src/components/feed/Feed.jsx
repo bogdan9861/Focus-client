@@ -14,7 +14,8 @@ import "./Feed.scss";
 
 const Feed = () => {
   const { data, isLoading } = useGetAllPostsQuery();
-  const user = useCurrentUserQuery();
+  // const user = useCurrentUserQuery();
+  const user = useSelector(selectUser);
   const [reversedData, setReversedData] = useState([]);
 
   useEffect(() => {

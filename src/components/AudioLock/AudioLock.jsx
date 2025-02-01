@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import bin from "../../assets/icons/bin.svg";
+
 import "./AudioLock.scss";
 import { useSelector } from "react-redux";
 
@@ -12,7 +14,9 @@ const AudioLock = () => {
   const [heigth, setHeight] = useState(0);
 
   useEffect(() => {
-    setHeight((passed / gapToLock) * 100);
+    if (!locked) {
+      setHeight((passed / gapToLock) * 100);
+    }
   }, [passed]);
 
   return (
@@ -35,11 +39,7 @@ const AudioLock = () => {
             alt=""
           />
         ) : (
-          <img
-            className="audioLock__inner-img"
-            src=" https://img.icons8.com/?size=100&id=7Sm4QkMSvsON&format=png&color=ffffff"
-            alt=""
-          />
+          <img src={bin} alt="" />
         )}
 
         <img

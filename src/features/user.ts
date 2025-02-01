@@ -52,12 +52,12 @@ const UserSlice = createSlice({
         state.user = action.payload;
       }
     );
-    builder.addMatcher(
-      UserApi.endpoints.isFollowed.matchFulfilled,
-      (state, action) => {
-        state.user.followed = action.payload.followed;
-      }
-    );
+    // builder.addMatcher(
+    //   UserApi.endpoints.isFollowed.matchFulfilled,
+    //   (state, action) => {
+    //     state.user.followed = action.payload.followed;
+    //   }
+    // );
     builder.addMatcher(
       UserApi.endpoints.follow.matchFulfilled,
       (state, action) => {

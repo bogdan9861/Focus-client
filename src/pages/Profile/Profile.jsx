@@ -17,8 +17,11 @@ import {
   useGetUsersPostMutation,
 } from "../../app/service/posts";
 
+import { useDispatch } from "react-redux";
+
 import { selectPosts } from "../../features/posts";
 import { selectUser } from "../../features/user";
+import { setFollowed } from "../../features/user";
 
 import Aside from "../../components/aside/Aside";
 import { Post } from "../../components/post/Post";
@@ -59,6 +62,8 @@ const Profile = () => {
   const [followersOpen, setFollowersOpen] = useState(false);
   const [isFolowedLoading, setIsFolowedLoading] = useState(false);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
       navigate("/login");
@@ -66,14 +71,15 @@ const Profile = () => {
   }, []);
 
   const checkFollow = async () => {
-    console.log(id);
-
     try {
       setIsFolowedLoading(true);
       const res = await isFollowed(id).unwrap();
-      console.log(res);
       
-      setIsFolowedLoading(false);
+      if (res) {
+        dispatch(setFollowed(res.isFollowed.followed));
+        setIsFolowedLoading(false);
+      }
+
     } catch (error) {
       setIsFolowedLoading(false);
     }

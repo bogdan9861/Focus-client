@@ -40,27 +40,29 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
     } catch (error) {}
   };
 
-  const handleMouseDown = (e) => {
-    if (e.button !== 0 || locked) return;
+  const handleMouseDown = (e, touch) => {
+    if ((e.button !== 0 || locked) && !touch) return;
 
     e.target.classList.add("audioBtn--active");
 
-    const start = e.clientY;
+    const start = touch ? e.touches[0]?.pageY : e.clientY;
 
     dispatch(setStarted(true));
 
     changeStatus("Записывает аудио");
 
     const handleMouseMove = (e) => {
-      dispatch(setPassedDistance(start - e.clientY));
-      if (e.clientY < start - gapToLock) {
+      let Y = touch ? e.touches[0]?.pageY : e.clientY;
+
+      dispatch(setPassedDistance(start - Y));
+      if (Y < start - gapToLock) {
         dispatch(setLocked(true));
 
-        window.removeEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("touchmove", handleMouseMove);
       }
     };
-
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener(touch ? "touchmove" : "mousemove", handleMouseMove);
 
     startRecording();
   };
@@ -92,9 +94,9 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
     }
   };
 
-  const stopRecording = (e) => {
+  const stopRecording = (e, touch) => {
     if (e.button !== 0) return;
-
+  
     dispatch(setStarted(false));
     dispatch(setStatus(""));
     dispatch(setLocked(false));
@@ -131,6 +133,8 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
         locked ? "audioBtn--locked audioBtn--active" : ""
       }`}
       onMouseDown={handleMouseDown}
+      onTouchStart={(e) => handleMouseDown(e, true)}
+      onTouchEnd={(e) => stopRecording(e, true)}
       onClick={stopRecording}
     >
       {!started ? (
@@ -139,6 +143,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
           alt="microphone"
         />
       ) : locked ? (
+        
         <img
           style={{
             width: 25,

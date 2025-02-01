@@ -19,9 +19,13 @@
     resize: horizontal;
     overflow: auto;
 
+    transition: all 0.3s;
+
     &-wrapper {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      width: 100%;
     }
 
     &-title {
@@ -102,6 +106,10 @@
     }
   }
 
+  &__aside.chat__aside--hidden {
+    transform: translateX(-100%);
+  }
+
   // .chat__aside-list
 
   &__aside-list {
@@ -157,6 +165,21 @@
     background: #fff;
   }
 
+  &__head-wrapper {
+    display: flex;
+    gap: 0 20px;
+    align-items: center;
+  }
+
+  &__head-inner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__head-arrow {
+    display: none;
+  }
+
   &__head-img {
     width: 40px;
     height: 40px;
@@ -206,6 +229,7 @@
 
   &__messages {
     overflow-y: scroll;
+    overflow-x: hidden;
     height: 100%;
     padding-right: 10px;
   }
@@ -239,8 +263,8 @@
     max-width: 500px;
     width: fit-content;
 
-    padding: 10px 30px 10px 13px;
-    margin-left: 30px;
+    padding: 10px 10px 10px 13px;
+    margin-left: 10px;
     margin-bottom: 14px;
 
     word-break: break-all;
@@ -259,6 +283,11 @@
   &__message.file {
     background-color: transparent;
     box-shadow: none;
+    margin-left: 0;
+  }
+
+  &__message.file.self {
+    margin-left: auto;
   }
 
   &__message-text {

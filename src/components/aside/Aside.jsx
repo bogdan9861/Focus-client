@@ -65,8 +65,6 @@ const Aside = ({
   }, [window.location.pathname]);
 
   useEffect(() => {
-    console.log(visable);
-
     if (visable) {
       aside.current.classList.add("aside--visable");
     } else {
@@ -75,10 +73,10 @@ const Aside = ({
   }, [visable]);
 
   return (
-    <div ref={aside} className={`aside  ${open ? "aside--active" : ""}`}>
-      <div className="logo__wrapper">
+    <div ref={aside} className={`aside ${open ? "aside--active" : ""}`}>
+      <div className="logo__wrapper" onClick={() => setAsideVisable(false)}>
         {open ? (
-          <picture onClick={() => setAsideVisable(false)}>
+          <picture>
             <source
               srcSet={shortLogo}
               media={`(max-width: ${collapseWidth.current}px`}
@@ -127,7 +125,10 @@ const Aside = ({
               </Link>
             </li>
             <li className="menu__list-item">
-              <Link className="menu__list-link" to={`/profile/${user.data?.id}`}>
+              <Link
+                className="menu__list-link"
+                to={`/profile/${user.data?.id}`}
+              >
                 <img className="menu__list-item__img" src={profile} alt="" />
                 <span className="menu__list-item__text">профиль</span>
               </Link>
