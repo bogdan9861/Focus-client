@@ -14,6 +14,7 @@ import {
   useSendFileMutation,
   useSendMessageMutation,
 } from "../../../app/service/chat";
+import { useCurrentUserQuery } from "../../../app/service/user";
 
 import AudioRecordButton from "../../../components/AudioRecordButton/AudioRecordButton";
 import AudioLock from "../../../components/AudioLock/AudioLock";
@@ -22,9 +23,8 @@ import FileInput from "../../../components/FileInput/FileInput";
 import { getTime } from "../../../utils/getTime";
 
 import fileIcon from "../../../assets/icons/file.svg";
-
 import picture from "../../../assets/icons/picture.svg";
-import { useCurrentUserQuery } from "../../../app/service/user";
+import notification from "../../../assets/icons/notification.svg";
 
 const Form = ({
   id,
@@ -46,17 +46,10 @@ const Form = ({
   const [fileFormData, setFileFormData] = useState(null);
   const [message, setMessage] = useState("");
   const [confirmOpen, setConfimOpen] = useState(false);
-  const [OS, setOS] = useState("");
 
   const chatSelector = useSelector(selectChat);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (navigator.userAgentData && navigator.userAgentData.platform) {
-      setOS(navigator.userAgentData.platform);
-    }
-  }, []);
 
   useEffect(() => {
     socket.on("get-status", ({ status, writerId }) => {
@@ -114,9 +107,11 @@ const Form = ({
     );
 
     socket.on("recive-push-notification", ({ title, message }) => {
-      if (navigator && OS !== "iOS")
+      if (typeof notification !== undefined)
         new Notification(title, {
           body: message,
+          requireInteraction: true,
+          icon: notification,
         });
     });
 

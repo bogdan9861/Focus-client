@@ -62,6 +62,8 @@ const Profile = () => {
   const [followersOpen, setFollowersOpen] = useState(false);
   const [isFolowedLoading, setIsFolowedLoading] = useState(false);
 
+  const [asideVisable, setAsideVisable] = useState(true);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -143,8 +145,50 @@ const Profile = () => {
 
   return (
     <>
-      <Aside open={true} />
+      <Aside
+        open={true}
+        visable={asideVisable}
+        setAsideVisable={setAsideVisable}
+      />
       <div className="profile">
+        <button
+          className="profile__burger header__burger"
+          onClick={() => setAsideVisable(true)}
+        >
+          <svg
+            width={"100%"}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M4 18H10"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M4 12L16 12"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M4 6L20 6"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+              ></path>
+            </g>
+          </svg>
+        </button>
         <div className="profile__wrapper">
           <div className="profile__inner">
             {isLoading ? (
@@ -161,6 +205,7 @@ const Profile = () => {
                     <span className="profile__name">
                       {user?.nickname || user?.name}
                     </span>
+
                     {current.data.id === id ? (
                       <div className="profile__content-btns">
                         <button
@@ -173,21 +218,25 @@ const Profile = () => {
                           <img src={settings} alt="" />
                         </a>
                       </div>
-                    ) : user.followed ? (
-                      <button
-                        className="profile__content-btn grey"
-                        onClick={() => onUnsub()}
-                      >
-                        отписаться
-                      </button>
-                    ) : (
-                      <button
-                        className="profile__content-btn blue"
-                        onClick={() => onFollow()}
-                      >
-                        подписаться
-                      </button>
-                    )}
+                    ) : null}
+                    {current.data.id !== id ? (
+                      user.followed ? (
+                        <button
+                          className="profile__content-btn grey"
+                          onClick={() => onUnsub()}
+                        >
+                          отписаться
+                        </button>
+                      ) : (
+                        <button
+                          className="profile__content-btn blue"
+                          onClick={() => onFollow()}
+                        >
+                          подписаться
+                        </button>
+                      )
+                    ) : null}
+
                     {current.data.id != id ? (
                       <button
                         className="profile__content-btn grey"
