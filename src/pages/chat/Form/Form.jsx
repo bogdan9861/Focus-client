@@ -44,14 +44,19 @@ const Form = ({
   const [file, setFile] = useState(null);
   const [url, setUrl] = useState(null);
   const [fileFormData, setFileFormData] = useState(null);
-
   const [message, setMessage] = useState("");
-
   const [confirmOpen, setConfimOpen] = useState(false);
+  const [OS, setOS] = useState("");
 
   const chatSelector = useSelector(selectChat);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+      setOS(navigator.userAgentData.platform);
+    }
+  }, []);
 
   useEffect(() => {
     socket.on("get-status", ({ status, writerId }) => {
@@ -109,9 +114,10 @@ const Form = ({
     );
 
     socket.on("recive-push-notification", ({ title, message }) => {
-      new Notification(title, {
-        body: message,
-      });
+      if (navigator && OS !== "iOS")
+        new Notification(title, {
+          body: message,
+        });
     });
 
     return () => {

@@ -45,7 +45,11 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    Notification.requestPermission();
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+      if (navigator.userAgentData.platform !== "iOS") {
+        Notification.requestPermission();
+      }
+    }
   }, []);
 
   useEffect(() => {
