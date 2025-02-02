@@ -45,15 +45,13 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
 
     e.target.classList.add("audioBtn--active");
 
-    const start = touch ? e.touches[0]?.pageY : e.clientY;
+    const start = touch ? e.touches[0].pageY : e.clientY;
 
     dispatch(setStarted(true));
-
     changeStatus("Записывает аудио");
 
     const handleMouseMove = (e) => {
-      let Y = touch ? e.touches[0]?.pageY : e.clientY;
-
+      let Y = touch ? e.touches[0].pageY : e.clientY;
       dispatch(setPassedDistance(start - Y));
       if (Y < start - gapToLock) {
         dispatch(setLocked(true));
@@ -96,7 +94,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
 
   const stopRecording = (e, touch) => {
     if (e.button !== 0) return;
-  
+
     dispatch(setStarted(false));
     dispatch(setStatus(""));
     dispatch(setLocked(false));
@@ -143,7 +141,6 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
           alt="microphone"
         />
       ) : locked ? (
-        
         <img
           style={{
             width: 25,

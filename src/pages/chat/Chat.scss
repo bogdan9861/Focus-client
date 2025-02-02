@@ -488,3 +488,8 @@
 .danger {
   background-color: #f6004a;
 }
+
+.chat::selection {
+  background-color: transparent;
+  color: transparent;
+}

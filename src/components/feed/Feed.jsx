@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../app/service/auth";
+
+import { useGetAllPostsQuery } from "../../app/service/posts";
 import { useCurrentUserQuery } from "../../app/service/user";
 
-import {
-  useGetAllPostsQuery,
-  useGetCommentsMutation,
-} from "../../app/service/posts";
 import { Post } from "../post/Post";
+import { setPhoto } from "../../utils/setPhoto";
+
 import Loader from "../loader/Loader";
 
 import "./Feed.scss";
 
 const Feed = () => {
   const { data, isLoading } = useGetAllPostsQuery();
-  // const user = useCurrentUserQuery();
-  const user = useSelector(selectUser);
+  const user = useCurrentUserQuery();
+
   const [reversedData, setReversedData] = useState([]);
 
   useEffect(() => {
@@ -46,7 +44,7 @@ const Feed = () => {
                 id={post?.id}
                 userId={post?.userId}
                 url={`${process.env.REACT_APP_SERVER_URL}/${post?.photo}`}
-                profileURL={`${process.env.REACT_APP_SERVER_URL}/${post?.userPhoto}`}
+                profileURL={setPhoto(post?.userPhoto)}
                 description={post?.description}
                 likes={post?.likesCount}
                 name={post?.name}

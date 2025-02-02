@@ -2,6 +2,12 @@ import { api } from "./api";
 
 export const UserApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getAll: builder.query({
+      query: () => ({
+        url: "/users/get",
+        method: "GET",
+      }),
+    }),
     currentUser: builder.query({
       query: () => ({
         url: "/users/current",
@@ -65,6 +71,7 @@ export const UserApi = api.injectEndpoints({
 });
 
 export const {
+  useGetAllQuery,
   useCurrentUserQuery,
   useFollowMutation,
   useIsFollowedMutation,

@@ -2,22 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { UserApi } from "../app/service/user";
 import { RootState } from "../app/store/store";
 
-type State = {
-  user: {
-    id: string;
-    about: string;
-    name: string;
-    phone: string;
-    photo: string;
-    status: string;
-    nickname: string;
-    followed: boolean;
-    followersCount: number;
-    [key: string]: any;
-  };
-};
-
-const initialState: State = {
+const initialState = {
   user: {
     id: "",
     about: "",
@@ -52,12 +37,12 @@ const UserSlice = createSlice({
         state.user = action.payload;
       }
     );
-    // builder.addMatcher(
-    //   UserApi.endpoints.isFollowed.matchFulfilled,
-    //   (state, action) => {
-    //     state.user.followed = action.payload.followed;
-    //   }
-    // );
+    builder.addMatcher(
+      UserApi.endpoints.isFollowed.matchFulfilled,
+      (state, action) => {
+        state.user.followed = action.payload.followed;
+      }
+    );
     builder.addMatcher(
       UserApi.endpoints.follow.matchFulfilled,
       (state, action) => {
@@ -84,5 +69,5 @@ const UserSlice = createSlice({
 
 export default UserSlice.reducer;
 
-export const selectUser = (state: RootState) => state.user.user;
+export const selectUser = (state) => state.user.user;
 export const { setFollowed } = UserSlice.actions;

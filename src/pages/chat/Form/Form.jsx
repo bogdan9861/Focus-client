@@ -24,12 +24,22 @@ import { getTime } from "../../../utils/getTime";
 import fileIcon from "../../../assets/icons/file.svg";
 
 import picture from "../../../assets/icons/picture.svg";
+import { useCurrentUserQuery } from "../../../app/service/user";
 
-const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
+const Form = ({
+  id,
+  chatUserId,
+  canWrite,
+  socket,
+  currentChatUserId,
+  openedUser,
+}) => {
   const [doSendMessage] = useSendMessageMutation();
   const [doCreateChat] = useCreateChatMutation();
   const [doGetChats] = useGetChatsMutation();
   const [doSendFile] = useSendFileMutation();
+
+  const user = useCurrentUserQuery();
 
   const [file, setFile] = useState(null);
   const [url, setUrl] = useState(null);
@@ -89,14 +99,26 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("recive-message", ({ message, time, userId, audio, file }) => {
-      dispatch(sendMessageAction({ message, time, userId, audio, file }));
+    socket.on(
+      "recive-message",
+      ({ room, message, time, reciverId, userId, audio, file }) => {
+        if (room === chatSelector?.id) {
+          dispatch(sendMessageAction({ message, time, userId, audio, file }));
+        }
+      }
+    );
+
+    socket.on("recive-push-notification", ({ title, message }) => {
+      new Notification(title, {
+        body: message,
+      });
     });
 
     return () => {
       socket.off("recive-message");
+      socket.off("recive-push-notification");
     };
-  }, []);
+  }, [chatSelector]);
 
   const sendMessage = async (audio, file) => {
     const time = getTime();
@@ -104,15 +126,32 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
     setMessage("");
 
     const send = async (chatId) => {
-      dispatch(sendMessageAction({ message, time, userId: id, audio, file }));
+      dispatch(
+        sendMessageAction({
+          message,
+          time,
+          chatUserId,
+          userId: id,
+          audio,
+          file,
+        })
+      );
       socket.emit(
         "send-message",
         chatSelector?.id,
         message,
         time,
+        chatUserId,
         id,
         audio,
         file
+      );
+
+      socket.emit(
+        "send-push-notification",
+        chatUserId,
+        user.data?.nickname,
+        message
       );
 
       if (!audio) {
@@ -141,13 +180,14 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
     }
 
     if (message || audio || file) {
-      send(chatSelector.id);
+      send(chatSelector?.id);
     }
   };
 
   useEffect(() => {
     if (file) {
       setConfimOpen(true);
+      console.log(file);
     }
   }, [file]);
 
@@ -172,6 +212,7 @@ const Form = ({ id, canWrite, socket, currentChatUserId, openedUser }) => {
       <AudioLock />
       <div className="chat-body__form-inner">
         <FileInput
+          multiple={true}
           width={50}
           setFormData={setFileFormData}
           setFile={setFile}

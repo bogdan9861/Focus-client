@@ -32,8 +32,8 @@ import settings from "../../assets/icons/settings.svg";
 
 import "./Profile.scss";
 import Loader from "../../components/loader/Loader";
-import FollowsModal from "../../components/FollowsModal/FollowsModal";
-import FollowersModal from "../../components/FollowersModal/FollowersModal";
+import UsersModal from "../../components/UsersModal/UsersModal";
+import { setPhoto } from "../../utils/setPhoto";
 
 const Profile = () => {
   const { id } = useParams();
@@ -73,13 +73,9 @@ const Profile = () => {
   const checkFollow = async () => {
     try {
       setIsFolowedLoading(true);
-      const res = await isFollowed(id).unwrap();
-      
-      if (res) {
-        dispatch(setFollowed(res.isFollowed.followed));
-        setIsFolowedLoading(false);
-      }
+      await isFollowed(id).unwrap();
 
+      setIsFolowedLoading(false);
     } catch (error) {
       setIsFolowedLoading(false);
     }
@@ -157,11 +153,7 @@ const Profile = () => {
               <>
                 <img
                   className="profile__img"
-                  src={
-                    (user?.photo &&
-                      `${process.env.REACT_APP_SERVER_URL}/${user?.photo}`) ||
-                    noPhoto
-                  }
+                  src={setPhoto(user?.photo)}
                   alt=""
                 />
                 <div className="profile__content">
@@ -398,17 +390,21 @@ const Profile = () => {
         setOppenModal={setOppenUpdateModal}
         data={user}
       />
-      <FollowsModal
+
+      <UsersModal
         title="Ваши подписки"
-        id={id}
         open={followsOpen}
         setOpen={setFollowsOpen}
+        data={follows.data}
+        isLoading={follows.isLoading}
       />
-      <FollowersModal
+
+      <UsersModal
         title="Подписчики"
-        id={id}
         open={followersOpen}
         setOpen={setFollowersOpen}
+        data={followers.data}
+        isLoading={followers.isLoading}
       />
     </>
   );

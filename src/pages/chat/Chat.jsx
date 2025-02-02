@@ -45,6 +45,10 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    socket.emit("auth", id);
+  }, []);
+
+  useEffect(() => {
     setCanWrite(!!chatSelector);
   }, [chatSelector]);
 
@@ -201,6 +205,7 @@ const Chat = () => {
 
             <Form
               id={id}
+              chatUserId={currentChatUserId}
               canWrite={canWrite}
               socket={socket}
               currentChatUserId={currentChatUserId}

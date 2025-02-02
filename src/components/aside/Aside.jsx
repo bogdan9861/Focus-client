@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import PostModal from "../postModal/PostModal";
 import { logout } from "../../features/auth";
-import { useCurrentUserQuery } from "../../app/service/user";
+import { useCurrentUserQuery, useGetAllQuery } from "../../app/service/user";
+
+import PostModal from "../postModal/PostModal";
+import UsersModal from "../UsersModal/UsersModal";
 
 import shortLogo from "../../assets/images/short-logo.svg";
 import logo from "../../assets/images/logo.svg";
@@ -14,7 +16,6 @@ import profile from "../../assets/icons/profile.svg";
 import friends from "../../assets/icons/friends.svg";
 
 import "./Aside.scss";
-import Loader from "../loader/Loader";
 
 const Aside = ({
   open,
@@ -24,6 +25,9 @@ const Aside = ({
 }) => {
   const [oppenPostModal, setOppenPostModal] = useState(false);
   const user = useCurrentUserQuery();
+  const users = useGetAllQuery();
+
+  const [friendsOpen, setFriendsOpen] = useState(false);
 
   const aside = useRef(null);
 
@@ -42,9 +46,9 @@ const Aside = ({
     const aside = document.querySelector(".aside");
 
     if (document.body.clientWidth <= collapseWidth.current) {
-      aside.classList.remove("aside--active");
+      aside?.classList.remove("aside--active");
     } else {
-      aside.classList.add("aside--active");
+      aside?.classList.add("aside--active");
     }
   };
 
@@ -119,10 +123,13 @@ const Aside = ({
               </div>
             </li>
             <li className="menu__list-item">
-              <Link className="menu__list-link" to={"/"}>
+              <div
+                className="menu__list-link"
+                onClick={() => setFriendsOpen(true)}
+              >
                 <img className="menu__list-item__img" src={friends} alt="" />
                 <span className="menu__list-item__text">друзья</span>
-              </Link>
+              </div>
             </li>
             <li className="menu__list-item">
               <Link
@@ -156,6 +163,14 @@ const Aside = ({
         oppen={oppenPostModal}
         onCancel={() => setOppenPostModal(false)}
         setOppenModal={setOppenPostModal}
+      />
+
+      <UsersModal
+        isLoading={users.isLoading}
+        data={users?.data}
+        open={friendsOpen}
+        setOpen={setFriendsOpen}
+        title={"Найти друзей"}
       />
     </div>
   );

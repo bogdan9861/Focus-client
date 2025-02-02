@@ -10,6 +10,7 @@ const FileInput = ({
   children = null,
   width,
   setFile,
+  multiple,
 }) => {
   const fileReader = new FileReader();
 
@@ -20,6 +21,7 @@ const FileInput = ({
   const handleChange = async (e) => {
     if (e.target.files) {
       const fromData = new FormData();
+
       const file = e.target.files[0];
 
       if (!file) return;
@@ -38,6 +40,7 @@ const FileInput = ({
         {label}
 
         <input
+          multiple={multiple}
           type="file"
           style={{ display: "none" }}
           onChange={(e) => handleChange(e)}

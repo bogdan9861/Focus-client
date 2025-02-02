@@ -9,6 +9,7 @@ import { selectUser, useCurrentQuery } from "../../app/service/auth";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "../loader/Loader";
+import { setPhoto } from "../../utils/setPhoto";
 
 const Header = ({ setAsideVisable }) => {
   const { data, isLoading } = useCurrentQuery();
@@ -82,9 +83,7 @@ const Header = ({ setAsideVisable }) => {
           <Link className="header__prfile-user" to={`/profile/${user?.id}`}>
             <img
               className="header__profile-img"
-              src={
-                `${process.env.REACT_APP_SERVER_URL}/${data?.photo}` || noPhoto
-              }
+              src={setPhoto(data?.photo)}
               alt=""
             />
             <div className="header__profile-info">
