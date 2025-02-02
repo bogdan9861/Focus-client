@@ -20,7 +20,7 @@ import { selectChat, selectHistory } from "../../features/chat";
 
 import "./Chat.scss";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://focus-socket.onrender.com");
 
 const Chat = () => {
   const { state } = useLocation();
