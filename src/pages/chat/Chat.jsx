@@ -45,6 +45,10 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    Notification.requestPermission();
+  }, []);
+
+  useEffect(() => {
     socket.emit("auth", id);
   }, []);
 
