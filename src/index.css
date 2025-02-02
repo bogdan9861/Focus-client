@@ -8,6 +8,8 @@ body {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+
+  overflow-x: hidden;
 }
 
 * {
@@ -193,7 +195,7 @@ button {
 
   .profile__name {
     width: fit-content;
-    margin-right: 5px
+    margin-right: 5px;
   }
 
   .profile__statistic-name {
@@ -212,5 +214,4 @@ button {
     width: 15px;
     height: 15px;
   }
-
 }
