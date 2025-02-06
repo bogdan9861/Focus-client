@@ -10,6 +10,7 @@ import {
 } from "../../../app/service/chat";
 
 import noPhoto from "../../../assets/images/no-photo.png";
+import { setPhoto } from "../../../utils/setPhoto";
 
 const ChatsList = ({
   id,
@@ -36,6 +37,7 @@ const ChatsList = ({
     if (window.screen.width <= 770) {
       setVisable(false);
     }
+
     try {
       await doGetChat(id).unwrap();
 
@@ -125,24 +127,42 @@ const ChatsList = ({
               key={chat.id}
               onClick={() => getChat(chat.id)}
             >
-              <img
-                className="chat__aside-item__img"
-                src={
-                  (self(chat.userID_1)
-                    ? `${process.env.REACT_APP_SERVER_URL}/${chat.user_2_photo}`
-                    : `${process.env.REACT_APP_SERVER_URL}/${chat.user_1_photo}`) ||
-                  noPhoto
-                }
-                alt=""
-              />
-              <div className="chat__aside-item__content">
-                <span className="chat__aside-item__name">
-                  {self(chat.userID_1)
-                    ? chat.user_2_name
-                    : chat.user_1_name || "No name"}
-                </span>
-                <p className="chat__aside-item__message">123</p>
-              </div>
+              {chat.users.length > 2 ? (
+                <>
+                  <img
+                    className="chat__aside-item__img"
+                    src={setPhoto(chat?.photo)}
+                    alt=""
+                  />
+                  <div className="chat__aside-item__content">
+                    <span className="chat__aside-item__name">{chat?.name}</span>
+                    <p className="chat__aside-item__message">
+                      {chat?.lastMessage}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                chat.users.map(({ user }) => {
+                  if (user.id === id) return;
+                  return (
+                    <>
+                      <img
+                        className="chat__aside-item__img"
+                        src={setPhoto(user.photo)}
+                        alt=""
+                      />
+                      <div className="chat__aside-item__content">
+                        <span className="chat__aside-item__name">
+                          {user.nickname}
+                        </span>
+                        <p className="chat__aside-item__message">
+                          {chat?.lastMessage}
+                        </p>
+                      </div>
+                    </>
+                  );
+                })
+              )}
             </li>
           );
         })}

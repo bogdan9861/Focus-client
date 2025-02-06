@@ -6,6 +6,7 @@ import { useCurrentUserQuery } from "../../app/service/user";
 import { Post } from "../post/Post";
 import { setPhoto } from "../../utils/setPhoto";
 
+import PhotoViewer from "../PhotoViewer/PhotoViewer";
 import Loader from "../loader/Loader";
 
 import "./Feed.scss";
@@ -55,6 +56,7 @@ const Feed = () => {
           })}
         </div>
       </div>
+      <PhotoViewer/>
     </div>
   );
 };

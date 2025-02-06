@@ -34,7 +34,7 @@ const FileMessage = ({ path, self }) => {
   const defineTypeByExtension = () => {
     let type = "";
 
-    switch (extension) {
+    switch (extension.toLowerCase()) {
       case "mp4":
       case "webm":
       case "mov":
@@ -84,7 +84,7 @@ const FileMessage = ({ path, self }) => {
           <p>{fileName}</p>
         </div>
       ) : defineTypeByExtension() === "image" ? (
-        <img src={serverPath.current} alt="" />
+        <img className="viewer" src={serverPath.current} alt="" />
       ) : (
         <a
           href={serverPath.current}

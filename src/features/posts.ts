@@ -57,7 +57,7 @@ const PostSlice = createSlice({
     builder.addMatcher(
       PostsApi.endpoints.removePost.matchFulfilled,
       (state, action) => {
-        state.posts.filter((el) => el.id != action.payload.id);
+        state.posts = state.posts.filter((el) => el.id != action.payload.id);
       }
     );
   },

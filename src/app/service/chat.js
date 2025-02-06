@@ -31,10 +31,10 @@ export const ChatApi = api.injectEndpoints({
       }),
     }),
     createChat: builder.mutation({
-      query: (id) => ({
+      query: (userIds) => ({
         url: `/chats/create`,
         method: "POST",
-        body: { recipientId: id },
+        body: { userIds },
       }),
     }),
     getChatByRecipientId: builder.mutation({

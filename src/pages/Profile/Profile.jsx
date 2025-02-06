@@ -26,6 +26,7 @@ import { setFollowed } from "../../features/user";
 import Aside from "../../components/aside/Aside";
 import { Post } from "../../components/post/Post";
 import UpdateModal from "../../components/UpdateForm/UpdateModal";
+import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
 
 import noPhoto from "../../assets/images/no-photo.png";
 import settings from "../../assets/icons/settings.svg";
@@ -63,8 +64,6 @@ const Profile = () => {
   const [isFolowedLoading, setIsFolowedLoading] = useState(false);
 
   const [asideVisable, setAsideVisable] = useState(true);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -455,6 +454,7 @@ const Profile = () => {
         data={followers.data}
         isLoading={followers.isLoading}
       />
+      <PhotoViewer />
     </>
   );
 };

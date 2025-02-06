@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { Modal, notification } from "antd";
 
 import menu from "../../assets/icons/menu.svg";
+import PhotoViewer from "../PhotoViewer/PhotoViewer";
 
 export const Post = ({
   id,
@@ -284,7 +285,7 @@ export const Post = ({
         ></video>
       ) : (
         <img
-          className="feed__post-img"
+          className="feed__post-img viewer"
           src={url}
           alt=""
           onClick={() => setPhotoViewOpen(true)}

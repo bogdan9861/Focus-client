@@ -7,11 +7,13 @@ import { usePostMutation } from "../../app/service/posts";
 import noPhoto from "../../assets/icons/PickPhoto.svg";
 
 import "./postModal.scss";
+import Loader from "../loader/Loader";
 
 const PostModal = ({ oppen, onCancel, setOppenModal }) => {
   const [url, setUrl] = useState();
   const [formData, setFormData] = useState();
   const [file, setFile] = useState();
+  const [loading, setLoading] = useState(false);
 
   const videoPlayer = useRef(null);
 
@@ -37,19 +39,27 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
 
   const doUpload = async () => {
     try {
+      setLoading(true);
+
       await doPost(formData).unwrap();
+
+      setLoading(false);
       setOppenModal(false);
       openNotification({
         description: "Фото опубликованно",
         duration: 3,
       });
     } catch (error) {
+      setLoading(false);
+
       if (error?.data?.message) {
         openNotification({
           description: `${error?.data?.message}`,
           duration: 3,
         });
       } else {
+        setLoading(false);
+
         openNotification({
           description: "Произошла ошибка",
           duration: 3,
@@ -89,12 +99,17 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
                     />
                   ) : null}
 
-                  <button
-                    className="postModal__send"
-                    onClick={() => doUpload()}
-                  >
-                    Опубликовать
-                  </button>
+                  {!loading ? (
+                    <button
+                      className="postModal__send"
+                      onClick={() => doUpload()}
+                    >
+                      Опубликовать
+                    </button>
+                  ) : (
+                    <Loader height={"100%"} />
+                  )}
+
                   <svg
                     viewBox="0 0 25 25"
                     fill="none"
@@ -138,7 +153,7 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
                   name={"image"}
                 >
                   <div className="postModal__preview-filebtn">
-                    Выбрать на компьютере
+                    Выбрать на устройстве
                   </div>
                 </FileInput>
               </>

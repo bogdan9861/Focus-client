@@ -13,10 +13,6 @@ const UsersModal = ({ data, title, open, setOpen, isLoading }) => {
   const users = useGetAllQuery();
   const [isFollowed] = useFollowMutation();
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   const setPhoto = (url) => {
     if (url) {
       return `${process.env.REACT_APP_SERVER_URL}/${url}`;
@@ -27,24 +23,28 @@ const UsersModal = ({ data, title, open, setOpen, isLoading }) => {
 
   return (
     <Modal title={title} open={open} onCancel={() => setOpen(false)}>
-      <ul className="users__list">
-        {data?.map((user) => (
-          <li className="users__list-item" onClick={() => setOpen(false)}>
-            <Link className="users__list-inner" to={`/profile/${user?.id}`}>
-              <img
-                className="users__list-img"
-                src={setPhoto(user?.photo)}
-                alt=""
-              />
-              <div className="users__list-content">
-                <span className="users__list-nickname">{user?.nickname}</span>
-                <span className="users__list-name">{user?.name}</span>
-              </div>
-            </Link>
-            <button className="users__list-btn">Удалить</button>
-          </li>
-        ))}
-      </ul>
+      {!isLoading ? (
+        <ul className="users__list">
+          {data?.map((user) => (
+            <li className="users__list-item" onClick={() => setOpen(false)}>
+              <Link className="users__list-inner" to={`/profile/${user?.id}`}>
+                <img
+                  className="users__list-img"
+                  src={setPhoto(user?.photo)}
+                  alt=""
+                />
+                <div className="users__list-content">
+                  <span className="users__list-nickname">{user?.nickname}</span>
+                  <span className="users__list-name">{user?.name}</span>
+                </div>
+              </Link>
+              <button className="users__list-btn">Удалить</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <Loader />
+      )}
     </Modal>
   );
 };

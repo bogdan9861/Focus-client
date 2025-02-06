@@ -53,6 +53,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
     const handleMouseMove = (e) => {
       let Y = touch ? e.touches[0].pageY : e.clientY;
       dispatch(setPassedDistance(start - Y));
+
       if (Y < start - gapToLock) {
         dispatch(setLocked(true));
 
@@ -92,7 +93,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
     }
   };
 
-  const stopRecording = (e, touch) => {
+  const stopRecording = (e) => {
     if (e.button !== 0) return;
 
     dispatch(setStarted(false));
@@ -132,7 +133,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
       }`}
       onMouseDown={handleMouseDown}
       onTouchStart={(e) => handleMouseDown(e, true)}
-      onTouchEnd={(e) => stopRecording(e, true)}
+      onTouchEnd={stopRecording}
       onClick={stopRecording}
     >
       {!started ? (

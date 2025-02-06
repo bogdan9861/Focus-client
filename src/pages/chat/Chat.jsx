@@ -1,8 +1,7 @@
 import io from "socket.io-client";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useGetChatByRecipientIdMutation } from "../../app/service/chat";
 
 import Form from "./Form/Form";
 import ChatsList from "./ChatsList/ChatsList";
@@ -14,19 +13,23 @@ import AudioMessageBtn from "../../components/Messages/AudioMessageBtn/AudioMess
 import FileMessage from "../../components/Messages/FileMessage/FileMessage";
 
 import { useGetUserByIDQuery } from "../../app/service/user";
+import { useGetChatByRecipientIdMutation } from "../../app/service/chat";
 
 import { setStatus } from "../../features/chat";
-import { selectChat, selectHistory } from "../../features/chat";
+import { selectChat, selectHistory, closeChat } from "../../features/chat";
 
 import "./Chat.scss";
+import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
+import { setPhoto } from "../../utils/setPhoto";
+import ChatMembersModal from "../../components/ChatMembersModal/ChatMembersModal";
 
-const socket = io.connect("https://focus-socket.onrender.com");
+const socket = io.connect("http://localhost:5000");
 
 const Chat = () => {
   const { state } = useLocation();
   const { id } = useParams();
 
-  const openedUser = useGetUserByIDQuery(state?.recipientId || "");
+  const openedUser = useGetUserByIDQuery(state?.recipientId);
   const [doGetRecipientChat] = useGetChatByRecipientIdMutation();
 
   const chatSelector = useSelector(selectChat);
@@ -39,6 +42,7 @@ const Chat = () => {
   const [currentChatUserId, setCurrentChatUserId] = useState(null);
   const [asideVisable, setAsideVisable] = useState(false);
   const [chatListVisable, setChatListVisable] = useState(true);
+  const [membersOpen, setMembersOpen] = useState(false);
 
   const status = useSelector((state) => state.chat.status);
 
@@ -68,7 +72,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (openedUser?.data?.id) {
-      const gitRecipientHistory = async () => {
+      const getRecipientHistory = async () => {
         try {
           await doGetRecipientChat(openedUser?.data?.id);
         } catch (error) {
@@ -76,7 +80,7 @@ const Chat = () => {
         }
       };
 
-      gitRecipientHistory();
+      getRecipientHistory();
     }
   }, [openedUser?.data?.id]);
 
@@ -86,10 +90,11 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    let chatUserId =
-      id == chatSelector?.userID_1
-        ? chatSelector?.userID_2
-        : chatSelector?.userID_1;
+    let chatUserId;
+
+    chatSelector?.users?.forEach(({ user }) => {
+      chatUserId = user.id !== id && user.id;
+    });
 
     setCurrentChatUserId(chatUserId);
     dispatch(setStatus(""));
@@ -98,6 +103,12 @@ const Chat = () => {
   useEffect(() => {
     scrollDown();
   }, [chatSelector, historySelector]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(closeChat());
+    };
+  }, []);
 
   const self = (userId) => {
     return id === userId;
@@ -149,20 +160,91 @@ const Chat = () => {
                 </g>
               </svg>
               <div className="chat-body__head-inner">
-                <h2 className="chat-body__head-name">
-                  {openedUser?.data?.nickname ||
-                    (self(chatSelector?.userID_1)
-                      ? chatSelector?.user_2_name
-                      : chatSelector?.user_1_name || "Выберите чат")}
-                </h2>
-                <span className="chat-body__head-status">
-                  {status !== "" ? <DotsAnimation /> : null}
-                  {chatSelector
-                    ? status !== ""
-                      ? status
-                      : "Был(а) недавно"
-                    : null}
-                </span>
+                {chatSelector?.users?.length === 2 ? (
+                  chatSelector?.users?.map(({ user }) => {
+                    if (user.id === id) return;
+
+                    return (
+                      <div className="chat-body__head-info">
+                        <img
+                          className="chat-body__head-img viewer"
+                          src={setPhoto(user.photo)}
+                          alt=""
+                        />
+                        <Link
+                          className="chat-body__head-info__content"
+                          to={`/profile/${user.id}`}
+                        >
+                          <h2 className="chat-body__head-name">
+                            {user.nickname}
+                          </h2>
+
+                          <span className="chat-body__head-status">
+                            {status !== "" ? <DotsAnimation /> : null}
+                            {chatSelector
+                              ? status !== ""
+                                ? status
+                                : "Был(а) недавно"
+                              : null}
+                          </span>
+                        </Link>
+                      </div>
+                    );
+                  })
+                ) : chatSelector?.users?.length > 2 ? (
+                  <div className="chat-body__head-info">
+                    <img
+                      className="chat-body__head-img viewer"
+                      src={setPhoto(chatSelector?.photo)}
+                      alt=""
+                    />
+                    <div
+                      className="chat-body__head-info__content"
+                      onClick={() => setMembersOpen(true)}
+                    >
+                      <h2 className="chat-body__head-name">
+                        {chatSelector?.name}
+                      </h2>
+                      <span className="chat-body__head-status">
+                        {chatSelector?.users.length} участника
+                      </span>
+                    </div>
+
+                    <ChatMembersModal
+                      open={membersOpen}
+                      setOpen={setMembersOpen}
+                      users={chatSelector?.users}
+                    />
+                  </div>
+                ) : openedUser.data ? (
+                  <div className="chat-body__head-info">
+                    <img
+                      className="chat-body__head-img"
+                      src={setPhoto(openedUser.data.photo)}
+                      alt=""
+                    />
+                    <Link
+                      className="chat-body__head-info__content"
+                      to={`/profile/${openedUser.data.id}`}
+                    >
+                      <h2 className="chat-body__head-name">
+                        {openedUser.data.nickname}
+                      </h2>
+                      <span className="chat-body__head-status">
+                        {status !== "" ? <DotsAnimation /> : null}
+                        {chatSelector
+                          ? status !== ""
+                            ? status
+                            : "Был(а) недавно"
+                          : null}
+                      </span>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="chat-body__head-info">
+                    <h2 className="chat-body__head-name">Выберите чат</h2>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -222,6 +304,7 @@ const Chat = () => {
           </div>
         </div>
       </div>
+      <PhotoViewer />
     </>
   );
 };

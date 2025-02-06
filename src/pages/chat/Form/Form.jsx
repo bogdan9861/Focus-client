@@ -25,6 +25,7 @@ import { getTime } from "../../../utils/getTime";
 import fileIcon from "../../../assets/icons/file.svg";
 import picture from "../../../assets/icons/picture.svg";
 import notification from "../../../assets/icons/notification.svg";
+import Loader from "../../../components/loader/Loader";
 
 const Form = ({
   id,
@@ -46,6 +47,7 @@ const Form = ({
   const [fileFormData, setFileFormData] = useState(null);
   const [message, setMessage] = useState("");
   const [confirmOpen, setConfimOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const chatSelector = useSelector(selectChat);
 
@@ -169,7 +171,7 @@ const Form = ({
 
     if (openedUser?.data?.id) {
       try {
-        const chat = await doCreateChat(openedUser?.data?.id).unwrap();
+        const chat = await doCreateChat([id, openedUser?.data?.id]).unwrap();
         getChats();
 
         send(chat.id, openedUser?.data?.id);
@@ -188,7 +190,6 @@ const Form = ({
   useEffect(() => {
     if (file) {
       setConfimOpen(true);
-      console.log(file);
     }
   }, [file]);
 
@@ -198,13 +199,16 @@ const Form = ({
     formData.append("file", file);
     formData.append("chatId", chatSelector?.id);
 
+    setLoading(true);
+
     try {
       const res = await doSendFile(formData).unwrap();
       sendMessage(null, res.path);
 
       setConfimOpen(false);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -255,8 +259,9 @@ const Form = ({
             )}
             <div className="chat-body__confirm-wrapper">
               <button className="chat-body__confirm-btn" onClick={sendFile}>
-                Отправить
+                {!loading ? "Отправить" : <Loader height={"100%"} />}
               </button>
+
               <button
                 className="chat-body__confirm-btn danger"
                 onClick={() => setConfimOpen(false)}

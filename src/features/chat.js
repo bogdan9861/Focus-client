@@ -18,6 +18,10 @@ const ChatSlice = createSlice({
     setStatus: (state, action) => {
       state.status = action.payload;
     },
+    closeChat: (state, action) => {
+      state.chat = null;
+      state.history = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -58,4 +62,4 @@ export const selectChats = (state) => state.chat.chats;
 export const selectChat = (state) => state.chat.chat;
 
 export default ChatSlice.reducer;
-export const { sendMessage, setStatus } = ChatSlice.actions;
+export const { sendMessage, setStatus, closeChat } = ChatSlice.actions;

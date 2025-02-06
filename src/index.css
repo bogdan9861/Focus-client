@@ -82,6 +82,10 @@ button {
     width: 100%;
   }
 
+  .feed__post {
+    max-width: 100% !important;
+  }
+
   .chat {
     width: 100%;
     margin-left: 0;
@@ -164,10 +168,6 @@ button {
 @media (max-width: 470px) {
   .header__prfile-user {
     display: none;
-  }
-
-  .feed__post {
-    max-width: 100% !important;
   }
 
   .chat__aside {

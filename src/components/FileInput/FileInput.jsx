@@ -40,7 +40,6 @@ const FileInput = ({
         {label}
 
         <input
-          multiple={multiple}
           type="file"
           style={{ display: "none" }}
           onChange={(e) => handleChange(e)}
