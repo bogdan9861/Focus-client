@@ -1,0 +1,58 @@
+.conference {
+  position: relative;
+  height: 100vh;
+  overflow-y: hidden;
+
+  // .conference__inner
+  background-color: #0e1621;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__controls {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  // .conference__controls-inner
+
+  &__controls-inner {
+    max-width: 400px;
+    width: 100%;
+    background-color: #17212b;
+    border-radius: 50px;
+    padding: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 10px;
+  }
+
+  // .conference__controls-btn
+
+  &__controls-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    padding: 10px;
+    border: none;
+    background: #43458d;
+  }
+
+  &__controls-btn.red {
+    background-color: #c20020;
+  }
+}

@@ -12,6 +12,7 @@ import call from "../../../assets/icons/call.svg";
 import { setConferenceId } from "../../../features/conference";
 
 import "../Chat.scss";
+import { setPhoto } from "../../../utils/setPhoto";
 
 const HeadInfo = ({
   photo,
@@ -27,8 +28,6 @@ const HeadInfo = ({
   const [conferenceId, setConferenceId] = useState();
   const user = useCurrentUserQuery();
 
-  const dispatch = useDispatch();
-
   const handleClick = () => {
     if (link) {
       navigate(link);
@@ -42,9 +41,26 @@ const HeadInfo = ({
   }, []);
 
   const createConference = useCallback(() => {
-    navigate(`/conference/${conferenceId}`);
-    socket.emit("send-call-offer", photo, name, conferenceId, id);
-  }, [conferenceId]);
+    if (!user.isLoading) {
+      console.log(user.data);
+
+      navigate(`/conference/${conferenceId}`);
+      socket.emit(
+        "send-call-offer",
+        setPhoto(user.data.photo),
+        user.data.nickname,
+        conferenceId,
+        id
+      );
+    }
+
+    socket.emit(
+      "send-push-notification",
+      id,
+      user.data?.nickname,
+      "Входщий вызов"
+    );
+  }, [conferenceId, user.isLoading]);
 
   return (
     <div className="chat-body__head-info__wrapper">

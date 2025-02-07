@@ -41,12 +41,19 @@ const CallOfferModal = () => {
 
   return (
     <div className="conferenceModal">
-      <Modal open={open} onCancel={() => setOpen(false)}>
+      <Modal
+        open={open}
+        onCancel={() => setOpen(false)}
+        closeIcon={null}
+        closable={false}
+      >
         <div className="conferenceModal__inner">
           <img className="conferenceModal__img" src={photo} alt="" />
           <div className="conferenceModal__info">
             <span className="conferenceModal__info-name">{name}</span>
-            <span className="conferenceModal__info-text">Звонок</span>
+            <span className="conferenceModal__info-text">
+              Входящий вызов...
+            </span>
           </div>
           <div className="conferenceModal__controls">
             <button

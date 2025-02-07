@@ -4,6 +4,13 @@ import { useParams } from "react-router";
 import { Modal } from "antd";
 import useWebRTC, { LOCAL_VIDEO } from "../../hooks/useWebRTC";
 
+import leave from "../../assets/icons/leave.svg";
+import mute from "../../assets/icons/mute.svg";
+import microphone from "../../assets/icons/microphone.svg";
+import cameraRotate from "../../assets/icons/CameraRotate.svg";
+
+import "./Сonference.scss";
+
 function layout(clientsNumber = 1) {
   const pairs = Array.from({ length: clientsNumber }).reduce(
     (acc, next, index, arr) => {
@@ -44,31 +51,39 @@ const Сonference = () => {
   const videoLayout = layout(clients.length);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        height: "100vh",
-      }}
-    >
-      {clients.map((clientID, index) => {
-        return (
-          <div key={clientID} style={videoLayout[index]} id={clientID}>
-            <video
-              width="100%"
-              height="100%"
-              ref={(instance) => {
-                provideMediaRef(clientID, instance);
-              }}
-              autoPlay
-              playsInline
-              muted={clientID === LOCAL_VIDEO}
-            />
-          </div>
-        );
-      })}
+    <div className="conference">
+      <div className="conference__inner">
+        {clients.map((clientID, index) => {
+          return (
+            <div key={clientID} id={clientID}>
+              <video
+                width="100%"
+                height="100%"
+                ref={(instance) => {
+                  provideMediaRef(clientID, instance);
+                }}
+                autoPlay
+                playsInline
+                muted={clientID === LOCAL_VIDEO}
+              />
+            </div>
+          );
+        })}
+      </div>
+      <div className="conference__controls">
+        <div className="conference__controls-inner">
+          <button className="conference__controls-btn">
+            <img src={cameraRotate} alt="" />
+          </button>
+          <button className="conference__controls-btn">
+            <img src={mute} alt="" />
+            {/* <img src={microphone} alt="" /> */}
+          </button>
+          <button className="conference__controls-btn red">
+            <img src={leave} alt="" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
