@@ -28,7 +28,6 @@ import { Post } from "../../components/post/Post";
 import UpdateModal from "../../components/UpdateForm/UpdateModal";
 import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
 
-import noPhoto from "../../assets/images/no-photo.png";
 import settings from "../../assets/icons/settings.svg";
 
 import "./Profile.scss";
@@ -195,7 +194,7 @@ const Profile = () => {
             ) : (
               <>
                 <img
-                  className="profile__img"
+                  className="profile__img viewer"
                   src={setPhoto(user?.photo)}
                   alt=""
                 />

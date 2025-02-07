@@ -1,16 +1,7 @@
-import io from "socket.io-client";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-
-import Form from "./Form/Form";
-import ChatsList from "./ChatsList/ChatsList";
-
-import Aside from "../../components/aside/Aside";
-import DotsAnimation from "../../components/DotsAnimation/DotsAnimation";
-import ScrollDown from "../../components/scrollDown/ScrollDown";
-import AudioMessageBtn from "../../components/Messages/AudioMessageBtn/AudioMessageBtn";
-import FileMessage from "../../components/Messages/FileMessage/FileMessage";
+import { socket } from "../../socket/index";
 
 import { useGetUserByIDQuery } from "../../app/service/user";
 import { useGetChatByRecipientIdMutation } from "../../app/service/chat";
@@ -18,12 +9,20 @@ import { useGetChatByRecipientIdMutation } from "../../app/service/chat";
 import { setStatus } from "../../features/chat";
 import { selectChat, selectHistory, closeChat } from "../../features/chat";
 
-import "./Chat.scss";
-import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
-import { setPhoto } from "../../utils/setPhoto";
+import Aside from "../../components/aside/Aside";
+import ScrollDown from "../../components/scrollDown/ScrollDown";
+import AudioMessageBtn from "../../components/Messages/AudioMessageBtn/AudioMessageBtn";
+import FileMessage from "../../components/Messages/FileMessage/FileMessage";
 import ChatMembersModal from "../../components/ChatMembersModal/ChatMembersModal";
 
-const socket = io.connect("http://localhost:5000");
+import HeadInfo from "./HeadInfo/HeadInfo";
+import Form from "./Form/Form";
+import ChatsList from "./ChatsList/ChatsList";
+
+import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
+import { setPhoto } from "../../utils/setPhoto";
+
+import "./Chat.scss";
 
 const Chat = () => {
   const { state } = useLocation();
@@ -54,10 +53,6 @@ const Chat = () => {
         Notification.requestPermission();
       }
     }
-  }, []);
-
-  useEffect(() => {
-    socket.emit("auth", id);
   }, []);
 
   useEffect(() => {
@@ -165,81 +160,43 @@ const Chat = () => {
                     if (user.id === id) return;
 
                     return (
-                      <div className="chat-body__head-info">
-                        <img
-                          className="chat-body__head-img viewer"
-                          src={setPhoto(user.photo)}
-                          alt=""
-                        />
-                        <Link
-                          className="chat-body__head-info__content"
-                          to={`/profile/${user.id}`}
-                        >
-                          <h2 className="chat-body__head-name">
-                            {user.nickname}
-                          </h2>
-
-                          <span className="chat-body__head-status">
-                            {status !== "" ? <DotsAnimation /> : null}
-                            {chatSelector
-                              ? status !== ""
-                                ? status
-                                : "Был(а) недавно"
-                              : null}
-                          </span>
-                        </Link>
-                      </div>
+                      <HeadInfo
+                        id={user.id}
+                        name={user.name}
+                        photo={setPhoto(user.photo)}
+                        status={status}
+                        chat={chatSelector}
+                        link={`/profile/${user.id}`}
+                      />
                     );
                   })
                 ) : chatSelector?.users?.length > 2 ? (
-                  <div className="chat-body__head-info">
-                    <img
-                      className="chat-body__head-img viewer"
-                      src={setPhoto(chatSelector?.photo)}
-                      alt=""
+                  <>
+                    <HeadInfo
+                      // id={chatSelector?.users.map(({ user }) => user.id)}
+                      chat={chatSelector}
+                      func={() => setMembersOpen(true)}
+                      membersCount={chatSelector?.users.length}
+                      name={chatSelector?.name}
+                      photo={setPhoto(chatSelector?.photo)}
+                      status={status}
                     />
-                    <div
-                      className="chat-body__head-info__content"
-                      onClick={() => setMembersOpen(true)}
-                    >
-                      <h2 className="chat-body__head-name">
-                        {chatSelector?.name}
-                      </h2>
-                      <span className="chat-body__head-status">
-                        {chatSelector?.users.length} участника
-                      </span>
-                    </div>
 
                     <ChatMembersModal
                       open={membersOpen}
                       setOpen={setMembersOpen}
                       users={chatSelector?.users}
                     />
-                  </div>
+                  </>
                 ) : openedUser.data ? (
-                  <div className="chat-body__head-info">
-                    <img
-                      className="chat-body__head-img"
-                      src={setPhoto(openedUser.data.photo)}
-                      alt=""
-                    />
-                    <Link
-                      className="chat-body__head-info__content"
-                      to={`/profile/${openedUser.data.id}`}
-                    >
-                      <h2 className="chat-body__head-name">
-                        {openedUser.data.nickname}
-                      </h2>
-                      <span className="chat-body__head-status">
-                        {status !== "" ? <DotsAnimation /> : null}
-                        {chatSelector
-                          ? status !== ""
-                            ? status
-                            : "Был(а) недавно"
-                          : null}
-                      </span>
-                    </Link>
-                  </div>
+                  <HeadInfo
+                    id={openedUser.data.id}
+                    chat={chatSelector}
+                    name={openedUser.data.nickname}
+                    photo={setPhoto(openedUser.data.photo)}
+                    status={status}
+                    link={`/profile/${openedUser.data.id}`}
+                  />
                 ) : (
                   <div className="chat-body__head-info">
                     <h2 className="chat-body__head-name">Выберите чат</h2>

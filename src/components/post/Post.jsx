@@ -29,6 +29,7 @@ export const Post = ({
   likes,
   status,
   maxWidth,
+  date,
 }) => {
   const [doLike] = useLikeMutation();
   const [doUnlike] = useUnlikeMutation();
@@ -173,7 +174,9 @@ export const Post = ({
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (e.target.className !== "feed__post-menu-btn") {
+      const className = e.target.className;
+
+      if (className !== "feed__post-menu-btn") {
         document.querySelectorAll(".feed__post-menu-list").forEach((menu) => {
           menu.classList.remove("active");
         });
@@ -199,7 +202,7 @@ export const Post = ({
           />
           <div className="feed__post-profile-info">
             <span className="feed__post-profile-name">{name}</span>
-            <span className="feed__post-profile-status">{status}</span>
+            <span className="feed__post-profile-status">{date}</span>
           </div>
         </Link>
         <div className="feed__post-menu-wrapper">

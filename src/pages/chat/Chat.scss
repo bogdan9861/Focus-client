@@ -176,7 +176,6 @@
     cursor: pointer;
   }
 
-
   &__head-info {
     display: flex;
     align-items: center;
@@ -224,6 +223,24 @@
     flex-grow: 1;
     height: calc(100% - 48px);
     padding: 10px 0;
+  }
+
+  &__head-inner {
+    width: 100%;
+  }
+
+  &__head-info__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__head-call {
+    width: 35px;
+    height: 35px;
+    background-color: transparent;
+    border: none;
   }
 
   // .chat-body__messages

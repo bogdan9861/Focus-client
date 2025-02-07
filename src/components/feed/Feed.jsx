@@ -5,6 +5,7 @@ import { useCurrentUserQuery } from "../../app/service/user";
 
 import { Post } from "../post/Post";
 import { setPhoto } from "../../utils/setPhoto";
+import { HumanizeDate } from "../../utils/HumanizeDate";
 
 import PhotoViewer from "../PhotoViewer/PhotoViewer";
 import Loader from "../loader/Loader";
@@ -29,7 +30,7 @@ const Feed = () => {
     }
   }, [data]);
 
-  if (isLoading || reversedData.length === 0) {
+  if (isLoading || user.isLoading) {
     return <Loader />;
   }
 
@@ -49,14 +50,15 @@ const Feed = () => {
                 description={post?.description}
                 likes={post?.likesCount}
                 name={post?.name}
-                self={user.id === post?.userId}
+                self={user.data.id === post?.userId}
                 status={post?.status}
+                date={HumanizeDate(post?.publishedAt)}
               />
             );
           })}
         </div>
       </div>
-      <PhotoViewer/>
+      <PhotoViewer />
     </div>
   );
 };

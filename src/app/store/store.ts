@@ -7,6 +7,7 @@ import user from "../../features/user";
 import posts from "../../features/posts";
 import chat from "../../features/chat";
 import audioLock from "../../features/audioLock";
+import conference from "../../features/conference";
 
 import { listener } from "../../middleware/middleware";
 
@@ -18,6 +19,7 @@ export const store = configureStore({
     user,
     chat,
     audioLock,
+    conference,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware).prepend(listener.middleware),

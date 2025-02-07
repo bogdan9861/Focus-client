@@ -1,0 +1,92 @@
+.conferenceModal {
+  // .conferenceModal__img
+
+  &__inner {
+    height: 600px;
+  }
+
+  &__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    object-fit: cover;
+
+    border-radius: 7px;
+  }
+
+  // .conferenceModal__info
+
+  &__info {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    position: relative;
+    top: 100px;
+  }
+
+  // .conferenceModal__info-name
+
+  &__info-name {
+    font-size: 30px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  // .conferenceModal__info-text
+
+  &__info-text {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 300;
+  }
+
+  // .conferenceModal__controls
+
+  &__controls {
+    position: absolute;
+    bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0 30px;
+    width: 100%;
+  }
+
+  // .conferenceModal__controls-accept
+
+  &__controls-accept {
+    background-color: #27c200;
+  }
+
+  &__controls-accept svg {
+    width: fit-content;
+    height: fit-content;
+  }
+
+  // .conferenceModal__controls-btn
+
+  &__controls-btn {
+    width: 50px;
+    height: 50px;
+    padding: 11px 9px;
+    border-radius: 100%;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // .conferenceModal__controls-reject
+
+  &__controls-reject {
+    background-color: #c20020;
+  }
+}
