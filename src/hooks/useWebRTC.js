@@ -6,7 +6,7 @@ import { socket } from "../socket/index";
 
 export const LOCAL_VIDEO = "LOCAL_VIDEO";
 
-export default function useWebRTC(roomID) {
+export default function useWebRTC(roomID, audio, video) {
   const [clients, updateClients] = useStateWithCallback([]);
 
   const addNewClient = useCallback(
@@ -191,7 +191,7 @@ export default function useWebRTC(roomID) {
 
       socket.emit(ACTIONS.LEAVE);
     };
-  }, [roomID]);
+  }, [roomID, video, audio]);
 
   const provideMediaRef = useCallback((id, node) => {
     peerMediaElements.current[id] = node;

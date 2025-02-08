@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-import { Modal } from "antd";
 import useWebRTC, { LOCAL_VIDEO } from "../../hooks/useWebRTC";
 
 import leave from "../../assets/icons/leave.svg";
@@ -47,8 +47,15 @@ function layout(clientsNumber = 1) {
 
 const Сonference = () => {
   const { id: roomID } = useParams();
-  const { clients, provideMediaRef } = useWebRTC(roomID);
+  const [params, setParams] = useState({ audio: false, video: false });
+  const { clients, provideMediaRef } = useWebRTC(
+    roomID,
+    params.audio,
+    params.video
+  );
   const videoLayout = layout(clients.length);
+
+  const navigate = useNavigate();
 
   return (
     <div className="conference">
@@ -72,14 +79,23 @@ const Сonference = () => {
       </div>
       <div className="conference__controls">
         <div className="conference__controls-inner">
-          <button className="conference__controls-btn">
+          <button className="conference__controls-btn" onClick={() => setParams({...params, audio: !params.video})}>
             <img src={cameraRotate} alt="" />
           </button>
-          <button className="conference__controls-btn">
-            <img src={mute} alt="" />
-            {/* <img src={microphone} alt="" /> */}
+          <button
+            className="conference__controls-btn"
+            onClick={() => setParams({ ...params, audio: !params.audio })}
+          >
+            {params.audio ? (
+              <img src={mute} alt="" />
+            ) : (
+              <img src={microphone} alt="" />
+            )}
           </button>
-          <button className="conference__controls-btn red">
+          <button
+            className="conference__controls-btn red"
+            onClick={() => navigate(-1)}
+          >
             <img src={leave} alt="" />
           </button>
         </div>

@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket/index";
 
 import { useCurrentUserQuery } from "../../app/service/user";
+
+import callSound from "../../assets/audio/calls/call_sound.wav";
 
 import "./CallOfferModal.scss";
 
@@ -14,7 +16,16 @@ const CallOfferModal = () => {
   const [photo, setPhoto] = useState("");
   const [conferenceId, setConferenceId] = useState("");
 
+  const audio = useRef(null);
+
   const navigate = useNavigate();
+
+  const stopAudio = () => {
+    if (audio.current) {
+      audio.current.pause();
+      audio.current.currentTime = 0;
+    }
+  };
 
   useEffect(() => {
     socket.on(
@@ -26,17 +37,26 @@ const CallOfferModal = () => {
           setPhoto(photo);
           setConferenceId(conferenceId);
         }
+
+        if (audio.current) {
+          console.log(audio.current);
+
+          audio.current.volume = 0.4;
+          audio.current.play();
+        }
       }
     );
-  }, [user.isLoading]);
+  }, [user.isLoading, audio.current]);
 
   const onAccept = () => {
     navigate(`/conference/${conferenceId}`);
     setOpen(false);
+    stopAudio();
   };
 
   const onCancel = () => {
     setOpen(false);
+    stopAudio();
   };
 
   return (
@@ -103,6 +123,7 @@ const CallOfferModal = () => {
           </div>
         </div>
       </Modal>
+      <audio ref={audio} src={callSound} loop />
     </div>
   );
 };
