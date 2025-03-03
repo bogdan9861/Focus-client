@@ -170,6 +170,7 @@ button {
 
   .feed__post-img.feed__post-img--mix {
     border-radius: 0;
+    max-height: 100vh !important;
     height: 100vh !important;
   }
 }

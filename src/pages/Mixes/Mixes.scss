@@ -1,4 +1,18 @@
 .mixes {
+  &__burger {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    border: none;
+    box-shadow: 2px 3px 8px 2px #00000091;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+  }
+
   &__swiper {
   }
 
@@ -29,7 +43,7 @@
 
     padding: 10px;
 
-    transition: all .3s;
+    transition: all 0.3s;
 
     &:hover {
       background-color: #c4c4c4;

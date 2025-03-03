@@ -10,10 +10,12 @@ import { HumanizeDate } from "../../utils/HumanizeDate";
 import Loader from "../../components/loader/Loader";
 
 import "swiper/css";
+import "../../components/header/Header.scss";
 import "./Mixes.scss";
 
 const Mixes = () => {
   const [reversedData, setReversedData] = useState([]);
+  const [asideVisable, setAsideVisable] = useState(false);
 
   const user = useCurrentUserQuery();
   const videos = useGetVideosQuery();
@@ -46,8 +48,18 @@ const Mixes = () => {
 
   return (
     <div className="mixes">
-      <Aside open={true} />
+      <Aside
+        open={true}
+        visable={asideVisable}
+        setAsideVisable={setAsideVisable}
+      />
       <div className="wrapper" onWheel={onHandleWheel}>
+        <button className="mixes__burger" onClick={() => setAsideVisable(true)}>
+          <img
+            src="https://img.icons8.com/?size=100&id=3761&format=png&color=ffffff"
+            alt=""
+          />
+        </button>
         <Swiper
           onSwiper={setSwiper}
           className="mixes__swiper"
