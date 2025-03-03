@@ -105,6 +105,12 @@ export const PostsApi = api.injectEndpoints({
         body: { id },
       }),
     }),
+    getVideos: builder.query({
+      query: () => ({
+        url: `/posts/getVideoPosts`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -124,4 +130,5 @@ export const {
   useGetUserSavesMutation,
   useIsSavedMutation,
   useGetUserLikesMutation,
+  useGetVideosQuery,
 } = PostsApi;

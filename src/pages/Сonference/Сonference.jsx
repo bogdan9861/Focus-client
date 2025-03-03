@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,8 @@ import microphone from "../../assets/icons/microphone.svg";
 import cameraRotate from "../../assets/icons/CameraRotate.svg";
 
 import "./Сonference.scss";
+import { socket } from "../../socket";
+import ACTIONS from "../../actions";
 
 function layout(clientsNumber = 1) {
   const pairs = Array.from({ length: clientsNumber }).reduce(
@@ -48,14 +50,15 @@ function layout(clientsNumber = 1) {
 const Сonference = () => {
   const { id: roomID } = useParams();
   const [params, setParams] = useState({ audio: false, video: false });
-  const { clients, provideMediaRef } = useWebRTC(
-    roomID,
-    params.audio,
-    params.video
-  );
+  const { clients, provideMediaRef } = useWebRTC(roomID);
   const videoLayout = layout(clients.length);
 
   const navigate = useNavigate();
+
+  const onLeave = () => {
+    socket.emit(ACTIONS.LEAVE);
+    navigate(-1);
+  };
 
   return (
     <div className="conference">
@@ -79,7 +82,10 @@ const Сonference = () => {
       </div>
       <div className="conference__controls">
         <div className="conference__controls-inner">
-          <button className="conference__controls-btn" onClick={() => setParams({...params, audio: !params.video})}>
+          <button
+            className="conference__controls-btn"
+            onClick={() => setParams({ ...params, audio: !params.video })}
+          >
             <img src={cameraRotate} alt="" />
           </button>
           <button
@@ -92,10 +98,7 @@ const Сonference = () => {
               <img src={microphone} alt="" />
             )}
           </button>
-          <button
-            className="conference__controls-btn red"
-            onClick={() => navigate(-1)}
-          >
+          <button className="conference__controls-btn red" onClick={onLeave}>
             <img src={leave} alt="" />
           </button>
         </div>

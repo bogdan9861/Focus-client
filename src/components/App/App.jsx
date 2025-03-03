@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { useCurrentUserQuery } from "../../app/service/user";
@@ -10,11 +10,13 @@ import Register from "../../pages/Register/Register";
 import Chat from "../../pages/chat/Chat";
 import Conference from "../../pages/Сonference/Сonference";
 import CallOfferModal from "../CallOfferModal/CallOfferModal";
+import Mixes from "../../pages/Mixes/Mixes";
 
 import { socket } from "../../socket";
 
 const App = () => {
   const user = useCurrentUserQuery();
+  const path = window.location.pathname;
 
   useEffect(() => {
     if (!user.isLoading && user.data) {
@@ -32,6 +34,7 @@ const App = () => {
           <Route path="/register" Component={Register} />
           <Route path="/chat/:id" Component={Chat} />
           <Route path="/conference/:id" Component={Conference} />
+          <Route path="/mixes" Component={Mixes} />
         </Routes>
 
         <CallOfferModal />

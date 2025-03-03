@@ -57,6 +57,10 @@ button {
   .feed__inner {
     width: 95%;
   }
+
+  .mixes__swiper-arrows {
+    display: none;
+  }
 }
 
 @media (max-width: 770px) {
@@ -140,6 +144,33 @@ button {
   .profile__posts {
     width: 100%;
     margin-left: 0;
+  }
+
+  .feed-post__mix-controls {
+    right: 0;
+  }
+
+  .feed-post__mix-controls__btn {
+    background-color: #fff;
+  }
+
+  .feed-post__mix-controls__info {
+    color: #fff;
+  }
+
+  .mixes__swiper-slide {
+    width: 100%;
+    margin: 0;
+  }
+
+  .feed__post.feed__post--mix {
+    height: 100vh !important;
+    padding: 0;
+  }
+
+  .feed__post-img.feed__post-img--mix {
+    border-radius: 0;
+    height: 100vh !important;
   }
 }
 

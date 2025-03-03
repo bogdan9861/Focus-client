@@ -14,6 +14,7 @@ import home from "../../assets/icons/home.svg";
 import add from "../../assets/icons/add.svg";
 import profile from "../../assets/icons/profile.svg";
 import friends from "../../assets/icons/friends.svg";
+import mixes from "../../assets/icons/mixes.svg";
 
 import "./Aside.scss";
 
@@ -37,7 +38,7 @@ const Aside = ({
   const onLogout = useCallback(() => {
     localStorage.removeItem("token");
     dispatch(logout());
-    window.location.reload();
+    window.location.href = "/";
   });
 
   const handleResize = () => {
@@ -148,6 +149,12 @@ const Aside = ({
                   alt=""
                 />
                 <span className="menu__list-item__text">Сообщения</span>
+              </Link>
+            </li>
+            <li className="menu__list-item">
+              <Link className="menu__list-link" to={`/mixes`}>
+                <img className="menu__list-item__img" src={mixes} alt="" />
+                <span className="menu__list-item__text mixes">Mixes</span>
               </Link>
             </li>
           </ul>
