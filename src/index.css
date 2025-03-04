@@ -63,14 +63,118 @@ button {
   }
 }
 
+@media (max-width: 855px) {
+ .ant-modal.css-dev-only-do-not-override-1okl62o {
+  width: 80% !important;
+ }
+}
+
 @media (max-width: 770px) {
+  .header {
+    position: fixed;
+    top: 0;
+    z-index: 90;
+  }
+
+  .feed {
+    margin-top: 100px;
+  }
+
   .feed__post {
     padding: 12px 0 18px 0;
   }
 
   .aside {
-    transform: translateX(-100%);
     transition: all 0.3s;
+    width: 101%;
+    height: 50px;
+    bottom: 0;
+    top: auto;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+  }
+
+  .aside__inner {
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0 30px;
+  }
+
+  .menu {
+    width: 100%;
+  }
+
+  .menu__list {
+    width: 100%;
+  }
+
+  .menu__list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu__list-item {
+    padding-bottom: 0;
+  }
+
+  .menu__list-item:nth-child(1) {
+    order: 1;
+  }
+
+  .menu__list-item:nth-child(2) {
+    order: 3;
+  }
+
+  .menu__list-item:nth-child(3) {
+    order: 2;
+  }
+
+  .menu__list-item:nth-child(4) {
+    order: 6;
+  }
+
+  .menu__list-item:nth-child(5) {
+    display: none;
+  }
+
+  .menu__list-item:nth-child(6) {
+    order: 5;
+  }
+
+  .mixes__burger {
+    display: none;
+  }
+
+  .header__burger {
+    display: none;
+  }
+
+  .aside.aside--black {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .aside.aside--black .menu__list-link.profile svg path {
+    stroke: #fff;
+    fill: #fff;
+  }
+
+  .aside.aside--black .menu__list-link svg path {
+    stroke: #fff;
+  }
+
+  .aside.aside--black .menu__list-link svg circle {
+    /* stroke: #fff; */
+    fill: #fff;
+  }
+
+  .logo__wrapper {
+    display: none;
+  }
+
+  .aside__footer {
+    display: none;
   }
 
   .aside.aside--visable {
@@ -78,21 +182,19 @@ button {
   }
 
   .header {
-    margin-bottom: 0;
-  }
-
-  .header {
     width: 100%;
     margin-left: auto;
     padding: 0 15px;
+    margin-bottom: 0;
+  }
+
+  .header__profile {
+    justify-content: space-between;
+    width: 100%;
   }
 
   .header__stories {
     display: none;
-  }
-
-  .header__burger {
-    display: block;
   }
 
   .feed__inner {
@@ -124,8 +226,17 @@ button {
     display: none;
   }
 
+  .chat-body__form {
+    transform: translateY(0);
+    bottom: 8%;
+  }
+
   .chat-body__head-arrow {
     display: block;
+  }
+
+  .chat-body__messages {
+    padding-bottom: 50px;
   }
 
   .profile__wrapper {
@@ -133,8 +244,18 @@ button {
     margin-left: 0;
   }
 
+  .profile__content {
+    margin-left: 15px;
+  }
+
+  .profile__name {
+    margin-right: 0;
+  }
+
   .profile__posts-mods {
-    gap: 0 30px;
+    margin-bottom: 15px;
+    gap: 0;
+    justify-content: space-between;
   }
 
   .profile__posts-mods__btn {
@@ -147,11 +268,15 @@ button {
   }
 
   .feed-post__mix-controls {
-    right: 0;
+    right: -20px;
   }
 
   .feed-post__mix-controls__btn {
-    background-color: #fff;
+    background-color: transparent;
+  }
+
+  .feed-post__mix-controls__btn svg path {
+    fill: #fff;
   }
 
   .feed-post__mix-controls__info {
@@ -180,6 +305,10 @@ button {
     padding: 20px;
   }
 
+  .profile__wrapper {
+    align-items: start;
+  }
+
   .profile__inner {
     flex-direction: column;
   }
@@ -197,6 +326,12 @@ button {
     margin-left: 0;
   }
 
+  .profile__content-top {
+    align-items: start;
+    flex-direction: column;
+    gap: 15px 0;
+  }
+
   .profile__img {
     margin-bottom: 15px;
   }
@@ -211,10 +346,6 @@ button {
 }
 
 @media (max-width: 470px) {
-  .header__prfile-user {
-    display: none;
-  }
-
   .chat__aside {
     padding: 20px 10px;
   }
@@ -226,9 +357,48 @@ button {
   .profile__posts-mods__btn {
     font-size: 14px;
   }
+
+  .profile__statistics {
+    justify-content: center;
+  }
+
+  .chat-body__head-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chat-body__head-name {
+    font-size: 17px;
+  }
+
+  .chat-body__head-status {
+    font-size: 13px;
+  }
+
+  .chat-body__head-call {
+    width: 30px;
+    height: 30px;
+  }
+
+  .chat-body__messages {
+    margin-bottom: 10px;
+  }
+
+  .chat-body__form {
+    bottom: 3%;
+  }
 }
 
 @media (max-width: 390px) {
+  .header__profile-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .header__profile-info {
+    display: none;
+  }
+
   .chat__aside-item__img {
     width: 50px;
     height: 50px;

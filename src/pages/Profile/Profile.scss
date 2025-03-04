@@ -36,6 +36,11 @@
     margin-left: 50px;
   }
 
+  &__content-buttons {
+    display: flex;
+    gap: 0 10px;
+  }
+
   // .profile__content-top
 
   &__content-top {
@@ -151,6 +156,12 @@
   &__statistic-name {
     font-weight: 400;
     font-size: 16px;
+  }
+
+  &__info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px 0;
   }
 
   // .profile__info

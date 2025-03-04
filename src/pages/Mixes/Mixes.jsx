@@ -16,6 +16,7 @@ import "./Mixes.scss";
 const Mixes = () => {
   const [reversedData, setReversedData] = useState([]);
   const [asideVisable, setAsideVisable] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   const user = useCurrentUserQuery();
   const videos = useGetVideosQuery();
@@ -42,6 +43,11 @@ const Mixes = () => {
     }
   };
 
+  const handleSwiperLoad = (swiper) => {
+    setSwiper(swiper);
+    setCurrentIndex(swiper.activeIndex);
+  };
+
   if (videos.isLoading || !reversedData) {
     return <Loader />;
   }
@@ -49,6 +55,7 @@ const Mixes = () => {
   return (
     <div className="mixes">
       <Aside
+        black={true}
         open={true}
         visable={asideVisable}
         setAsideVisable={setAsideVisable}
@@ -61,14 +68,17 @@ const Mixes = () => {
           />
         </button>
         <Swiper
-          onSwiper={setSwiper}
+          onSwiper={handleSwiperLoad}
           className="mixes__swiper"
           direction={"vertical"}
           mousewheel={{ enabled: false }}
+          onSlideChange={(slide) => setCurrentIndex(slide.activeIndex)}
         >
-          {reversedData.map((post) => (
+          {reversedData.map((post, i) => (
             <SwiperSlide className="mixes__swiper-slide">
               <Post
+                isCurrent={currentIndex === i}
+                currentIndex={currentIndex}
                 height={"95vh"}
                 isMix
                 key={post?.id}

@@ -74,7 +74,7 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
       title={"Создание публикации"}
       open={oppen}
       onCancel={onCancel}
-      width={"40%"}
+      width={"50%"}
     >
       <div
         className="postModal"

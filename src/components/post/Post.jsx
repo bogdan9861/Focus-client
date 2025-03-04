@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../feed/Feed.scss";
 import {
   useIsLikedMutation,
@@ -33,6 +33,8 @@ export const Post = ({
   height,
   date,
   isMix = false,
+  isCurrent,
+  currentIndex,
 }) => {
   const [doLike] = useLikeMutation();
   const [doUnlike] = useUnlikeMutation();
@@ -53,6 +55,8 @@ export const Post = ({
   const [PohotoViewOpen, setPhotoViewOpen] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
+
+  const video = useRef(null);
 
   const openNotification = ({ duration, description }) => {
     api.open({
@@ -193,6 +197,31 @@ export const Post = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (!video.current || !isMix) return;
+
+    const videos = document.querySelectorAll(
+      ".feed__post-img.feed__post-img--mix"
+    );
+
+    if (isCurrent) {
+      videos[currentIndex - 1]?.pause();
+      videos[currentIndex + 1]?.pause();
+      video.current.play();
+      video.current.muted = false;
+    }
+  }, [video, isCurrent]);
+
+  const onPause = (e) => {
+    const video = e.target;
+
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  };
+
   return (
     <div
       className={`feed__post ${isMix && "feed__post--mix"}`}
@@ -259,6 +288,7 @@ export const Post = ({
               </h1>
               {url.split(".")[1] === "mp4" ? (
                 <video
+                  ref={video}
                   src={url}
                   playsInline
                   controls
@@ -286,13 +316,17 @@ export const Post = ({
         </div>
       )}
 
-      {url.indexOf(".mp4") > 0 ? (
+      {url.indexOf(".mp4") > 0 ||
+      url.indexOf(".MP4") > 0 ||
+      url.indexOf(".mov") > 0 ? (
         <div className="feed__post-video__wrapper">
           <video
+            onClick={onPause}
+            ref={video}
             className={`feed__post-img ${isMix && "feed__post-img--mix"}`}
             src={url}
             controls={!isMix}
-            autoPlay
+            autoPlay={!isMix}
             playsInline
             muted
             loop={isMix}
@@ -406,22 +440,16 @@ export const Post = ({
               {commentsCount}
             </span>
             <button
-              className="feed-post__mix-controls__btn"
+              className={`feed-post__mix-controls__btn ${
+                isSavedLocal && "feed-post__mix-controls__btn--saved"
+              }`}
               onClick={() => (!isSavedLocal ? onSave() : unSave())}
             >
-              {!isSavedLocal ? (
-                <img
-                  style={{ width: 24, height: 24 }}
-                  src="https://img.icons8.com/?size=100&id=83134&format=png&color=000000"
-                  alt=""
-                />
-              ) : (
-                <img
-                  style={{ width: 24, height: 24 }}
-                  src="https://img.icons8.com/?size=100&id=83134&format=png&color=CF0C0C"
-                  alt=""
-                />
-              )}
+              <svg width="25px" height="23px" viewBox="0 0 24 24" version="1.1">
+                <g id="Icon">
+                  <path d="M19.75,4.042c0,-0.739 -0.288,-1.447 -0.8,-1.969c-0.517,-0.528 -1.219,-0.823 -1.95,-0.823l-10,0c-0.731,0 -1.433,0.295 -1.95,0.823c-0.512,0.522 -0.8,1.23 -0.8,1.969c0,3.853 -0,12.951 0,16.937c-0,0.692 0.398,1.318 1.013,1.606c0.625,0.294 1.36,0.19 1.882,-0.266l4.698,-4.112c0.09,-0.079 0.224,-0.079 0.314,0l4.698,4.112c0.522,0.456 1.257,0.56 1.882,0.266c0.615,-0.288 1.013,-0.914 1.013,-1.606l-0,-16.937Z"></path>
+                </g>
+              </svg>
             </button>
           </div>
           <MixComments id={id} />

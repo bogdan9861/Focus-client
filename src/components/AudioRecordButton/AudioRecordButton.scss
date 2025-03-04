@@ -18,6 +18,9 @@
     position: relative;
     z-index: 10;
     pointer-events: none;
+    object-fit: contain;
+    width: 23px;
+    height: 25px;
   }
 }
 

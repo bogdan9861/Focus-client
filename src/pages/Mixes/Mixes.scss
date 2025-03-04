@@ -57,6 +57,14 @@
   }
 }
 
+.feed-post__mix-controls__btn.feed-post__mix-controls__btn--saved svg path {
+  fill: rgb(219, 247, 62);
+}
+
+.feed__post-statistic-btn.feed__post-statistic-btn--liked svg path {
+  fill: rgb(255, 0, 0);
+}
+
 .wrapper {
   display: flex;
   justify-content: center;

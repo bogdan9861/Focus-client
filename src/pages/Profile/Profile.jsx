@@ -193,57 +193,47 @@ const Profile = () => {
               <Loader />
             ) : (
               <>
-                <img
-                  className="profile__img viewer"
-                  src={setPhoto(user?.photo)}
-                  alt=""
-                />
-                <div className="profile__content">
+                <div className="profile__img-wrapper">
+                  <img
+                    className="profile__img viewer"
+                    src={setPhoto(user?.photo)}
+                    alt=""
+                  />
                   <div className="profile__content-top">
                     <span className="profile__name">
                       {user?.nickname || user?.name}
                     </span>
+                    <div className="profile__content-buttons">
+                      {current.data.id !== id ? (
+                        user.followed ? (
+                          <button
+                            className="profile__content-btn grey"
+                            onClick={() => onUnsub()}
+                          >
+                            отписаться
+                          </button>
+                        ) : (
+                          <button
+                            className="profile__content-btn blue"
+                            onClick={() => onFollow()}
+                          >
+                            подписаться
+                          </button>
+                        )
+                      ) : null}
 
-                    {current.data.id === id ? (
-                      <div className="profile__content-btns">
-                        <button
-                          className="profile__content-subscribe"
-                          onClick={() => setOppenUpdateModal(true)}
-                        >
-                          Редактировать
-                        </button>
-                        <a className="profile__content-settings" href="#">
-                          <img src={settings} alt="" />
-                        </a>
-                      </div>
-                    ) : null}
-                    {current.data.id !== id ? (
-                      user.followed ? (
+                      {current.data.id != id ? (
                         <button
                           className="profile__content-btn grey"
-                          onClick={() => onUnsub()}
+                          onClick={goToChat}
                         >
-                          отписаться
+                          Сообщение
                         </button>
-                      ) : (
-                        <button
-                          className="profile__content-btn blue"
-                          onClick={() => onFollow()}
-                        >
-                          подписаться
-                        </button>
-                      )
-                    ) : null}
-
-                    {current.data.id != id ? (
-                      <button
-                        className="profile__content-btn grey"
-                        onClick={goToChat}
-                      >
-                        Сообщение
-                      </button>
-                    ) : null}
+                      ) : null}
+                    </div>
                   </div>
+                </div>
+                <div className="profile__content">
                   <div className="profile__statistics">
                     <div className="profile__statistic">
                       <span className="profile__statistic-count">
