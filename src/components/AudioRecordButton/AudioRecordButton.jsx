@@ -7,7 +7,6 @@ import {
   setStarted,
   setPassedDistance,
 } from "../../features/audioLock";
-import { setStatus } from "../../features/chat";
 
 import "./AudioRecordButton.scss";
 
@@ -96,11 +95,9 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
   };
 
   const stopRecording = (e) => {
-    if (e.button !== 0) return;
-
     dispatch(setStarted(false));
-    dispatch(setStatus(""));
     dispatch(setLocked(false));
+    changeStatus("");
 
     audioBtn.current.classList.remove("audioBtn--active");
     audioBtn.current.classList.remove("audioBtn--locked");

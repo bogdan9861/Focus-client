@@ -55,9 +55,7 @@ const Form = ({
 
   useEffect(() => {
     socket.on("get-status", ({ status, writerId }) => {
-      if (currentChatUserId === writerId) {
-        dispatch(setStatus(status));
-      }
+      dispatch(setStatus(status));
     });
 
     return () => {
@@ -66,7 +64,11 @@ const Form = ({
   }, [currentChatUserId]);
 
   const changeStatus = (status) => {
-    socket.emit("send-status", chatSelector?.id, id, status);
+    const reciverId = chatSelector?.users
+      .filter(({ user }) => user.id !== id)
+      .pop().userId;
+
+    socket.emit("send-status", id, reciverId, status);
   };
 
   useEffect(() => {
