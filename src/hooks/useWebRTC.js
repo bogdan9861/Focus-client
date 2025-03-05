@@ -1,26 +1,24 @@
-import { useEffect, useRef, useCallback } from "react";
-import freeice from "freeice";
-import useStateWithCallback from "./useStateWithCallback";
-import ACTIONS from "../actions";
-import { socket } from "../socket/index";
+import {useEffect, useRef, useCallback} from 'react';
+import freeice from 'freeice';
+import useStateWithCallback from './useStateWithCallback';
+import socket from '../socket';
+import ACTIONS from '../socket/actions';
 
-export const LOCAL_VIDEO = "LOCAL_VIDEO";
+export const LOCAL_VIDEO = 'LOCAL_VIDEO';
+
 
 export default function useWebRTC(roomID) {
   const [clients, updateClients] = useStateWithCallback([]);
 
-  const addNewClient = useCallback(
-    (newClient, cb) => {
-      updateClients((list) => {
-        if (!list.includes(newClient)) {
-          return [...list, newClient];
-        }
+  const addNewClient = useCallback((newClient, cb) => {
+    updateClients(list => {
+      if (!list.includes(newClient)) {
+        return [...list, newClient]
+      }
 
-        return list;
-      }, cb);
-    },
-    [clients, updateClients]
-  );
+      return list;
+    }, cb);
+  }, [clients, updateClients]);
 
   const peerConnections = useRef({});
   const localMediaStream = useRef(null);
@@ -29,7 +27,7 @@ export default function useWebRTC(roomID) {
   });
 
   useEffect(() => {
-    async function handleNewPeer({ peerID, createOffer }) {
+    async function handleNewPeer({peerID, createOffer}) {
       if (peerID in peerConnections.current) {
         return console.warn(`Already connected to peer ${peerID}`);
       }
@@ -38,23 +36,20 @@ export default function useWebRTC(roomID) {
         iceServers: freeice(),
       });
 
-      peerConnections.current[peerID].onicecandidate = (event) => {
+      peerConnections.current[peerID].onicecandidate = event => {
         if (event.candidate) {
           socket.emit(ACTIONS.RELAY_ICE, {
             peerID,
             iceCandidate: event.candidate,
           });
         }
-      };
+      }
 
       let tracksNumber = 0;
-      peerConnections.current[peerID].ontrack = ({
-        streams: [remoteStream],
-      }) => {
-        tracksNumber++;
+      peerConnections.current[peerID].ontrack = ({streams: [remoteStream]}) => {
+        tracksNumber++
 
-        if (tracksNumber === 2) {
-          // video & audio tracks received
+        if (tracksNumber === 2) { // video & audio tracks received
           tracksNumber = 0;
           addNewClient(peerID, () => {
             if (peerMediaElements.current[peerID]) {
@@ -75,13 +70,10 @@ export default function useWebRTC(roomID) {
             }
           });
         }
-      };
+      }
 
-      localMediaStream.current.getTracks().forEach((track) => {
-        peerConnections.current[peerID].addTrack(
-          track,
-          localMediaStream.current
-        );
+      localMediaStream.current.getTracks().forEach(track => {
+        peerConnections.current[peerID].addTrack(track, localMediaStream.current);
       });
 
       if (createOffer) {
@@ -100,19 +92,16 @@ export default function useWebRTC(roomID) {
 
     return () => {
       socket.off(ACTIONS.ADD_PEER);
-    };
+    }
   }, []);
 
   useEffect(() => {
-    async function setRemoteMedia({
-      peerID,
-      sessionDescription: remoteDescription,
-    }) {
+    async function setRemoteMedia({peerID, sessionDescription: remoteDescription}) {
       await peerConnections.current[peerID]?.setRemoteDescription(
         new RTCSessionDescription(remoteDescription)
       );
 
-      if (remoteDescription.type === "offer") {
+      if (remoteDescription.type === 'offer') {
         const answer = await peerConnections.current[peerID].createAnswer();
 
         await peerConnections.current[peerID].setLocalDescription(answer);
@@ -124,15 +113,15 @@ export default function useWebRTC(roomID) {
       }
     }
 
-    socket.on(ACTIONS.SESSION_DESCRIPTION, setRemoteMedia);
+    socket.on(ACTIONS.SESSION_DESCRIPTION, setRemoteMedia)
 
     return () => {
       socket.off(ACTIONS.SESSION_DESCRIPTION);
-    };
+    }
   }, []);
 
   useEffect(() => {
-    socket.on(ACTIONS.ICE_CANDIDATE, ({ peerID, iceCandidate }) => {
+    socket.on(ACTIONS.ICE_CANDIDATE, ({peerID, iceCandidate}) => {
       peerConnections.current[peerID]?.addIceCandidate(
         new RTCIceCandidate(iceCandidate)
       );
@@ -140,11 +129,11 @@ export default function useWebRTC(roomID) {
 
     return () => {
       socket.off(ACTIONS.ICE_CANDIDATE);
-    };
+    }
   }, []);
 
   useEffect(() => {
-    const handleRemovePeer = ({ peerID }) => {
+    const handleRemovePeer = ({peerID}) => {
       if (peerConnections.current[peerID]) {
         peerConnections.current[peerID].close();
       }
@@ -152,14 +141,14 @@ export default function useWebRTC(roomID) {
       delete peerConnections.current[peerID];
       delete peerMediaElements.current[peerID];
 
-      updateClients((list) => list.filter((c) => c !== peerID));
+      updateClients(list => list.filter(c => c !== peerID));
     };
 
     socket.on(ACTIONS.REMOVE_PEER, handleRemovePeer);
 
     return () => {
       socket.off(ACTIONS.REMOVE_PEER);
-    };
+    }
   }, []);
 
   useEffect(() => {
@@ -169,7 +158,7 @@ export default function useWebRTC(roomID) {
         video: {
           width: 1280,
           height: 720,
-        },
+        }
       });
 
       addNewClient(LOCAL_VIDEO, () => {
@@ -183,11 +172,11 @@ export default function useWebRTC(roomID) {
     }
 
     startCapture()
-      .then(() => socket.emit(ACTIONS.JOIN, { room: roomID }))
-      .catch((e) => console.error("Error getting userMedia:", e));
+      .then(() => socket.emit(ACTIONS.JOIN, {room: roomID}))
+      .catch(e => console.error('Error getting userMedia:', e));
 
     return () => {
-      localMediaStream.current.getTracks().forEach((track) => track.stop());
+      localMediaStream.current.getTracks().forEach(track => track.stop());
 
       socket.emit(ACTIONS.LEAVE);
     };
@@ -199,6 +188,6 @@ export default function useWebRTC(roomID) {
 
   return {
     clients,
-    provideMediaRef,
+    provideMediaRef
   };
 }

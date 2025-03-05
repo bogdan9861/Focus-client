@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
-const useStateWithCB = (initialState) => {
+const useStateWithCallback = (initialState) => {
   const [state, setState] = useState(initialState);
   const cbRef = useRef(null);
 
@@ -22,4 +22,4 @@ const useStateWithCB = (initialState) => {
   return [state, updateState];
 };
 
-export default useStateWithCB;
+export default useStateWithCallback;
