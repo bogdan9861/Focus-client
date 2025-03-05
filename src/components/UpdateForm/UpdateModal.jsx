@@ -10,6 +10,7 @@ import {
 import { toProxyPath } from "../../utils/toProxyPath";
 import noPhoto from "../../assets/images/no-photo.png";
 import "./UpdateModal.scss";
+import { setPhoto } from "../../utils/setPhoto";
 
 const UpdateModal = ({ data, oppen, onCancel, setOppenModal }) => {
   const [url, setUrl] = useState("");
@@ -56,8 +57,6 @@ const UpdateModal = ({ data, oppen, onCancel, setOppenModal }) => {
           description: "Слишком большой размер изображения",
         });
       }
-
-      console.log(error);
     }
   };
 
@@ -66,11 +65,7 @@ const UpdateModal = ({ data, oppen, onCancel, setOppenModal }) => {
       {contextHolder}
       <div className="update">
         <div className="update__profile">
-          <img
-            className="update__img"
-            src={url || (data?.photo && toProxyPath(data?.photo)) || noPhoto}
-            alt=""
-          />
+          <img className="update__img" src={setPhoto(data?.photo)} alt="" />
           <div className="update__profile-content">
             <span className="update__profile-name">{data?.name}</span>
             <span className="update__profile-nickName">{data?.nickname}</span>
