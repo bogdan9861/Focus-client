@@ -1,0 +1,16 @@
+.chatmembers__btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: none;
+  background-color: #4366ff;
+  font-size: 25px;
+  color: #fff;
+
+  transition: all .3s;
+
+  &:hover{
+    transform: scale(1.1);
+    background-color: #3250d6;
+  }
+}

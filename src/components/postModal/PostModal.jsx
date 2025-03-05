@@ -88,7 +88,8 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
             {url ? (
               <>
                 <div className="postModal__preview-wrapper">
-                  {url?.split(";")[0].split("/")[1] === "mp4" ? (
+                  {url?.split(";")[0].split("/")[1] === "mp4" ||
+                  url?.split(";")[0].split("/")[1] === "mov" ? (
                     <video
                       ref={videoPlayer}
                       style={{ maxWidth: "100%" }}
@@ -146,6 +147,7 @@ const PostModal = ({ oppen, onCancel, setOppenModal }) => {
                   />
                 </div>
                 <FileInput
+                accept=".mp4, .jpg, .png, .svg"
                   width={"auto"}
                   setFormData={setFormData}
                   setUrl={setUrl}

@@ -23,6 +23,7 @@ import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
 import { setPhoto } from "../../utils/setPhoto";
 
 import "./Chat.scss";
+import { Button } from "antd";
 
 const Chat = () => {
   const { state } = useLocation();
@@ -183,6 +184,7 @@ const Chat = () => {
                     />
 
                     <ChatMembersModal
+                      chatId={chatSelector?.id}
                       open={membersOpen}
                       setOpen={setMembersOpen}
                       users={chatSelector?.users}

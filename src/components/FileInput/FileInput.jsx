@@ -11,6 +11,7 @@ const FileInput = ({
   width,
   setFile,
   multiple,
+  accept,
 }) => {
   const fileReader = new FileReader();
 
@@ -38,9 +39,9 @@ const FileInput = ({
     <div style={{ width }}>
       <label className={`${label && !children ? "update__profile-label" : ""}`}>
         {label}
-
         <input
           type="file"
+          accept={accept}
           style={{ display: "none" }}
           onChange={(e) => handleChange(e)}
         />

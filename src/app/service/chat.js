@@ -57,6 +57,20 @@ export const ChatApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    addUserToChat: builder.mutation({
+      query: (data) => ({
+        url: `/chats/addUser`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    removeUserFromChat: builder.mutation({
+      query: (data) => ({
+        url: `/chats/removeUser`,
+        body: data,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -70,4 +84,6 @@ export const {
   useGetChatByRecipientIdMutation,
   useSendVoiceMutation,
   useSendFileMutation,
+  useAddUserToChatMutation,
+  useRemoveUserFromChatMutation,
 } = ChatApi;

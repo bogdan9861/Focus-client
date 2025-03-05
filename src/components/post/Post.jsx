@@ -329,7 +329,7 @@ export const Post = ({
             autoPlay={!isMix}
             playsInline
             muted
-            loop={isMix}
+            loop
             style={{ height, maxHeight: height, marginBottom: !isMix && 20 }}
           ></video>
           {isMix && (

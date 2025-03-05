@@ -34,6 +34,7 @@ import "./Profile.scss";
 import Loader from "../../components/loader/Loader";
 import UsersModal from "../../components/UsersModal/UsersModal";
 import { setPhoto } from "../../utils/setPhoto";
+import { HumanizeDate } from "../../utils/HumanizeDate";
 
 const Profile = () => {
   const { id } = useParams();
@@ -203,37 +204,36 @@ const Profile = () => {
                     <span className="profile__name">
                       {user?.nickname || user?.name}
                     </span>
-                    <div className="profile__content-buttons">
-                      {current.data.id !== id ? (
-                        user.followed ? (
-                          <button
-                            className="profile__content-btn grey"
-                            onClick={() => onUnsub()}
-                          >
-                            отписаться
-                          </button>
-                        ) : (
-                          <button
-                            className="profile__content-btn blue"
-                            onClick={() => onFollow()}
-                          >
-                            подписаться
-                          </button>
-                        )
-                      ) : null}
-
-                      {current.data.id != id ? (
-                        <button
-                          className="profile__content-btn grey"
-                          onClick={goToChat}
-                        >
-                          Сообщение
-                        </button>
-                      ) : null}
-                    </div>
                   </div>
                 </div>
                 <div className="profile__content">
+                  <div className="profile__content-buttons">
+                    {current.data.id !== id ? (
+                      user.followed ? (
+                        <button
+                          className="profile__content-btn grey"
+                          onClick={() => onUnsub()}
+                        >
+                          отписаться
+                        </button>
+                      ) : (
+                        <button
+                          className="profile__content-btn blue"
+                          onClick={() => onFollow()}
+                        >
+                          подписаться
+                        </button>
+                      )
+                    ) : null}
+                    {current.data.id != id ? (
+                      <button
+                        className="profile__content-btn grey"
+                        onClick={goToChat}
+                      >
+                        Сообщение
+                      </button>
+                    ) : null}
+                  </div>
                   <div className="profile__statistics">
                     <div className="profile__statistic">
                       <span className="profile__statistic-count">
@@ -265,7 +265,20 @@ const Profile = () => {
                     </div>
                   </div>
                   <div className="profile__info">
-                    <span className="profile__info-name">{user?.name}</span>
+                    <div className="profile__info-name__wrapper">
+                      <span className="profile__info-name">{user?.name}</span>
+                      {current.data.id === id ? (
+                        <div className="profile__content-settings">
+                          <img
+                            className="profile__info-edit"
+                            src={settings}
+                            alt=""
+                            onClick={() => setOppenUpdateModal(true)}
+                          />
+                        </div>
+                      ) : null}
+                    </div>
+
                     <span className="profile__info-about">{user?.about}</span>
                     <p className="profile__info-status">{user?.status}</p>
                   </div>
@@ -409,6 +422,7 @@ const Profile = () => {
                           self={current.data.id === post?.userId}
                           likes={post?.likesCount}
                           status={post?.status}
+                          date={HumanizeDate(post?.publishedAt)}
                         />
                       );
                     })
@@ -429,7 +443,7 @@ const Profile = () => {
       />
 
       <UsersModal
-        title="Ваши подписки"
+        title="Подписки"
         open={followsOpen}
         setOpen={setFollowsOpen}
         data={follows.data}

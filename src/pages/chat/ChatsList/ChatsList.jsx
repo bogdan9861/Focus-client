@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { toProxyPath } from "../../../utils/toProxyPath";
+import { ReduceString } from "../../../utils/ReduceString";
 import { selectChats } from "../../../features/chat";
 import {
   useGetChatByIdMutation,
@@ -137,7 +137,7 @@ const ChatsList = ({
                   <div className="chat__aside-item__content">
                     <span className="chat__aside-item__name">{chat?.name}</span>
                     <p className="chat__aside-item__message">
-                      {chat?.lastMessage}
+                      {ReduceString(chat?.lastMessage, 40)}
                     </p>
                   </div>
                 </>
@@ -156,7 +156,7 @@ const ChatsList = ({
                           {user.nickname}
                         </span>
                         <p className="chat__aside-item__message">
-                          {chat?.lastMessage}
+                          {ReduceString(chat?.lastMessage, 40)}
                         </p>
                       </div>
                     </>

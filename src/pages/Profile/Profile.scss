@@ -1,6 +1,6 @@
 .profile {
   &__burger {
-    margin: 10px 0 0 10px
+    margin: 10px 0 0 10px;
   }
 
   &__wrapper {
@@ -39,6 +39,7 @@
   &__content-buttons {
     display: flex;
     gap: 0 10px;
+    margin-bottom: 20px;
   }
 
   // .profile__content-top
@@ -116,10 +117,15 @@
     height: 24px;
     transform: rotateY(0deg);
     transition: transform 0.3s;
+    cursor: pointer;
 
     &:hover {
       transform: rotateZ(90deg);
     }
+  }
+
+  &__info-edit {
+
   }
 
   // .profile__statistics
@@ -163,6 +169,14 @@
     flex-direction: column;
     gap: 15px 0;
   }
+
+  &__info-name__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+  }
+
+
 
   // .profile__info
 

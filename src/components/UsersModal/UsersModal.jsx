@@ -8,10 +8,18 @@ import Loader from "../loader/Loader";
 import "./UsersModal.scss";
 
 import noPhoto from "../../assets/images/no-photo.png";
+import { useAddUserToChatMutation } from "../../app/service/chat";
 
-const UsersModal = ({ data, title, open, setOpen, isLoading }) => {
-  const users = useGetAllQuery();
-  const [isFollowed] = useFollowMutation();
+const UsersModal = ({
+  data,
+  title,
+  open,
+  setOpen,
+  isLoading,
+  chatId,
+  addUsers = false,
+}) => {
+  const [addUser] = useAddUserToChatMutation();
 
   const setPhoto = (url) => {
     if (url) {
@@ -19,6 +27,13 @@ const UsersModal = ({ data, title, open, setOpen, isLoading }) => {
     } else {
       return noPhoto;
     }
+  }; 
+
+  const addUserToChat = async (e, id) => {
+    try {
+      await addUser({ chatId, userId: id }).unwrap();
+      e.target.style.display = "none";
+    } catch (error) {}
   };
 
   return (
@@ -26,7 +41,7 @@ const UsersModal = ({ data, title, open, setOpen, isLoading }) => {
       {!isLoading ? (
         <ul className="users__list">
           {data?.map((user) => (
-            <li className="users__list-item" onClick={() => setOpen(false)}>
+            <li className="users__list-item" onClick={() => !addUser && setOpen(false)}>
               <Link className="users__list-inner" to={`/profile/${user?.id}`}>
                 <img
                   className="users__list-img"
@@ -38,7 +53,15 @@ const UsersModal = ({ data, title, open, setOpen, isLoading }) => {
                   <span className="users__list-name">{user?.name}</span>
                 </div>
               </Link>
-              <button className="users__list-btn">Удалить</button>
+              {addUsers && (
+                <button
+                  onClick={(e) => addUserToChat(e, user.id)}
+                  className="chatmembers__btn"
+                  style={{ width: 30, height: 30 }}
+                >
+                  +
+                </button>
+              )}
             </li>
           ))}
         </ul>

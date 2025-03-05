@@ -23,13 +23,16 @@ const FileMessage = ({ path, self }) => {
       }
     }
 
+    console.log(path);
+    
+
     extensionArr.forEach((letter) => {
       extension += letter;
     });
 
     setExtension(extension);
     setFileName(path.split("\\").pop());
-  }, [fileName]);
+  }, [path]);
 
   const defineTypeByExtension = () => {
     let type = "";
