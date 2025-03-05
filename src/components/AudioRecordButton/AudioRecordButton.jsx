@@ -57,11 +57,13 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
       if (Y < start - gapToLock) {
         dispatch(setLocked(true));
 
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("touchmove", handleMouseMove);
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("touchmove", handleMouseMove);
       }
     };
-    window.addEventListener(touch ? "touchmove" : "mousemove", handleMouseMove);
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleMouseMove);
 
     startRecording();
   };
@@ -101,6 +103,7 @@ const AudioRecordButton = ({ sendMessage, chatId, changeStatus }) => {
     dispatch(setLocked(false));
 
     audioBtn.current.classList.remove("audioBtn--active");
+    audioBtn.current.classList.remove("audioBtn--locked");
 
     if (mediaRecorder.current && mediaRecorder.current.state === "recording") {
       mediaRecorder.current.stop();
