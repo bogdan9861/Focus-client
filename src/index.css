@@ -87,7 +87,7 @@ button {
   .aside {
     transition: all 0.3s;
     width: 101%;
-    height: 90px;
+    height: 70px;
     bottom: 0;
     top: auto;
     justify-content: center;
