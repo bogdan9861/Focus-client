@@ -82,16 +82,10 @@ const Сonference = () => {
       </div>
       <div className="conference__controls">
         <div className="conference__controls-inner">
-          <button
-            className="conference__controls-btn"
-            onClick={() => setParams({ ...params, audio: !params.video })}
-          >
+          <button className="conference__controls-btn">
             <img src={cameraRotate} alt="" />
           </button>
-          <button
-            className="conference__controls-btn"
-            onClick={() => setParams({ ...params, audio: !params.audio })}
-          >
+          <button className="conference__controls-btn">
             {params.audio ? (
               <img src={mute} alt="" />
             ) : (
