@@ -104,9 +104,9 @@ const Form = ({
     socket.on(
       "recive-message",
       ({ room, message, time, reciverId, userId, audio, file }) => {
-
+        if (room === chatSelector.id) {
           dispatch(sendMessageAction({ message, time, userId, audio, file }));
-
+        }
       }
     );
 
