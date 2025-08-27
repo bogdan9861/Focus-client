@@ -86,6 +86,8 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    if (!chatSelector || !chatSelector?.users) return;
+    
     let chatUser = chatSelector?.users?.find(prev => prev.userId !== id);
 
     console.log(chatUser);
