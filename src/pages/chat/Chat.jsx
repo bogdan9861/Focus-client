@@ -88,6 +88,10 @@ const Chat = () => {
   useEffect(() => {
     let chatUser = chatSelector?.users?.find(prev => prev.userId !== id);
 
+    console.log(chatUser);
+    console.log(chatSelector?.users);
+    
+      
     setCurrentChatUserId(chatUser.userId);
     dispatch(setStatus(""));
   }, [chatSelector]);
