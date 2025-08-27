@@ -86,13 +86,9 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    let chatUserId;
+    let chatUser = chatSelector?.users?.find(prev => prev.userId !== id);
 
-    chatSelector?.users?.forEach(({ user }) => {
-      chatUserId = user.id !== id && user.id;
-    });
-
-    setCurrentChatUserId(chatUserId);
+    setCurrentChatUserId(chatUser.userId);
     dispatch(setStatus(""));
   }, [chatSelector]);
 
