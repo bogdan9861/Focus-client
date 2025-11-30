@@ -22,7 +22,7 @@ const Login = () => {
       await loginUser(data).unwrap();
       navigate("/");
     } catch (error) {
-      if (error.data.message) {
+      if (error?.data?.message) {
         setError(error.data.message);
       } else {
         setError(error);

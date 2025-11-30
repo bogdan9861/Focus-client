@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { socket } from "../../socket/index";
 
 import { useGetUserByIDQuery } from "../../app/service/user";
-import { useGetChatByRecipientIdMutation } from "../../app/service/chat";
+import {
+  useCreateChatMutation,
+  useGetChatByRecipientIdMutation,
+} from "../../app/service/chat";
 
 import { setStatus } from "../../features/chat";
 import { selectChat, selectHistory, closeChat } from "../../features/chat";
@@ -20,7 +23,7 @@ import Form from "./Form/Form";
 import ChatsList from "./ChatsList/ChatsList";
 
 import PhotoViewer from "../../components/PhotoViewer/PhotoViewer";
-import { setPhoto } from "../../utils/setPhoto";
+import noPhoto from "../../assets/images/no-photo.png";
 
 import "./Chat.scss";
 import { Button } from "antd";
@@ -30,10 +33,13 @@ const Chat = () => {
   const { id } = useParams();
 
   const openedUser = useGetUserByIDQuery(state?.recipientId);
-  const [doGetRecipientChat] = useGetChatByRecipientIdMutation();
+  const [doGetOrCreateChat] = useCreateChatMutation();
 
   const chatSelector = useSelector(selectChat);
   const historySelector = useSelector(selectHistory);
+
+  console.log("historySelector  ====>", historySelector);
+
   const [canWrite, setCanWrite] = useState(false);
   const [historyScrollData, setHistoryScrollData] = useState({
     current: 0,
@@ -70,7 +76,8 @@ const Chat = () => {
     if (openedUser?.data?.id) {
       const getRecipientHistory = async () => {
         try {
-          await doGetRecipientChat(openedUser?.data?.id);
+          const res = await doGetOrCreateChat([openedUser?.data?.id]).unwrap();
+          console.log(res);
         } catch (error) {
           console.log(error);
         }
@@ -164,7 +171,7 @@ const Chat = () => {
                       <HeadInfo
                         id={user.id}
                         name={user.name}
-                        photo={setPhoto(user.photo)}
+                        photo={user.photo || noPhoto}
                         status={status}
                         chat={chatSelector}
                         link={`/profile/${user.id}`}
@@ -179,7 +186,7 @@ const Chat = () => {
                       func={() => setMembersOpen(true)}
                       membersCount={chatSelector?.users.length}
                       name={chatSelector?.name}
-                      photo={setPhoto(chatSelector?.photo)}
+                      photo={chatSelector?.photo}
                       status={status}
                     />
 
@@ -195,7 +202,7 @@ const Chat = () => {
                     id={openedUser.data.id}
                     chat={chatSelector}
                     name={openedUser.data.nickname}
-                    photo={setPhoto(openedUser.data.photo)}
+                    photo={openedUser.data.photo}
                     status={status}
                     link={`/profile/${openedUser.data.id}`}
                   />
@@ -218,32 +225,34 @@ const Chat = () => {
                   });
                 }}
               >
-                {historySelector?.map((el, i) => {
+                {historySelector?.data?.map((message, i) => {
                   return (
                     <>
                       <li
                         className={`chat-body__message fallDown ${
-                          el?.file ? "file" : ""
-                        } ${el.userId === id ? "self" : ""}`}
+                          message?.file ? "file" : ""
+                        } ${message.userId === id ? "self" : ""}`}
                         key={i}
                       >
-                        {el?.file ? (
+                        {message?.file ? (
                           <FileMessage
-                            self={el.userId === id}
-                            path={el?.file}
+                            self={message.userId === id}
+                            path={message?.file}
                           />
-                        ) : el?.audio ? (
+                        ) : message?.audio ? (
                           <AudioMessageBtn
-                            self={el.userId === id}
-                            url={el.audio}
+                            self={message.userId === id}
+                            url={message.audio}
                           />
                         ) : (
                           <p className="chat-body__message-text">
-                            {el.message}
+                            {message.text}
                           </p>
                         )}
 
-                        <p className="chat-body__message-time">{el.time}</p>
+                        <p className="chat-body__message-time">
+                          {message.time}
+                        </p>
                       </li>
                     </>
                   );

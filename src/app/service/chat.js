@@ -37,12 +37,6 @@ export const ChatApi = api.injectEndpoints({
         body: { userIds },
       }),
     }),
-    getChatByRecipientId: builder.mutation({
-      query: (id) => ({
-        url: `/chats/recipient/${id}`,
-        method: "POST",
-      }),
-    }),
     sendVoice: builder.mutation({
       query: (data) => ({
         url: `/chats/upload/voice`,
@@ -81,7 +75,6 @@ export const {
   useGetChatByIdMutation,
   useSendMessageMutation,
   useCreateChatMutation,
-  useGetChatByRecipientIdMutation,
   useSendVoiceMutation,
   useSendFileMutation,
   useAddUserToChatMutation,

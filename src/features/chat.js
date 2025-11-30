@@ -13,7 +13,7 @@ const ChatSlice = createSlice({
   initialState,
   reducers: {
     sendMessage: (state, action) => {
-      state.history.push(action.payload);
+      state.history.data.push(action.payload);
     },
     setStatus: (state, action) => {
       state.status = action.payload;
@@ -46,12 +46,7 @@ const ChatSlice = createSlice({
       ChatApi.endpoints.createChat.matchFulfilled,
       (state, action) => {
         state.chat = action.payload;
-      }
-    );
-    builder.addMatcher(
-      ChatApi.endpoints.getChatByRecipientId.matchFulfilled,
-      (state, action) => {
-        state.history = action.payload;
+        state.chats = [...state.chats, action.payload];
       }
     );
   },

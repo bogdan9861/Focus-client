@@ -18,6 +18,8 @@ const Feed = () => {
 
   const [reversedData, setReversedData] = useState([]);
 
+  console.log(data);
+
   useEffect(() => {
     if (data) {
       const arr = [];
@@ -41,12 +43,13 @@ const Feed = () => {
           {reversedData.map((post) => {
             return (
               <Post
+              
                 maxWidth={"80%"}
                 key={post?.id}
                 id={post?.id}
                 userId={post?.userId}
-                url={`${process.env.REACT_APP_SERVER_URL}/${post?.photo}`}
-                profileURL={setPhoto(post?.userPhoto)}
+                url={post?.photo}
+                profileURL={post?.userPhoto}
                 description={post?.description}
                 likes={post?.likesCount}
                 name={post?.name}

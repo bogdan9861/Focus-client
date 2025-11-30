@@ -65,7 +65,7 @@ const UpdateModal = ({ data, oppen, onCancel, setOppenModal }) => {
       {contextHolder}
       <div className="update">
         <div className="update__profile">
-          <img className="update__img" src={setPhoto(data?.photo)} alt="" />
+          <img className="update__img" src={data?.photo} alt="" />
           <div className="update__profile-content">
             <span className="update__profile-name">{data?.name}</span>
             <span className="update__profile-nickName">{data?.nickname}</span>

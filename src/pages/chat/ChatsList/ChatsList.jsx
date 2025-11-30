@@ -10,7 +10,6 @@ import {
 } from "../../../app/service/chat";
 
 import noPhoto from "../../../assets/images/no-photo.png";
-import { setPhoto } from "../../../utils/setPhoto";
 
 const ChatsList = ({
   id,
@@ -131,7 +130,7 @@ const ChatsList = ({
                 <>
                   <img
                     className="chat__aside-item__img"
-                    src={setPhoto(chat?.photo)}
+                    src={chat?.photo}
                     alt=""
                   />
                   <div className="chat__aside-item__content">
@@ -148,12 +147,12 @@ const ChatsList = ({
                     <>
                       <img
                         className="chat__aside-item__img"
-                        src={setPhoto(user.photo)}
+                        src={user.photo || noPhoto}
                         alt=""
                       />
                       <div className="chat__aside-item__content">
                         <span className="chat__aside-item__name">
-                          {user.nickname}
+                          {user.nickname || user.name}
                         </span>
                         <p className="chat__aside-item__message">
                           {ReduceString(chat?.lastMessage, 40)}

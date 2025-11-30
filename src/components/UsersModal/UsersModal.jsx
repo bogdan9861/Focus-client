@@ -27,7 +27,7 @@ const UsersModal = ({
     } else {
       return noPhoto;
     }
-  }; 
+  };
 
   const addUserToChat = async (e, id) => {
     try {
@@ -41,11 +41,14 @@ const UsersModal = ({
       {!isLoading ? (
         <ul className="users__list">
           {data?.map((user) => (
-            <li className="users__list-item" onClick={() => !addUser && setOpen(false)}>
+            <li
+              className="users__list-item"
+              onClick={() => !addUser && setOpen(false)}
+            >
               <Link className="users__list-inner" to={`/profile/${user?.id}`}>
                 <img
                   className="users__list-img"
-                  src={setPhoto(user?.photo)}
+                  src={user?.photo || noPhoto}
                   alt=""
                 />
                 <div className="users__list-content">

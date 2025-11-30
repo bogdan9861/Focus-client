@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import noPhoto from "../../assets/images/no-photo.png";
+
 import {
   useCurrentUserQuery,
   useFollowMutation,
@@ -197,7 +199,7 @@ const Profile = () => {
                 <div className="profile__img-wrapper">
                   <img
                     className="profile__img viewer"
-                    src={setPhoto(user?.photo)}
+                    src={user?.photo || noPhoto}
                     alt=""
                   />
                   <div className="profile__content-top">
@@ -416,8 +418,8 @@ const Profile = () => {
                           key={post?.id}
                           id={post?.id}
                           userId={post?.userId}
-                          url={`${process.env.REACT_APP_SERVER_URL}/${post?.photo}`}
-                          profileURL={`${process.env.REACT_APP_SERVER_URL}/${post?.userPhoto}`}
+                          url={post?.photo}
+                          profileURL={post?.userPhoto}
                           name={post?.name}
                           self={current.data.id === post?.userId}
                           likes={post?.likesCount}

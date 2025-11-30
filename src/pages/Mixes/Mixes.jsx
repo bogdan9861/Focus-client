@@ -85,7 +85,7 @@ const Mixes = () => {
                 id={post?.id}
                 userId={post?.userId}
                 url={`${process.env.REACT_APP_SERVER_URL}/${post?.photo}`}
-                profileURL={setPhoto(post?.userPhoto)}
+                profileURL={post?.userPhoto}
                 description={post?.description}
                 likes={post?.likesCount}
                 name={post?.name}

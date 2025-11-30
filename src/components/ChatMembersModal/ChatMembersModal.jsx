@@ -9,6 +9,7 @@ import "./ChatMembersModal.scss";
 import UsersModal from "../UsersModal/UsersModal";
 import { useGetAllQuery } from "../../app/service/user";
 import { useRemoveUserFromChatMutation } from "../../app/service/chat";
+import noPhoto from "../../assets/images/no-photo.png";
 
 const ChatMembersModal = ({ chatId, users, open, setOpen, actionButton }) => {
   const [usersOpen, setUsersOpen] = useState(false);
@@ -32,7 +33,7 @@ const ChatMembersModal = ({ chatId, users, open, setOpen, actionButton }) => {
               <Link className="users__list-inner" to={`/profile/${user?.id}`}>
                 <img
                   className="users__list-img"
-                  src={setPhoto(user?.photo)}
+                  src={user?.photo || noPhoto}
                   alt=""
                 />
                 <div className="users__list-content">

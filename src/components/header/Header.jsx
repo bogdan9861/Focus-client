@@ -81,11 +81,7 @@ const Header = ({ setAsideVisable }) => {
         </button>
         <div className="header__profile">
           <Link className="header__prfile-user" to={`/profile/${user?.id}`}>
-            <img
-              className="header__profile-img"
-              src={setPhoto(data?.photo)}
-              alt=""
-            />
+            <img className="header__profile-img" src={data?.photo} alt="" />
             <div className="header__profile-info">
               <span className="header__profile-name">{data?.name}</span>
               <span className="header__profile-nickname">{data?.nickname}</span>

@@ -47,7 +47,7 @@ const HeadInfo = ({
       navigate(`/conference/${conferenceId}`);
       socket.emit(
         "send-call-offer",
-        setPhoto(user.data.photo),
+        user.data.photo,
         user.data.nickname,
         conferenceId,
         id

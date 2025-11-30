@@ -105,7 +105,9 @@ const Form = ({
       "recive-message",
       ({ room, message, time, reciverId, userId, audio, file }) => {
         if (room === chatSelector?.id) {
-          dispatch(sendMessageAction({ message, time, userId, audio, file }));
+          dispatch(
+            sendMessageAction({ text: message, time, userId, audio, file })
+          );
         }
       }
     );
@@ -133,7 +135,7 @@ const Form = ({
     const send = async (chatId) => {
       dispatch(
         sendMessageAction({
-          message,
+          text: message,
           time,
           chatUserId,
           userId: id,
